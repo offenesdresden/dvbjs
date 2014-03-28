@@ -1,6 +1,6 @@
 ## dvbjs
 
-**WIP**: Not finished at this point! This will be updated when it is.
+**WIP**: Only single stop queries at this point, route calculation is hopefully possible soon. Still awaiting a call back (pun intended) regarding their API specification.
 
 ---
 
@@ -15,16 +15,22 @@ var dvb = require('dvbjs');
 and then call 
 
 ```
-var results = '';
-dvb.single("Helmholtzstraße",2,function(data){results = data;});
+var stopName = "Helmholtzstraße";
+var numResults = 2;
+
+dvb.monitor(stopName,numResults,function(data){
+console.log(data);
+});
 ```
 
-where you can substitute 'Helmholtzstraße' with any stop you'd like and 2 with the amount of results.
-
-Calling ```console.log(results)``` would output the following.
+Output is an array of the following form:
 
 ```
 [ [ '85', 'Striesen', '4' ], 
 [ '85', 'Löbtau Süd', '4' ] ]
 ```
+
+```
 [ 'name of the bus/tramline' , 'direction' , 'when it will arrive' ]
+```
+Stop names are very forgiving. Helmholtzstraße = helmholtzstrasse, Nürnberger Platz = nuernbergerplatz etc.
