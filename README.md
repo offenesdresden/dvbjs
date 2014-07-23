@@ -2,14 +2,9 @@
 
 A node module giving you a few options to query the servers of the [DVB](http://dvb.de) for current bus- and tramstop data.
 
-There's two functions available, `dvb.monitor()` and `dvb.route()`. Monitor is used to monitor a single stop as it returns every bus and tram leaving there in a specified time. The route function takes two stops and returns possible routes between these two. As the *official* API only allows access via a reverse proxy, this actually goes ahead and scrapes their site, which makes it a little slow, but it should work just fine. They'll probably block you for a shitload of requests though, so use with caution.
+There's two functions available, `dvb.monitor()` and `dvb.route()`. Monitor is used to monitor a single stop as it returns every bus and tram leaving there in a specified time. The route function takes two stops and returns possible routes between these two.
 
-You can download and mark it as a dependency in your package.json with npm.
-```bash
-$ npm install --save dvbjs
-```
-
-Here's two minimal examples.
+**Important: Apparently the data acquired by `dvb.route()` is not allowed to be gathered in this form. I am therefore not publishing this module through npm and am merely documenting *how* one could work with this data. You are not to use this for any actual applications.**
 
 #### Monitor a single stop
 
@@ -46,14 +41,15 @@ Output is of the following form.
 ```js
 var dvb = require('dvbjs');
 
-var start = "Helmholtzstraße";
-var stop  = "Zellescher Weg";
-var time = ; // not sure yet
+var origin = "Helmholtzstraße";
+var destination  = "Zellescher Weg";
+var time = 1419424657; // unix time plz
 
-dvb.route(start, stop, time, function(data){
+dvb.route(origin, destination, time, function(data){
     console.log(data);
 });
-
 ```
 
 By the way, stop names are very forgiving. 'Helmholtzstraße' is the same as 'helmholtzstrasse', 'Nürnberger Platz' = 'nuernbergerplatz' etc.
+
+One last note, be sure not to run whatever it is your building from inside the network of the TU Dresden (at least as far as I can tell). Calls to `dvb.route()` will time out. If I could tell you why their site won't give me much info from inside eduroam I would.
