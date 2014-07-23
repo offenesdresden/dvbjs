@@ -26,6 +26,7 @@
     "url": "https://github.com/kiliankoe/dvbjs/issues"
   },
   "homepage": "https://github.com/kiliankoe/dvbjs",
+  "private": "true",
   "dependencies": {
     "request": "^2.38.0"
   }
