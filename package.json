@@ -28,6 +28,8 @@
   "homepage": "https://github.com/kiliankoe/dvbjs",
   "dependencies": {
     "cheerio": "^0.17.0",
-    "request": "^2.38.0"
+    "request": "^2.38.0",
+    "async": "^0.9.0",
+    "zombie": "^2.0.0-alpha31"
   }
 }

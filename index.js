@@ -1,1 +1,1 @@
-module.exports = require('./lib/dvbjs');
+module.exports = require('./lib/dvbjs')();
