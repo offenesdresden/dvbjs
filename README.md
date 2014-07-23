@@ -5,6 +5,7 @@ A node module giving you a few options to query the servers of the [DVB](http://
 There's two functions available, `dvb.monitor()` and `dvb.route()`. Monitor is used to monitor a single stop as it returns every bus and tram leaving there in a specified time. The route function takes two stops and returns possible routes between these two.
 
 **Important: Apparently the data acquired by `dvb.route()` is not allowed to be gathered in this form. I am therefore not publishing this module through npm and am merely documenting *how* one could work with this data. You are not to use this for any actual applications.**
+`dvb.monitor()` *should* be exempt from this.
 
 #### Monitor a single stop
 
@@ -48,6 +49,10 @@ var time = 1419424657; // unix time plz
 dvb.route(origin, destination, time, function(data){
     console.log(data);
 });
+```
+
+```
+this is still work in progress...
 ```
 
 By the way, stop names are very forgiving. 'Helmholtzstraße' is the same as 'helmholtzstrasse', 'Nürnberger Platz' = 'nuernbergerplatz' etc.
