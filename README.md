@@ -1,36 +1,55 @@
 ## dvbjs
 
-**WIP**: Only single stop queries at this point, route calculation is hopefully possible soon. Still awaiting a call back (pun intended) regarding their API specification.
-
----
-
 A node module giving you a few options to query the servers of the [DVB](http://dvb.de) for current bus- and tramstop data.
 
-All you need to do is
+There's two functions available, `dvb.monitor()` and `dvb.route()`. Monitor is used to monitor a single stop as it returns every bus and tram leaving there in a specified time. The route function takes two stops and returns possible routes between these two.
 
-```
+**Important: Apparently the data acquired by `dvb.route()` is not allowed to be gathered in this form. I am therefore not publishing this module through npm and am merely documenting *how* one could work with this data. You are not to use this for any actual applications.**
+
+#### Monitor a single stop
+
+```js
 var dvb = require('dvbjs');
-````
 
-and then call 
-
-```
 var stopName = "Helmholtzstraße";
+var timeOffset = 0; // how many minutes in the future, 0 for now
 var numResults = 2;
 
-dvb.monitor(stopName,numResults,function(data){
-console.log(data);
+dvb.monitor(stopName, timeOffset, numResults, function(data){
+    console.log(data);
+});
+
+```
+
+Output is of the following form.
+
+```json
+[{
+    line: "85",
+    direction: "Striesen",
+    arrivaltime: "4"
+},
+{
+    line: "85",
+    direction: "Löbtau Süd",
+    arrivaltime: "4"
+}]
+```
+
+#### Find routes
+
+```js
+var dvb = require('dvbjs');
+
+var origin = "Helmholtzstraße";
+var destination  = "Zellescher Weg";
+var time = 1419424657; // unix time plz
+
+dvb.route(origin, destination, time, function(data){
+    console.log(data);
 });
 ```
 
-Output is an array of the following form:
+By the way, stop names are very forgiving. 'Helmholtzstraße' is the same as 'helmholtzstrasse', 'Nürnberger Platz' = 'nuernbergerplatz' etc.
 
-```
-[ [ '85', 'Striesen', '4' ], 
-[ '85', 'Löbtau Süd', '4' ] ]
-```
-
-```
-[ 'name of the bus/tramline' , 'direction' , 'when it will arrive' ]
-```
-Stop names are very forgiving. Helmholtzstraße = helmholtzstrasse, Nürnberger Platz = nuernbergerplatz etc.
+One last note, be sure not to run whatever it is your building from inside the network of the TU Dresden (at least as far as I can tell). Calls to `dvb.route()` will time out. If I could tell you why their site won't give me much info from inside eduroam I would.

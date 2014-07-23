@@ -1,6 +1,6 @@
 {
   "name": "dvbjs",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "query the servers of dvb.de for current bus- and tramstop data",
   "main": "index",
   "scripts": {
@@ -17,13 +17,17 @@
     "dresden"
   ],
   "author": {
-  	"name": "Kilian Koeltzsch",
-  	"email": "koeltzsch@gmail.com",
-  	"url": "http://koeltzs.ch"
+    "name": "Kilian Koeltzsch",
+    "email": "koeltzsch@gmail.com",
+    "url": "http://koeltzs.ch"
   },
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/kiliankoe/dvbjs/issues"
   },
-  "homepage": "https://github.com/kiliankoe/dvbjs"
+  "homepage": "https://github.com/kiliankoe/dvbjs",
+  "dependencies": {
+    "cheerio": "^0.17.0",
+    "request": "^2.38.0"
+  }
 }
