@@ -8,25 +8,26 @@ A node module giving you a few options to query the servers of the [DVB](http://
 
 All you need to do is
 
-```
-var dvb = require('dvbjs');
+```js
+var dvb = require('dvbjs')();
 ````
 
-and then call 
+and then call
 
-```
+```js
 var stopName = "Helmholtzstraße";
 var numResults = 2;
 
-dvb.monitor(stopName,numResults,function(data){
-console.log(data);
+dvb.monitor(stopName, numResults, function(data){
+    console.log(data);
 });
+
 ```
 
 Output is an array of the following form:
 
 ```
-[ [ '85', 'Striesen', '4' ], 
+[ [ '85', 'Striesen', '4' ],
 [ '85', 'Löbtau Süd', '4' ] ]
 ```
 
