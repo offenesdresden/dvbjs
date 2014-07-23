@@ -10,25 +10,30 @@ All you need to do is
 
 ```js
 var dvb = require('dvbjs')();
-````
 
-and then call
-
-```js
 var stopName = "Helmholtzstraße";
+var timeOffset = 0; // how many minutes in the future, 0 for now
 var numResults = 2;
 
-dvb.monitor(stopName, numResults, function(data){
+dvb.monitor(stopName, timeOffset, numResults, function(data){
     console.log(data);
 });
 
 ```
 
-Output is an array of the following form:
+Output is of the following form.
 
-```
-[ [ '85', 'Striesen', '4' ],
-[ '85', 'Löbtau Süd', '4' ] ]
+```json
+[{
+    line: "85",
+    direction: "Striesen",
+    arrivaltime: "4"
+},
+{
+    line: "85",
+    direction: "Löbtau Süd",
+    arrivaltime: "4"
+}]
 ```
 
 ```
