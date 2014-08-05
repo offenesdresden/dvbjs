@@ -44,7 +44,7 @@ var dvb = require('dvbjs');
 
 var origin = "Helmholtzstraße";
 var destination  = "Zellescher Weg";
-var time = 1419424657; // unix time plz
+var time = new Date(); // returns current data
 
 dvb.route(origin, destination, time, function(data){
     console.log(data);
