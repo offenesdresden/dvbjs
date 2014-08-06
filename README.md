@@ -6,11 +6,11 @@ There's a few methods available:
 - `dvb.monitor()`
 
  This is used to monitor a single stop as it returns every bus and tram leaving there in a specified time.
-    
+
 - `dvb.route()`
 
  Takes two stops and returns possible routes between these two.
-    
+
 - `dvb.find()`
 
  Uses a searchstring to find stops in Dresden.
@@ -39,8 +39,7 @@ Output is of the following form.
     line: "85",
     direction: "Striesen",
     arrivaltime: "4"
-},
-{
+}, {
     line: "85",
     direction: "Löbtau Süd",
     arrivaltime: "4"
@@ -72,10 +71,12 @@ dvb.find('zellesch', function(data){
 ```
 
 ```json
-{ results: [{
-    stop: 'Zellescher Weg',
-    coords: '4622580.00000,503749.00000'
-}]}
+{
+    results: [{
+        stop: 'Zellescher Weg',
+        coords: '4622580.00000,503749.00000'
+    }]
+}
 ```
 
 By the way, stop names in queries are very forgiving. As long as the server sees it as a unique hit, it'll work. 'Helmholtzstraße' finds the same data as 'helmholtzstrasse', 'Nürnberger Platz' = 'nuernbergerplatz' etc.
