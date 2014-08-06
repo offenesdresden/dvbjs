@@ -34,12 +34,13 @@ dvb.monitor(stopName, timeOffset, numResults, function(data){
 
 Output is of the following form.
 
-```json
+```js
 [{
     line: "85",
     direction: "Striesen",
     arrivaltime: "4"
-}, {
+},
+{
     line: "85",
     direction: "Löbtau Süd",
     arrivaltime: "4"
@@ -70,7 +71,7 @@ dvb.find('zellesch', function(data){
 });
 ```
 
-```json
+```js
 {
     results: [{
         stop: 'Zellescher Weg',
