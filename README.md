@@ -2,16 +2,27 @@
 
 A node module giving you a few options to query the servers of the [DVB](http://dvb.de) for current bus- and tramstop data.
 
-There's two functions available, `dvb.monitor()` and `dvb.route()`. Monitor is used to monitor a single stop as it returns every bus and tram leaving there in a specified time. The route function takes two stops and returns possible routes between these two.
+There's a few methods available:
+- `dvb.monitor()`
 
-**Important: Apparently the data acquired by `dvb.route()` is not allowed to be gathered in this form. I am therefore not publishing this module through npm and am merely documenting *how* one could work with this data. You are not to use this for any actual applications.**
-`dvb.monitor()` *should* be exempt from this.
+ This is used to monitor a single stop as it returns every bus and tram leaving there in a specified time.
+    
+- `dvb.route()`
 
-#### Monitor a single stop
+ Takes two stops and returns possible routes between these two.
+    
+- `dvb.find()`
 
+ Uses a searchstring to find stops in Dresden.
+
+Require the module to get started.
 ```js
 var dvb = require('dvbjs');
+```
 
+### Monitor a single stop
+
+```js
 var stopName = "Helmholtzstraße";
 var timeOffset = 0; // how many minutes in the future, 0 for now
 var numResults = 2;
@@ -19,7 +30,6 @@ var numResults = 2;
 dvb.monitor(stopName, timeOffset, numResults, function(data){
     console.log(data);
 });
-
 ```
 
 Output is of the following form.
@@ -37,11 +47,9 @@ Output is of the following form.
 }]
 ```
 
-#### Find routes
+### Find routes
 
 ```js
-var dvb = require('dvbjs');
-
 var origin = "Helmholtzstraße";
 var destination  = "Zellescher Weg";
 var time = new Date(); // returns current data
@@ -55,6 +63,21 @@ dvb.route(origin, destination, time, function(data){
 this is still work in progress...
 ```
 
-By the way, stop names are very forgiving. 'Helmholtzstraße' is the same as 'helmholtzstrasse', 'Nürnberger Platz' = 'nuernbergerplatz' etc.
+### Find stops
 
-One last note, be sure not to run whatever it is your building from inside the network of the TU Dresden (at least as far as I can tell). Calls to `dvb.route()` will time out. If I could tell you why their site won't give me much info from inside eduroam I would.
+```js
+dvb.find('zellesch', function(data){
+    console.log(data);
+});
+```
+
+```json
+{ results: [{
+    stop: 'Zellescher Weg',
+    coords: '4622580.00000,503749.00000'
+}]}
+```
+
+By the way, stop names in queries are very forgiving. As long as the server sees it as a unique hit, it'll work. 'Helmholtzstraße' finds the same data as 'helmholtzstrasse', 'Nürnberger Platz' = 'nuernbergerplatz' etc.
+
+One last note, be sure not to run whatever it is your building from inside the network of the TU Dresden (at least as far as I can tell). Calls to everything but `dvb.monitor()` will time out. If I could tell you why their site won't give me much info from inside eduroam I would.
