@@ -1,19 +1,6 @@
 ## dvbjs
 
-A node module giving you a few options to query the servers of the [DVB](http://dvb.de) for current bus- and tramstop data.
-
-There's a few methods available:
-- `dvb.monitor()`
-
- This is used to monitor a single stop as it returns every bus and tram leaving there in a specified time.
-
-- `dvb.route()`
-
- Takes two stops and returns possible routes between these two.
-
-- `dvb.find()`
-
- Uses a searchstring to find stops in Dresden.
+A node module giving you a few options to query the servers of the [DVB](http://dvb.de) for current bus- and tramstop information.
 
 Require the module to get started.
 ```js
@@ -21,6 +8,8 @@ var dvb = require('dvbjs');
 ```
 
 ### Monitor a single stop
+
+Monitor a single stop to see every bus or tram leaving this stop after the specified time offset.
 
 ```js
 var stopName = "Helmholtzstraße";
@@ -31,8 +20,6 @@ dvb.monitor(stopName, timeOffset, numResults, function(data){
     console.log(data);
 });
 ```
-
-Output is of the following form.
 
 ```js
 [{
@@ -49,12 +36,15 @@ Output is of the following form.
 
 ### Find routes
 
+Query the server for possible routes from one stop to another. Returns multiple possible routes, the single stops on each of these and some other info.
+
 ```js
 var origin = "Helmholtzstraße";
 var destination  = "Zellescher Weg";
-var time = new Date(); // returns current data
+var time = new Date();
+var deparr = 0; // set to 0 for the time to be the departure time, 1 for arrival time
 
-dvb.route(origin, destination, time, function(data){
+dvb.route(origin, destination, time, deparr, function(data){
     console.log(data);
 });
 ```
@@ -64,6 +54,8 @@ this is still work in progress...
 ```
 
 ### Find stops
+
+Search for a single stop in the network of the DVB. Returns an array of all possible hits including their GPS coordinates.
 
 ```js
 dvb.find('zellesch', function(data){
