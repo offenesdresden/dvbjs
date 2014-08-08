@@ -106,12 +106,10 @@ dvb.find('zellesch', function(data){
 ```
 
 ```js
-{
-    results: [{
-        stop: 'Zellescher Weg',
-        coords: '4622580.00000,503749.00000'
-    }]
-}
+[{
+    stop: 'Zellescher Weg',
+    coords: '4622580.00000,503749.00000'
+}]
 ```
 
 By the way, stop names in queries are very forgiving. As long as the server sees it as a unique hit, it'll work. 'Helmholtzstraße' finds the same data as 'helmholtzstrasse', 'Nürnberger Platz' = 'nuernbergerplatz' etc.

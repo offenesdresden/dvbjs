@@ -1,6 +1,4 @@
-var assert = require('assert');
 var dvb = require('../index.js');
-
 
 describe('dvb.monitor "Postplatz"', function(){
     it('should return an array', function(done){
@@ -31,12 +29,12 @@ describe('dvb.route "Prager Straße -> Postplatz"', function(){
 describe('dvb.find "Zellescher Weg"', function(){
     it('should return an array', function(done){
         dvb.find('zellesch',function(data){
-            if (Array.isArray(data.results)) done();
+            if (Array.isArray(data)) done();
         });
     });
     it('should find the correct stop', function(done){
         dvb.find('zellesch', function(data){
-            if (data.results[0].stop === 'Zellescher Weg') done();
+            if (data[0].stop === 'Zellescher Weg') done();
         });
     });
 });
