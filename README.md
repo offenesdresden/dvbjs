@@ -1,5 +1,7 @@
 ## dvbjs
 
+![travis-ci](http://img.shields.io/travis/kiliankoe/dvbjs.svg?style=flat)
+
 A node module giving you a few options to query the servers of the [DVB](http://dvb.de) for current bus- and tramstop information.
 
 Install and require the module to get started.
