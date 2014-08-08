@@ -78,14 +78,18 @@ dvb.route(origin, destination, time, deparr, function(data){
                 "time": "13:36",
                 "coords": "4620527.00000,503940.00000"
             }
-        }, {...}, {...}]
+        },
+        {...}
+        ]
     }, {
         "departure": "14:02",
         "arrival": "14:11",
         "duration": "00:09",
         "interchange": "1",
-        "nodes": [{...}, {...}]
-    }, {...}, {...}]
+        "nodes": [...]
+    },
+    {...}
+    ]
 }
 ```
 
