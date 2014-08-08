@@ -60,36 +60,32 @@ dvb.route(origin, destination, time, deparr, function(data){
     "origin": "Dresden, Helmholtzstraße",
     "destination": "Dresden, Zellescher Weg",
     "trips": [{
-        "departure": "21:28",
-        "arrival": "21:48",
-        "duration": "00:20",
+        "departure": "13:34",
+        "arrival": "13:56",
+        "duration": "00:22",
         "interchange": "2",
         "nodes": [{
             "mode": "Stadtbus",
             "line": "85",
             "direction": "DD Löbtau Süd Mohorner Str.",
-            "departure": "Helmholtzstraße",
-            "departuretime": "21:28",
-            "departurecoords": "4621158.00000,504097.00000",
-            "arrival": "Plauen Nöthnitzer Straße",
-            "arrivaltime": "21:29",
-            "arrivalcoords": "4620527.00000,503940.00000"
-        }, {
-            ...
-        }, {
-            ...
-        }]
+            "departure": {
+                "stop": "Helmholtzstraße",
+                "time": "13:34",
+                "coords": "4621158.00000,504097.00000"
+            },
+            "arrival": {
+                "stop": "Plauen Nöthnitzer Straße",
+                "time": "13:36",
+                "coords": "4620527.00000,503940.00000"
+            }
+        }, {...}, {...}]
     }, {
-        "departure": "05:36",
-        "arrival": "05:53",
-        "duration": "00:17",
+        "departure": "14:02",
+        "arrival": "14:11",
+        "duration": "00:09",
         "interchange": "1",
-        "nodes": [{
-            ...
-        }, {
-            ...
-        }]
-    }]
+        "nodes": [{...}, {...}]
+    }, {...}, {...}]
 }
 ```
 
