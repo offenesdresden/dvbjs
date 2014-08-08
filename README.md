@@ -36,7 +36,7 @@ dvb.monitor(stopName, timeOffset, numResults, function(data){
 
 ### Find routes
 
-Query the server for possible routes from one stop to another. Returns multiple possible routes, the single stops on each of these and some other info.
+Query the server for possible routes from one stop to another. Returns multiple possible trips, the bus-/tramlines to be taken, the single stops, their arrival and departure times and their GPS coordinates.
 
 ```js
 var origin = "Helmholtzstraße";
@@ -49,9 +49,45 @@ dvb.route(origin, destination, time, deparr, function(data){
 });
 ```
 
+```js
+{
+    "origin": "Dresden, Helmholtzstraße",
+    "destination": "Dresden, Zellescher Weg",
+    "trips": [{
+        "departure": "21:28",
+        "arrival": "21:48",
+        "duration": "00:20",
+        "interchange": "2",
+        "nodes": [{
+            "mode": "Stadtbus",
+            "line": "85",
+            "direction": "DD Löbtau Süd Mohorner Str.",
+            "departure": "Helmholtzstraße",
+            "departuretime": "21:28",
+            "departurecoords": "4621158.00000,504097.00000",
+            "arrival": "Plauen Nöthnitzer Straße",
+            "arrivaltime": "21:29",
+            "arrivalcoords": "4620527.00000,503940.00000"
+        }, {
+            ...
+        }, {
+            ...
+        }]
+    }, {
+        "departure": "05:36",
+        "arrival": "05:53",
+        "duration": "00:17",
+        "interchange": "1",
+        "nodes": [{
+            ...
+        }, {
+            ...
+        }]
+    }]
+}
 ```
-this is still work in progress...
-```
+
+A note: A simple console.log of the returned data will look slightly different as js objects will only be displayed as `Object` at a certain depth. They're still there though. Use `console.log(JSON.stringify(data, null, 4));` for example to view it in your console.
 
 ### Find stops
 
