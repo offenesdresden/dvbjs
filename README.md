@@ -2,7 +2,11 @@
 
 A node module giving you a few options to query the servers of the [DVB](http://dvb.de) for current bus- and tramstop information.
 
-Require the module to get started.
+Install and require the module to get started.
+```sh
+$ npm install dvbjs
+```
+
 ```js
 var dvb = require('dvbjs');
 ```
