@@ -1,7 +1,7 @@
 {
   "name": "dvbjs",
-  "version": "1.1.0",
-  "description": "query the servers of dvb.de for current bus- and tramstop data",
+  "version": "1.2.0",
+  "description": "query Dresden's public transport system for current bus- and tramstop data",
   "main": "index",
   "scripts": {
     "test": "mocha"
@@ -14,7 +14,8 @@
     "dvb",
     "bus",
     "tram",
-    "dresden"
+    "dresden",
+    "public transport"
   ],
   "author": {
     "name": "Kilian Koeltzsch",

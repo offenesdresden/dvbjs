@@ -77,7 +77,8 @@ dvb.route(origin, destination, time, deparr, function(data){
                 "stop": "Plauen Nöthnitzer Straße",
                 "time": "13:36",
                 "coords": [ 51.027625, 13.715769 ]
-            }
+            },
+            "path": [[ 51.02554, 13.725471 ],[ 51.02557, 13.725286 ], ...]
         },
         {...}
         ]
@@ -92,6 +93,8 @@ dvb.route(origin, destination, time, deparr, function(data){
     ]
 }
 ```
+
+The path property contains an array consisting of all the coordinates describing the path of this node. Useful for example to draw on a map.
 
 A note: A simple console.log of the returned data will look slightly different as js objects will only be displayed as `Object` at a certain depth. They're still there though. Use `console.log(JSON.stringify(data, null, 4));` for example to view it in your console.
 
