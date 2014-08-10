@@ -30,14 +30,13 @@ dvb.monitor(stopName, timeOffset, numResults, function(data){
 
 ```js
 [{
-    line: "85",
-    direction: "Striesen",
-    arrivaltime: "4"
-},
-{
-    line: "85",
-    direction: "Löbtau Süd",
-    arrivaltime: "4"
+    line: '85',
+    direction: 'Striesen',
+    arrivaltime: 14
+}, {
+    line: '85',
+    direction: 'Löbtau Süd',
+    arrivaltime: 20
 }]
 ```
 
@@ -64,7 +63,7 @@ dvb.route(origin, destination, time, deparr, function(data){
         "departure": "13:34",
         "arrival": "13:56",
         "duration": "00:22",
-        "interchange": "2",
+        "interchange": 2,
         "nodes": [{
             "mode": "Stadtbus",
             "line": "85",
@@ -72,12 +71,12 @@ dvb.route(origin, destination, time, deparr, function(data){
             "departure": {
                 "stop": "Helmholtzstraße",
                 "time": "13:34",
-                "coords": "4621158.00000,504097.00000"
+                "coords": [ 51.025549, 13.725457 ]
             },
             "arrival": {
                 "stop": "Plauen Nöthnitzer Straße",
                 "time": "13:36",
-                "coords": "4620527.00000,503940.00000"
+                "coords": [ 51.027625, 13.715769 ]
             }
         },
         {...}
@@ -86,7 +85,7 @@ dvb.route(origin, destination, time, deparr, function(data){
         "departure": "14:02",
         "arrival": "14:11",
         "duration": "00:09",
-        "interchange": "1",
+        "interchange": 1,
         "nodes": [...]
     },
     {...}
@@ -109,7 +108,7 @@ dvb.find('zellesch', function(data){
 ```js
 [{
     stop: 'Zellescher Weg',
-    coords: '4622580.00000,503749.00000'
+    coords: [51.028366, 13.745847]
 }]
 ```
 

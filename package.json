@@ -1,6 +1,6 @@
 {
   "name": "dvbjs",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "query the servers of dvb.de for current bus- and tramstop data",
   "main": "index",
   "scripts": {
