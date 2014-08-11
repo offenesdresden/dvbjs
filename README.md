@@ -3,7 +3,7 @@
 [![travis-ci](http://img.shields.io/travis/kiliankoe/dvbjs.svg?style=flat)](https://travis-ci.org/kiliankoe/dvbjs)
 [![npmversion](http://img.shields.io/npm/v/dvbjs.svg?style=flat)](https://www.npmjs.org/package/dvbjs)
 
-A node module giving you a few options to query the servers of the [DVB](http://dvb.de) for current bus- and tramstop information.
+An unofficial node module giving you a few options to query Dresden's public transport system for current bus- and tramstop data.
 
 Install and require the module to get started.
 ```sh
