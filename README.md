@@ -23,8 +23,10 @@ var stopName = "Helmholtzstraße";
 var timeOffset = 0; // how many minutes in the future, 0 for now
 var numResults = 2;
 
-dvb.monitor(stopName, timeOffset, numResults, function(data){
-    console.log(data);
+dvb.monitor(stopName, timeOffset, numResults, function(err, data){
+    if (!err) {
+        console.log(data);
+    }
 });
 ```
 
@@ -50,8 +52,10 @@ var destination  = "Zellescher Weg";
 var time = new Date();
 var deparr = 0; // set to 0 for the time to be the departure time, 1 for arrival time
 
-dvb.route(origin, destination, time, deparr, function(data){
-    console.log(data);
+dvb.route(origin, destination, time, deparr, function(err, data){
+    if (!err) {
+        console.log(data);
+    }
 });
 ```
 
@@ -103,8 +107,10 @@ A note: A simple console.log of the returned data will look slightly different a
 Search for a single stop in the network of the DVB. Returns an array of all possible hits including their GPS coordinates.
 
 ```js
-dvb.find('zellesch', function(data){
-    console.log(data);
+dvb.find('zellesch', function(err, data){
+    if (!err) {
+        console.log(data);
+    }
 });
 ```
 
