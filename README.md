@@ -5,6 +5,8 @@
 
 An unofficial node module giving you a few options to query Dresden's public transport system for current bus- and tramstop data.
 
+In case you're looking for something like this for Python, check out [dvbpy](https://github.com/kiliankoe/dvbpy).
+
 Install and require the module to get started.
 ```sh
 $ npm install dvbjs
@@ -120,6 +122,8 @@ dvb.find('zellesch', function(err, data){
     coords: [51.028366, 13.745847]
 }]
 ```
+
+### Other stuff
 
 By the way, stop names in queries are very forgiving. As long as the server sees it as a unique hit, it'll work. 'Helmholtzstraße' finds the same data as 'helmholtzstrasse', 'Nürnberger Platz' = 'nuernbergerplatz' etc.
 
