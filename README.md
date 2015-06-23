@@ -52,7 +52,7 @@ Query the server for possible routes from one stop to another. Returns multiple 
 var origin = "Helmholtzstraße";
 var destination  = "Zellescher Weg";
 var time = new Date();
-var deparr = 0; // set to 0 for the time to be the departure time, 1 for arrival time
+var deparr = dvb.route.DEPATURE; // set to dvb.route.DEPATURE for the time to be the departure time, dvb.route.ARRIVAL for arrival time
 
 dvb.route(origin, destination, time, deparr, function(err, data){
     if (!err) {

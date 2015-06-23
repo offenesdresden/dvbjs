@@ -1,1 +1,3 @@
-module.exports = require('./lib/dvbjs')();
+'use strict';
+
+module.exports = require('./lib/dvbjs');
