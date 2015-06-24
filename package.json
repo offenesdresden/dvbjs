@@ -1,6 +1,6 @@
 {
   "name": "dvbjs",
-  "version": "3.0.0",
+  "version": "3.1.0",
   "description": "query Dresden's public transport system for current bus- and tramstop data",
   "main": "index",
   "scripts": {
@@ -19,8 +19,8 @@
   ],
   "author": {
     "name": "Kilian Koeltzsch",
-    "email": "koeltzsch@gmail.com",
-    "url": "http://koeltzs.ch"
+    "email": "me@kilian.io",
+    "url": "http://kilian.io"
   },
   "license": "MIT",
   "bugs": {

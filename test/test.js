@@ -66,7 +66,7 @@ describe('dvb.route "Prager Straße -> Postplatz"', function() {
     }
 
     it('should return the correct origin and destination', function(done) {
-        dvb.route('pragerstrasse', 'postplatz', new Date(), dvb.route.DEPATURE, function(err, data) {
+        dvb.route('pragerstrasse', 'postplatz', new Date(), dvb.route.DEPARTURE, function(err, data) {
             assert.ifError(err);
             assert(data.origin === 'Dresden, Prager Straße');
             assert(data.destination === 'Dresden, Postplatz');
