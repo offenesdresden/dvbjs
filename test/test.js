@@ -21,10 +21,13 @@ function mockRequest(filename) {
 describe('dvb.monitor "Postplatz"', function() {
     mockRequest('monitor-postplatz.json');
 
+    var now = new Date();
+
     function assertTransport(transport) {
         assert(transport.line);
         assert(transport.direction);
-        assert.strictEqual('number', typeof transport.arrivaltime);
+        assert.strictEqual('number', typeof transport.arrivalTimeRelative);
+        assert.strictEqual('object', typeof transport.arrivalTime);
     }
 
     it('should return an array', function(done) {
