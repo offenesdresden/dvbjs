@@ -30,18 +30,18 @@ describe('dvb.monitor "Postplatz"', function() {
         assert.strictEqual('object', typeof transport.arrivalTime);
     }
 
-    it('should return an array', function(done) {
+    it('should return an array with elements', function(done) {
         dvb.monitor('postplatz', 0, 5, function(err, data) {
             assert.ifError(err);
             assert(Array.isArray(data));
+            assert(data.length > 0);
             done();
         });
     });
 
-    it('should contain all three fields', function(done) {
+    it('should contain all four fields', function(done) {
         dvb.monitor('postplatz', 0, 5, function(err, data) {
             assert.ifError(err);
-            assert(data.length > 0);
             data.forEach(assertTransport);
             done();
         });
@@ -92,7 +92,15 @@ describe('dvb.route "Prager Straße -> Postplatz"', function() {
             assert.ifError(err);
             assert.strictEqual('Dresden, Prager Straße', data.origin);
             assert.strictEqual('Dresden, Postplatz', data.destination);
+            done();
+        });
+    });
+
+    it('should return an array of trips', function(done) {
+        dvb.route('pragerstrasse', 'postplatz', new Date(), dvb.route.DEPARTURE, function(err, data) {
+            assert.ifError(err);
             assert(Array.isArray(data.trips));
+            assert(data.trips.length > 0);
             data.trips.forEach(assertTrip);
             done();
         });
