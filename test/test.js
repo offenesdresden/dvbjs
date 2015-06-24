@@ -1,9 +1,26 @@
 'use strict';
 
+var fs = require('fs');
 var assert = require('assert');
+var sinon = require('sinon');
+var request = require('request');
 var dvb = require('../index.js');
 
+function mockRequest(filename) {
+    before(function (done) {
+        sinon.stub(request, 'get').yields(null, { statusCode: 200 }, fs.readFileSync(__dirname + '/data/' + filename));
+        done();
+    });
+
+    after(function (done) {
+        request.get.restore();
+        done();
+    });
+}
+
 describe('dvb.monitor "Postplatz"', function() {
+    mockRequest('monitor-postplatz.json');
+
     function assertTransport(transport) {
         assert(transport.line);
         assert(transport.direction);
@@ -29,6 +46,8 @@ describe('dvb.monitor "Postplatz"', function() {
 });
 
 describe('dvb.route "Prager Straße -> Postplatz"', function() {
+    mockRequest('route-pragerstr-postplatz.json');
+
     function assertTrip(trip) {
         assert(trip.departure);
         assert(trip.arrival);
@@ -78,6 +97,8 @@ describe('dvb.route "Prager Straße -> Postplatz"', function() {
 });
 
 describe('dvb.find "Zellescher Weg"', function() {
+    mockRequest('find-zellescherweg.json');
+
     function assertStop(stop) {
         assert(stop.stop);
         assert(Array.isArray(stop.coords));
