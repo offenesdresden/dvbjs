@@ -3,15 +3,18 @@
 [![travis-ci](http://img.shields.io/travis/kiliankoe/dvbjs.svg?style=flat)](https://travis-ci.org/kiliankoe/dvbjs)
 [![npmversion](http://img.shields.io/npm/v/dvbjs.svg?style=flat)](https://www.npmjs.org/package/dvbjs)
 
-An unofficial node module giving you a few options to query Dresden's public transport system for current bus- and tramstop data.
+This is an unofficial node module, giving you a few options to query Dresden's public transport system for current bus- and tramstop data.
 
 In case you're looking for something like this for Python, check out [dvbpy](https://github.com/kiliankoe/dvbpy).
 
-Install and require the module to get started.
+### Getting Started
+
+Install the module using npm
 ```sh
 $ npm install dvbjs
 ```
 
+and require it in your project
 ```js
 var dvb = require('dvbjs');
 ```
@@ -20,18 +23,18 @@ var dvb = require('dvbjs');
 
 Monitor a single stop to see every bus or tram leaving this stop after the specified time offset.
 
+Example:
 ```js
-var stopName = "Helmholtzstraße";
+var stopName = 'Helmholtzstraße'; // name of the stop
 var timeOffset = 0; // how many minutes in the future, 0 for now
-var numResults = 2;
+var numResults = 2; // number of results
 
-dvb.monitor(stopName, timeOffset, numResults, function(err, data){
-    if (!err) {
-        console.log(data);
-    }
+dvb.monitor(stopName, timeOffset, numResults, function(err, data) {
+    if (err) throw err;
+    console.log(JSON.stringify(data, null, 4));
 });
 ```
-
+Output:
 ```js
 [{
     line: '85',
@@ -48,19 +51,19 @@ dvb.monitor(stopName, timeOffset, numResults, function(err, data){
 
 Query the server for possible routes from one stop to another. Returns multiple possible trips, the bus-/tramlines to be taken, the single stops, their arrival and departure times and their GPS coordinates.
 
+Example:
 ```js
-var origin = "Helmholtzstraße";
-var destination  = "Zellescher Weg";
-var time = new Date();
+var origin = 'Helmholtzstraße';
+var destination = 'Zellescher Weg';
+var time = new Date(); // starting at what time
 var deparr = dvb.route.DEPARTURE; // set to dvb.route.DEPARTURE for the time to be the departure time, dvb.route.ARRIVAL for arrival time
 
-dvb.route(origin, destination, time, deparr, function(err, data){
-    if (!err) {
-        console.log(data);
-    }
+dvb.route(origin, destination, time, deparr, function(err, data) {
+    if (err) throw err;
+    console.log(JSON.stringify(data, null, 4));
 });
 ```
-
+Output:
 ```js
 {
     "origin": "Dresden, Helmholtzstraße",
@@ -100,22 +103,20 @@ dvb.route(origin, destination, time, deparr, function(err, data){
 }
 ```
 
-The path property contains an array consisting of all the coordinates describing the path of this node. Useful for example to draw on a map.
-
-A note: A simple console.log of the returned data will look slightly different as js objects will only be displayed as `Object` at a certain depth. They're still there though. Use `console.log(JSON.stringify(data, null, 4));` for example to view it in your console.
+The path property contains an array consisting of all the coordinates describing the path of this node. This can be useful to draw the route on a map.
 
 ### Find stops
 
 Search for a single stop in the network of the DVB. Returns an array of all possible hits including their GPS coordinates.
 
+Example:
 ```js
 dvb.find('zellesch', function(err, data){
-    if (!err) {
-        console.log(data);
-    }
+    if (err) throw err;
+    console.log(JSON.stringify(data, null, 4));
 });
 ```
-
+Output:
 ```js
 [{
     stop: 'Zellescher Weg',
@@ -123,8 +124,8 @@ dvb.find('zellesch', function(err, data){
 }]
 ```
 
-### Other stuff
+### Misc
 
-By the way, stop names in queries are very forgiving. As long as the server sees it as a unique hit, it'll work. 'Helmholtzstraße' finds the same data as 'helmholtzstrasse', 'Nürnberger Platz' = 'nuernbergerplatz' etc.
+By the way, stop names in queries are very forgiving. As long as the server sees it as an unique hit, it'll work. 'Helmholtzstraße' finds the same data as 'helmholtzstrasse', 'Nürnberger Platz' as 'nuernbergerplatz' etc.
 
-One last note, be sure not to run whatever it is you're building from inside the network of the TU Dresden (at least as far as I can tell). Calls to everything but `dvb.monitor()` will time out. If I could tell you why their site won't give me much info from inside eduroam I would.
+One last note, be sure not to run whatever it is you're building from inside the network of the TU Dresden (at least as far as I can tell). Calls to everything but `dvb.monitor()` will time out. If I could tell you why their site won't give me much info from inside eduroam, I would.
