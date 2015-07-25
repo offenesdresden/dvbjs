@@ -123,3 +123,34 @@ describe('dvb.find "Zellescher Weg"', function() {
         });
     });
 });
+
+describe('dvb.pins "5654791, 4620310, 5657216, 4623119, stop"', function() {
+    
+    it('should resolve into an array', function (done) {
+        var data = dvb.pins(5654791, 4620310, 5657216, 4623119, 'stop')
+        .then(function(data) {
+            assert(Array.isArray(data));
+            done();
+        });
+    });
+
+    it('should contain objects with id, name, coords and connections', function (done) {
+       var data = dvb.pins(5654791, 4620310, 5657216, 4623119, 'stop')
+       .then(function(data) {
+            data.forEach(function(elem) {
+                assert(elem.id);
+                assert(elem.name);
+                assert(elem.coords);
+                assert(elem.connections);
+            }) 
+            done();
+       });
+    });
+
+    it('should return a Promise but still accept a callback', function(done) {
+        dvb.pins(5654791, 4620310, 5657216, 4623119, 'stop', function(err, data) {
+            assert(data);
+            done();
+        }).then(assert);
+    });
+});
