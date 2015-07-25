@@ -154,3 +154,20 @@ describe('dvb.pins "5654791, 4620310, 5657216, 4623119, stop"', function() {
         }).then(assert);
     });
 });
+
+describe('dvb.address "51.051487, 13.738256"', function() {
+    it('should resolve into an object with city and address properties', function () {
+        var data = dvb.address(51.051487, 13.738256)
+        .then(function() {
+            assert(data.address);
+            assert(data.city);
+        });
+    });
+
+    it('should return a Promise but still accept a callback', function(done) {
+        dvb.address(51.051487, 13.738256, function(err, data) {
+            assert(data);
+            done();
+        }).then(assert);
+    });
+});
