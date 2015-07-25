@@ -171,3 +171,21 @@ describe('dvb.address "51.051487, 13.738256"', function() {
         }).then(assert);
     });
 });
+
+describe('dvb.coords "33000755"', function() {
+    it('should resolve into a coordinate array [lat, lng]', function (done) {
+        var data = dvb.coords('33000755')
+        .then(function(data) {
+            assert(Array.isArray(data));
+            assert.equal(data.length, 2);
+            done();
+        });
+    });
+
+    it('should return a Promise but still accept a callback', function(done) {
+        dvb.coords('3300755', function(err, data) {
+            assert(data);
+            done();
+        }).then(assert);
+    });
+});
