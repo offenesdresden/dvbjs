@@ -2,7 +2,6 @@
 
 var fs = require('fs');
 var assert = require('assert');
-var sinon = require('sinon');
 var dvb = require('../index.js');
 
 describe('dvb.monitor "Postplatz"', function() {
