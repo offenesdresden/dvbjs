@@ -29,7 +29,6 @@
   "homepage": "https://github.com/kiliankoe/dvbjs",
   "dependencies": {
     "lodash": "^3.10.0",
-    "request": "^2.58.0",
     "request-promise": "^0.4.2"
   },
   "devDependencies": {

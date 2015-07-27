@@ -3,17 +3,14 @@
 var fs = require('fs');
 var assert = require('assert');
 var sinon = require('sinon');
-var request = require('request');
 var dvb = require('../index.js');
 
 function mockRequest(filename) {
     before(function (done) {
-        sinon.stub(request, 'get').yields(null, { statusCode: 200 }, fs.readFileSync(__dirname + '/data/' + filename));
         done();
     });
 
     after(function (done) {
-        request.get.restore();
         done();
     });
 }
