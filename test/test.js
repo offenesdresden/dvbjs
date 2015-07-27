@@ -3,24 +3,9 @@
 var fs = require('fs');
 var assert = require('assert');
 var sinon = require('sinon');
-var request = require('request');
 var dvb = require('../index.js');
 
-function mockRequest(filename) {
-    before(function (done) {
-        sinon.stub(request, 'get').yields(null, { statusCode: 200 }, fs.readFileSync(__dirname + '/data/' + filename));
-        done();
-    });
-
-    after(function (done) {
-        request.get.restore();
-        done();
-    });
-}
-
 describe('dvb.monitor "Postplatz"', function() {
-    mockRequest('monitor-postplatz.json');
-
     var now = new Date();
 
     function assertTransport(transport) {
@@ -49,8 +34,6 @@ describe('dvb.monitor "Postplatz"', function() {
 });
 
 describe('dvb.route "Prager Straße -> Postplatz"', function() {
-    mockRequest('route-pragerstr-postplatz.json');
-
     function assertTrip(trip) {
         assert(trip.departure);
         assert(trip.arrival);
@@ -108,8 +91,6 @@ describe('dvb.route "Prager Straße -> Postplatz"', function() {
 });
 
 describe('dvb.find "Zellescher Weg"', function() {
-    mockRequest('find-zellescherweg.json');
-
     function assertStop(stop) {
         assert(stop.stop);
         assert(Array.isArray(stop.coords));
@@ -132,5 +113,70 @@ describe('dvb.find "Zellescher Weg"', function() {
             assert.strictEqual('Zellescher Weg', data[0].stop);
             done();
         });
+    });
+});
+
+describe('dvb.pins "5654791, 4620310, 5657216, 4623119, stop"', function() {
+    it('should resolve into an array', function (done) {
+        var data = dvb.pins(5654791, 4620310, 5657216, 4623119, 'stop')
+        .then(function(data) {
+            assert(Array.isArray(data));
+            done();
+        });
+    });
+
+    it('should contain objects with id, name, coords and connections', function (done) {
+       var data = dvb.pins(5654791, 4620310, 5657216, 4623119, 'stop')
+       .then(function(data) {
+            data.forEach(function(elem) {
+                assert(elem.id);
+                assert(elem.name);
+                assert(elem.coords);
+                assert(elem.connections);
+            })
+            done();
+       });
+    });
+
+    it('should return a Promise but still accept a callback', function(done) {
+        dvb.pins(5654791, 4620310, 5657216, 4623119, 'stop', function(err, data) {
+            assert(data);
+            done();
+        }).then(assert);
+    });
+});
+
+describe('dvb.address "51.051487, 13.738256"', function() {
+    it('should resolve into an object with city and address properties', function () {
+        var data = dvb.address(51.051487, 13.738256)
+        .then(function(data) {
+            assert(data.address);
+            assert(data.city);
+        });
+    });
+
+    it('should return a Promise but still accept a callback', function(done) {
+        dvb.address(51.051487, 13.738256, function(err, data) {
+            assert(data);
+            done();
+        }).then(assert);
+    });
+});
+
+describe('dvb.coords "33000755"', function() {
+    it('should resolve into a coordinate array [lat, lng]', function (done) {
+        var data = dvb.coords('33000755')
+        .then(function(data) {
+            assert(Array.isArray(data));
+            assert.equal(data.length, 2);
+            done();
+        });
+    });
+
+    it('should return a Promise but still accept a callback', function(done) {
+        dvb.coords('3300755', function(err, data) {
+            assert(data);
+            done();
+        }).then(assert);
     });
 });
