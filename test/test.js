@@ -2,9 +2,36 @@
 
 var fs = require('fs');
 var assert = require('assert');
-var dvb = require('../index.js');
+var mockery = require('mockery');
+var bluebird = require('bluebird');
+var dvb;
+
+function mockRequest(filename) {
+    before(function (done) {
+        mockery.enable({
+            warnOnReplace: false,
+            warnOnUnregistered: false,
+            useCleanCache: true
+        });
+        mockery.registerMock('request-promise', function () {
+            var response = fs.readFileSync(__dirname + '/data/' + filename, 'utf8');
+            return bluebird.resolve(response.trim());
+        });
+
+        dvb = require('../index');
+        done();
+    });
+
+    after(function (done) {
+        mockery.disable();
+        mockery.deregisterAll();
+        done();
+    });
+}
 
 describe('dvb.monitor "Postplatz"', function() {
+    mockRequest('monitor-postplatz.json');
+
     var now = new Date();
 
     function assertTransport(transport) {
@@ -15,8 +42,8 @@ describe('dvb.monitor "Postplatz"', function() {
     }
 
     it('should return an array with elements', function(done) {
-        dvb.monitor('postplatz', 0, 5, function(err, data) {
-            assert.ifError(err);
+        dvb.monitor('postplatz', 0, 5)
+        .then(function (data) {
             assert(Array.isArray(data));
             assert(data.length > 0);
             done();
@@ -24,8 +51,8 @@ describe('dvb.monitor "Postplatz"', function() {
     });
 
     it('should contain all four fields', function(done) {
-        dvb.monitor('postplatz', 0, 5, function(err, data) {
-            assert.ifError(err);
+        dvb.monitor('postplatz', 0, 5)
+        .then(function (data) {
             data.forEach(assertTransport);
             done();
         });
@@ -33,6 +60,8 @@ describe('dvb.monitor "Postplatz"', function() {
 });
 
 describe('dvb.route "Prager Straße -> Postplatz"', function() {
+    mockRequest('route-pragerstr-postplatz.json');
+
     function assertTrip(trip) {
         assert(trip.departure);
         assert(trip.arrival);
@@ -70,8 +99,8 @@ describe('dvb.route "Prager Straße -> Postplatz"', function() {
     }
 
     it('should return the correct origin and destination', function(done) {
-        dvb.route('pragerstrasse', 'postplatz', new Date(), dvb.route.DEPARTURE, function(err, data) {
-            assert.ifError(err);
+        dvb.route('pragerstrasse', 'postplatz', new Date(), dvb.route.DEPARTURE)
+        .then(function (data) {
             assert.strictEqual('Dresden, Prager Straße', data.origin);
             assert.strictEqual('Dresden, Postplatz', data.destination);
             done();
@@ -79,8 +108,8 @@ describe('dvb.route "Prager Straße -> Postplatz"', function() {
     });
 
     it('should return an array of trips', function(done) {
-        dvb.route('pragerstrasse', 'postplatz', new Date(), dvb.route.DEPARTURE, function(err, data) {
-            assert.ifError(err);
+        dvb.route('pragerstrasse', 'postplatz', new Date(), dvb.route.DEPARTURE)
+        .then(function (data) {
             assert(Array.isArray(data.trips));
             assert(data.trips.length > 0);
             data.trips.forEach(assertTrip);
@@ -90,6 +119,8 @@ describe('dvb.route "Prager Straße -> Postplatz"', function() {
 });
 
 describe('dvb.find "Zellescher Weg"', function() {
+    mockRequest('find-zellescherweg.json');
+
     function assertStop(stop) {
         assert(stop.stop);
         assert(Array.isArray(stop.coords));
@@ -97,8 +128,8 @@ describe('dvb.find "Zellescher Weg"', function() {
     }
 
     it('should return an array', function(done) {
-        dvb.find('zellesch',function(err, data) {
-            assert.ifError(err);
+        dvb.find('zellesch')
+        .then(function (data) {
             assert(Array.isArray(data));
             assert(data.length > 0);
             data.forEach(assertStop);
@@ -107,18 +138,20 @@ describe('dvb.find "Zellescher Weg"', function() {
     });
 
     it('should find the correct stop', function(done) {
-        dvb.find('zellesch', function(err, data) {
-            assert.ifError(err);
+        dvb.find('zellesch')
+        .then(function (data) {
             assert.strictEqual('Zellescher Weg', data[0].stop);
             done();
         });
     });
 });
 
-describe('dvb.pins "5654791, 4620310, 5657216, 4623119, stop"', function() {
+describe('dvb.pins "5654791, 4620310, 5657216, 4623119, stop"', function () {
+    mockRequest('pins-stop.json');
+
     it('should resolve into an array', function (done) {
         var data = dvb.pins(5654791, 4620310, 5657216, 4623119, 'stop')
-        .then(function(data) {
+        .then(function (data) {
             assert(Array.isArray(data));
             done();
         });
@@ -126,7 +159,7 @@ describe('dvb.pins "5654791, 4620310, 5657216, 4623119, stop"', function() {
 
     it('should contain objects with id, name, coords and connections', function (done) {
        var data = dvb.pins(5654791, 4620310, 5657216, 4623119, 'stop')
-       .then(function(data) {
+       .then(function (data) {
             data.forEach(function(elem) {
                 assert(elem.id);
                 assert(elem.name);
@@ -138,14 +171,16 @@ describe('dvb.pins "5654791, 4620310, 5657216, 4623119, stop"', function() {
     });
 
     it('should return a Promise but still accept a callback', function(done) {
-        dvb.pins(5654791, 4620310, 5657216, 4623119, 'stop', function(err, data) {
+        dvb.pins(5654791, 4620310, 5657216, 4623119, 'stop', function (err, data) {
             assert(data);
             done();
         }).then(assert);
     });
 });
 
-describe('dvb.address "51.051487, 13.738256"', function() {
+describe('dvb.address "51.051487, 13.738256"', function () {
+    mockRequest('address-51-13.json');
+
     it('should resolve into an object with city and address properties', function () {
         var data = dvb.address(51.051487, 13.738256)
         .then(function(data) {
@@ -155,7 +190,7 @@ describe('dvb.address "51.051487, 13.738256"', function() {
     });
 
     it('should return a Promise but still accept a callback', function(done) {
-        dvb.address(51.051487, 13.738256, function(err, data) {
+        dvb.address(51.051487, 13.738256, function (err, data) {
             assert(data);
             done();
         }).then(assert);
@@ -163,9 +198,11 @@ describe('dvb.address "51.051487, 13.738256"', function() {
 });
 
 describe('dvb.coords "33000755"', function() {
+    mockRequest('coords-33000755.json');
+
     it('should resolve into a coordinate array [lat, lng]', function (done) {
         var data = dvb.coords('33000755')
-        .then(function(data) {
+        .then(function (data) {
             assert(Array.isArray(data));
             assert.equal(data.length, 2);
             done();
@@ -173,7 +210,7 @@ describe('dvb.coords "33000755"', function() {
     });
 
     it('should return a Promise but still accept a callback', function(done) {
-        dvb.coords('3300755', function(err, data) {
+        dvb.coords('3300755', function (err, data) {
             assert(data);
             done();
         }).then(assert);
