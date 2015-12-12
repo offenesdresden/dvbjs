@@ -169,48 +169,48 @@ describe('dvb.find "Zellescher Weg"', function() {
     });
 });
 
-describe('dvb.pins "5654791, 4620310, 5657216, 4623119, stop"', function () {
+describe('dvb.pins "51.026578, 13.713899, 51.035565, 13.737974, stop"', function () {
     mockRequest('pins-stop.json');
 
     it('should resolve into an array', function (done) {
-        dvb.pins(5654791, 4620310, 5657216, 4623119, 'stop')
-        .then(function (data) {
-            assert(Array.isArray(data));
-            assert.notEqual(0, data.length);
-            done();
-        });
+        dvb.pins(51.026578, 13.713899, 51.035565, 13.737974, 'stop')
+            .then(function (data) {
+                assert(Array.isArray(data));
+                assert.notEqual(0, data.length);
+                done();
+            });
     });
 
     it('should contain objects with id, name, coords and connections', function (done) {
-       dvb.pins(5654791, 4620310, 5657216, 4623119, 'stop')
-       .then(function (data) {
-            data.forEach(function(elem) {
-                assert(elem.id);
-                assert(elem.name);
-                assert(elem.coords);
-                assert.strictEqual(2, elem.coords.length);
-                assert.strictEqual(13, Math.floor(elem.coords[1]));
-                assert.strictEqual(51, Math.floor(elem.coords[0]));
-                assert.strictEqual(13, Math.floor(elem.coords[1]));
-                assert(elem.connections);
+        dvb.pins(51.026578, 13.713899, 51.035565, 13.737974, 'stop')
+            .then(function (data) {
+                data.forEach(function (elem) {
+                    assert(elem.id);
+                    assert(elem.name);
+                    assert(elem.coords);
+                    assert.strictEqual(2, elem.coords.length);
+                    assert.strictEqual(13, Math.floor(elem.coords[1]));
+                    assert.strictEqual(51, Math.floor(elem.coords[0]));
+                    assert.strictEqual(13, Math.floor(elem.coords[1]));
+                    assert(elem.connections);
+                });
+                done();
             });
-            done();
-       });
     });
 
-    it('should return a Promise but still accept a callback', function(done) {
-        dvb.pins(5654791, 4620310, 5657216, 4623119, 'stop', function (err, data) {
+    it('should return a Promise but still accept a callback', function (done) {
+        dvb.pins(51.026578, 13.713899, 51.035565, 13.737974, 'stop', function (err, data) {
             assert(data);
             done();
         }).then(assert);
     });
 });
 
-describe('dvb.pins "5654791, 4620310, 5657216, 4623119, platform"', function () {
+describe('dvb.pins "51.026578, 13.713899, 51.035565, 13.737974, platform"', function () {
     mockRequest('pins-platform.json');
 
     it('should resolve into an array', function (done) {
-        dvb.pins(5654791, 4620310, 5657216, 4623119, 'platform')
+        dvb.pins(51.026578, 13.713899, 51.035565, 13.737974, 'platform')
             .then(function (data) {
                 assert(Array.isArray(data));
                 done();
@@ -218,10 +218,10 @@ describe('dvb.pins "5654791, 4620310, 5657216, 4623119, platform"', function () 
     });
 
     it('should contain objects with id, name, coords and connections', function (done) {
-        dvb.pins(5654791, 4620310, 5657216, 4623119, 'platform')
+        dvb.pins(51.026578, 13.713899, 51.035565, 13.737974, 'platform')
             .then(function (data) {
                 assert.notEqual(0, data.length);
-                data.forEach(function(elem) {
+                data.forEach(function (elem) {
                     assert(elem.name);
                     assert(elem.coords);
                     assert.strictEqual(2, elem.coords.length);
