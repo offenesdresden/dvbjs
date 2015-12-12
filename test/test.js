@@ -32,8 +32,6 @@ function mockRequest(filename) {
 describe('dvb.monitor "Postplatz"', function() {
     mockRequest('monitor-postplatz.json');
 
-    var now = new Date();
-
     function assertTransport(transport) {
         assert(transport.line);
         assert(transport.direction);
@@ -56,6 +54,13 @@ describe('dvb.monitor "Postplatz"', function() {
             data.forEach(assertTransport);
             done();
         });
+    });
+
+    it('should return a Promise but still accept a callback', function(done) {
+        dvb.monitor('postplatz', 0, 5, function (err, data) {
+            assert(data);
+            done();
+        }).then(assert);
     });
 });
 
@@ -116,6 +121,13 @@ describe('dvb.route "Prager Straße -> Postplatz"', function() {
             done();
         });
     });
+
+    it('should return a Promise but still accept a callback', function(done) {
+        dvb.route('pragerstrasse', 'postplatz', new Date(), dvb.route.DEPARTURE, function (err, data) {
+            assert(data);
+            done();
+        }).then(assert);
+    });
 });
 
 describe('dvb.find "Zellescher Weg"', function() {
@@ -144,13 +156,20 @@ describe('dvb.find "Zellescher Weg"', function() {
             done();
         });
     });
+
+    it('should return a Promise but still accept a callback', function(done) {
+        dvb.find('zellesch', function (err, data) {
+            assert(data);
+            done();
+        }).then(assert);
+    });
 });
 
 describe('dvb.pins "5654791, 4620310, 5657216, 4623119, stop"', function () {
     mockRequest('pins-stop.json');
 
     it('should resolve into an array', function (done) {
-        var data = dvb.pins(5654791, 4620310, 5657216, 4623119, 'stop')
+        dvb.pins(5654791, 4620310, 5657216, 4623119, 'stop')
         .then(function (data) {
             assert(Array.isArray(data));
             done();
@@ -165,7 +184,7 @@ describe('dvb.pins "5654791, 4620310, 5657216, 4623119, stop"', function () {
                 assert(elem.name);
                 assert(elem.coords);
                 assert(elem.connections);
-            })
+            });
             done();
        });
     });
@@ -182,7 +201,7 @@ describe('dvb.address "51.051487, 13.738256"', function () {
     mockRequest('address-51-13.json');
 
     it('should resolve into an object with city and address properties', function () {
-        var data = dvb.address(51.051487, 13.738256)
+        dvb.address(51.051487, 13.738256)
         .then(function(data) {
             assert(data.address);
             assert(data.city);
@@ -201,7 +220,7 @@ describe('dvb.coords "33000755"', function() {
     mockRequest('coords-33000755.json');
 
     it('should resolve into a coordinate array [lat, lng]', function (done) {
-        var data = dvb.coords('33000755')
+        dvb.coords('33000755')
         .then(function (data) {
             assert(Array.isArray(data));
             assert.equal(data.length, 2);
