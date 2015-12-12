@@ -22,15 +22,23 @@
     "email": "me@kilian.io",
     "url": "http://kilian.io"
   },
-  "contributors": [{
-    "name": "Florian Schmidt",
-    "email": "florian.schmidt.1994@icloud.com",
-    "url": "https://github.com/florianschmidt1994"
-  }, {
-    "name": "Hannes Rosenbauer",
-    "email": "hannes.rosenbauer@gmail.com",
-    "url": "https://github.com/rebugger"
-  }],
+  "contributors": [
+    {
+      "name": "Florian Schmidt",
+      "email": "florian.schmidt.1994@icloud.com",
+      "url": "https://github.com/florianschmidt1994"
+    },
+    {
+      "name": "Hannes Rosenbauer",
+      "email": "hannes.rosenbauer@gmail.com",
+      "url": "https://github.com/rebugger"
+    },
+    {
+      "name": "Andreas Hippler",
+      "email": "andreas@tabaro.de",
+      "url": "https://github.com/ronhippler"
+    }
+  ],
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/kiliankoe/dvbjs/issues"
