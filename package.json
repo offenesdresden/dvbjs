@@ -38,10 +38,11 @@
   "homepage": "https://github.com/kiliankoe/dvbjs",
   "dependencies": {
     "lodash": "^3.10.0",
-    "request-promise": "^0.4.2"
+    "proj4": "^2.3.12",
+    "request-promise": "^1.0.2"
   },
   "devDependencies": {
-    "bluebird": "^2.9.34",
+    "bluebird": "^3.0.6",
     "mocha": "^2.2.5",
     "mockery": "^1.4.0"
   }
