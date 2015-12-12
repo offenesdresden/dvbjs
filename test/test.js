@@ -100,6 +100,8 @@ describe('dvb.route "Prager Straße -> Postplatz"', function() {
         node.path.forEach(function (path) {
             assert(Array.isArray(path));
             assert.strictEqual(2, path.length);
+            assert.strictEqual(51, Math.floor(path[0]));
+            assert.strictEqual(13, Math.floor(path[1]));
         });
     }
 
@@ -137,6 +139,8 @@ describe('dvb.find "Zellescher Weg"', function() {
         assert(stop.stop);
         assert(Array.isArray(stop.coords));
         assert.strictEqual(2, stop.coords.length);
+        assert.strictEqual(51, Math.floor(stop.coords[0]));
+        assert.strictEqual(13, Math.floor(stop.coords[1]));
     }
 
     it('should return an array', function(done) {
@@ -172,17 +176,22 @@ describe('dvb.pins "5654791, 4620310, 5657216, 4623119, stop"', function () {
         dvb.pins(5654791, 4620310, 5657216, 4623119, 'stop')
         .then(function (data) {
             assert(Array.isArray(data));
+            assert.notEqual(0, data.length);
             done();
         });
     });
 
     it('should contain objects with id, name, coords and connections', function (done) {
-       var data = dvb.pins(5654791, 4620310, 5657216, 4623119, 'stop')
+       dvb.pins(5654791, 4620310, 5657216, 4623119, 'stop')
        .then(function (data) {
             data.forEach(function(elem) {
                 assert(elem.id);
                 assert(elem.name);
                 assert(elem.coords);
+                assert.strictEqual(2, elem.coords.length);
+                assert.strictEqual(13, Math.floor(elem.coords[1]));
+                assert.strictEqual(51, Math.floor(elem.coords[0]));
+                assert.strictEqual(13, Math.floor(elem.coords[1]));
                 assert(elem.connections);
             });
             done();
@@ -197,19 +206,47 @@ describe('dvb.pins "5654791, 4620310, 5657216, 4623119, stop"', function () {
     });
 });
 
-describe('dvb.address "51.051487, 13.738256"', function () {
+describe('dvb.pins "5654791, 4620310, 5657216, 4623119, platform"', function () {
+    mockRequest('pins-platform.json');
+
+    it('should resolve into an array', function (done) {
+        dvb.pins(5654791, 4620310, 5657216, 4623119, 'platform')
+            .then(function (data) {
+                assert(Array.isArray(data));
+                done();
+            });
+    });
+
+    it('should contain objects with id, name, coords and connections', function (done) {
+        dvb.pins(5654791, 4620310, 5657216, 4623119, 'platform')
+            .then(function (data) {
+                assert.notEqual(0, data.length);
+                data.forEach(function(elem) {
+                    assert(elem.name);
+                    assert(elem.coords);
+                    assert.strictEqual(2, elem.coords.length);
+                    assert.strictEqual(13, Math.floor(elem.coords[1]));
+                    assert.strictEqual(51, Math.floor(elem.coords[0]));
+                    assert(elem.platform_id);
+                });
+                done();
+            });
+    });
+});
+
+describe('dvb.address "51.025451, 13.722943"', function () {
     mockRequest('address-51-13.json');
 
     it('should resolve into an object with city and address properties', function () {
-        dvb.address(51.051487, 13.738256)
+        dvb.address(51.025451, 13.722943)
         .then(function(data) {
-            assert(data.address);
-            assert(data.city);
+            assert.strictEqual("Nöthnitzer Straße 46", data.address);
+            assert.strictEqual("Dresden", data.city);
         });
     });
 
     it('should return a Promise but still accept a callback', function(done) {
-        dvb.address(51.051487, 13.738256, function (err, data) {
+        dvb.address(51.025451, 13.722943, function (err, data) {
             assert(data);
             done();
         }).then(assert);
@@ -224,12 +261,14 @@ describe('dvb.coords "33000755"', function() {
         .then(function (data) {
             assert(Array.isArray(data));
             assert.equal(data.length, 2);
+            assert.strictEqual(13, Math.floor(data[1]));
+            assert.strictEqual(51, Math.floor(data[0]));
             done();
         });
     });
 
     it('should return a Promise but still accept a callback', function(done) {
-        dvb.coords('3300755', function (err, data) {
+        dvb.coords('33000755', function (err, data) {
             assert(data);
             done();
         }).then(assert);
