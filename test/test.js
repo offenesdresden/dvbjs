@@ -192,7 +192,11 @@ describe('dvb.pins "51.026578, 13.713899, 51.035565, 13.737974, stop"', function
                     assert.strictEqual(13, Math.floor(elem.coords[1]));
                     assert.strictEqual(51, Math.floor(elem.coords[0]));
                     assert.strictEqual(13, Math.floor(elem.coords[1]));
-                    assert(elem.connections);
+                    assert(Array.isArray(elem.connections));
+                    elem.connections.forEach(function (con) {
+                        assert(con.line);
+                        assert(con.type);
+                    });
                 });
                 done();
             });
@@ -217,7 +221,7 @@ describe('dvb.pins "51.026578, 13.713899, 51.035565, 13.737974, platform"', func
             });
     });
 
-    it('should contain objects with id, name, coords and connections', function (done) {
+    it('should contain objects with name, coords and platform_nr', function (done) {
         dvb.pins(51.026578, 13.713899, 51.035565, 13.737974, 'platform')
             .then(function (data) {
                 assert.notEqual(0, data.length);
@@ -227,7 +231,7 @@ describe('dvb.pins "51.026578, 13.713899, 51.035565, 13.737974, platform"', func
                     assert.strictEqual(2, elem.coords.length);
                     assert.strictEqual(13, Math.floor(elem.coords[1]));
                     assert.strictEqual(51, Math.floor(elem.coords[0]));
-                    assert(elem.platform_id);
+                    assert(elem.platform_nr);
                 });
                 done();
             });
