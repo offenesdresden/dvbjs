@@ -23,6 +23,25 @@ var dvb = require('dvbjs');
 
 ## API Documentation
 
+All dvbjs functions use callbacks and return a Promise:
+
+```js
+dvb.find('zellesch', function(err, data){
+    if (err) throw err;
+    console.log(JSON.stringify(data, null, 4));
+});
+
+// or:
+
+dvb.find('zellesch')
+    .then(function (data) {
+        console.log(JSON.stringify(data, null, 4));
+    })
+    .catch(function (err) {
+        throw err;
+    });
+```
+
 ### Monitor a single stop
 
 Monitor a single stop to see every bus or tram leaving this stop after the specified time offset.
