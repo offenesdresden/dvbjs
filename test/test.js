@@ -8,16 +8,17 @@ var dvb;
 
 function mockRequest(filename) {
     before(function (done) {
-        mockery.enable({
-            warnOnReplace: false,
-            warnOnUnregistered: false,
-            useCleanCache: true
-        });
-        mockery.registerMock('request-promise', function () {
-            var response = fs.readFileSync(__dirname + '/data/' + filename, 'utf8');
-            return bluebird.resolve(response.trim());
-        });
-
+        if (process.env.NODE_ENV != 'test_live') {
+            mockery.enable({
+                warnOnReplace: true,
+                warnOnUnregistered: false,
+                useCleanCache: true
+            });
+            mockery.registerMock('request-promise', function () {
+                var response = fs.readFileSync(__dirname + '/data/' + filename, 'utf8');
+                return bluebird.resolve(response.trim());
+            });
+        }
         dvb = require('../index');
         done();
     });

@@ -4,7 +4,8 @@
   "description": "query Dresden's public transport system for current bus- and tramstop data",
   "main": "index",
   "scripts": {
-    "test": "mocha"
+    "test": "mocha",
+    "test-live": "NODE_ENV=test_live mocha"
   },
   "repository": {
     "type": "git",
