@@ -214,14 +214,6 @@ describe('dvb.pins "51.026578, 13.713899, 51.035565, 13.737974, stop"', function
 describe('dvb.pins "51.026578, 13.713899, 51.035565, 13.737974, platform"', function () {
     mockRequest('pins-platform.json');
 
-    it('should resolve into an array', function (done) {
-        dvb.pins(51.026578, 13.713899, 51.035565, 13.737974, 'platform')
-            .then(function (data) {
-                assert(Array.isArray(data));
-                done();
-            });
-    });
-
     it('should contain objects with name, coords and platform_nr', function (done) {
         dvb.pins(51.026578, 13.713899, 51.035565, 13.737974, 'platform')
             .then(function (data) {
@@ -233,6 +225,26 @@ describe('dvb.pins "51.026578, 13.713899, 51.035565, 13.737974, platform"', func
                     assert.strictEqual(13, Math.floor(elem.coords[1]));
                     assert.strictEqual(51, Math.floor(elem.coords[0]));
                     assert(elem.platform_nr);
+                });
+                done();
+            });
+    });
+});
+
+describe('dvb.pins "51.026578, 13.713899, 51.035565, 13.737974, POI"', function () {
+    mockRequest('pins-poi.json');
+
+    it('should contain objects with name, coords and id', function (done) {
+        dvb.pins(51.026578, 13.713899, 51.035565, 13.737974, dvb.pins.type.POI)
+            .then(function (data) {
+                assert.notEqual(0, data.length);
+                data.forEach(function (elem) {
+                    assert(elem.id);
+                    assert(elem.name);
+                    assert(elem.coords);
+                    assert.strictEqual(2, elem.coords.length);
+                    assert.strictEqual(13, Math.floor(elem.coords[1]));
+                    assert.strictEqual(51, Math.floor(elem.coords[0]));
                 });
                 done();
             });
@@ -277,5 +289,44 @@ describe('dvb.coords "33000755"', function () {
             assert(data);
             done();
         }).then(assert);
+    });
+});
+
+describe('dvb.coords for id from dvb.pins', function () {
+
+    var pins = [];
+
+    describe('dvb.pins "51.026578, 13.713899, 51.035565, 13.737974, POI"', function () {
+        mockRequest('pins-poi.json');
+
+        it('should contain objects with name, coords and id', function (done) {
+            dvb.pins(51.026578, 13.713899, 51.035565, 13.737974, dvb.pins.type.POI)
+                .then(function (data) {
+                    assert(Array.isArray(data));
+                    assert.notEqual(0, data.length);
+                    data.forEach(function (elem) {
+                        assert(elem.id);
+                        assert(elem.name);
+                        assert(elem.coords);
+                        assert.strictEqual(2, elem.coords.length);
+                        assert.strictEqual(13, Math.floor(elem.coords[1]));
+                        assert.strictEqual(51, Math.floor(elem.coords[0]));
+                    });
+                    pins = data;
+                    done();
+                });
+        });
+    });
+
+    describe('dvb.coords should be equal to first pin choords', function () {
+        mockRequest('coords-poi.json');
+
+        it('coordinates should be equal', function (done) {
+            dvb.coords(pins[0].id)
+                .then(function (coords) {
+                    assert.deepEqual(coords, pins[0].coords);
+                    done();
+                });
+        });
     });
 });
