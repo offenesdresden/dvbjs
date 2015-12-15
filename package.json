@@ -51,7 +51,9 @@
   },
   "devDependencies": {
     "bluebird": "^3.0.6",
+    "coveralls": "^2.11.6",
     "mocha": "^2.2.5",
+    "mocha-lcov-reporter": "^1.0.0",
     "mockery": "^1.4.0"
   }
 }
