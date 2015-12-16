@@ -164,7 +164,7 @@ Output:
 
 ### Find POIs with coordinates
 
-Search for diffent kinds of POIs inside a given square.
+Search for different kinds of POIs inside a given square.
 
 ```js
 // southwest point
