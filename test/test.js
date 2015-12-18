@@ -45,7 +45,10 @@ describe('dvb.monitor "Postplatz"', function () {
             .then(function (data) {
                 assert(Array.isArray(data));
                 assert(data.length > 0);
-                done();
+                done()
+            })
+            .catch(function (err) {
+                done(err);
             });
     });
 
@@ -54,14 +57,17 @@ describe('dvb.monitor "Postplatz"', function () {
             .then(function (data) {
                 data.forEach(assertTransport);
                 done();
+            })
+            .catch(function (err) {
+                done(err);
             });
     });
 
-    it('should return a Promise but still accept a callback', function (done) {
+    it('should return a Promise but still accept a callback', function () {
         dvb.monitor('postplatz', 0, 5, function (err, data) {
-            assert(data);
-            done();
-        }).then(assert);
+                assert(data);
+            })
+            .then(assert)
     });
 });
 
@@ -112,6 +118,9 @@ describe('dvb.route "Prager Straße -> Postplatz"', function () {
                 assert.strictEqual('Dresden, Prager Straße', data.origin);
                 assert.strictEqual('Dresden, Postplatz', data.destination);
                 done();
+            })
+            .catch(function (err) {
+                done(err);
             });
     });
 
@@ -122,6 +131,9 @@ describe('dvb.route "Prager Straße -> Postplatz"', function () {
                 assert(data.trips.length > 0);
                 data.trips.forEach(assertTrip);
                 done();
+            })
+            .catch(function (err) {
+                done(err);
             });
     });
 
@@ -151,6 +163,9 @@ describe('dvb.find "Zellescher Weg"', function () {
                 assert(data.length > 0);
                 data.forEach(assertStop);
                 done();
+            })
+            .catch(function (err) {
+                done(err);
             });
     });
 
@@ -159,6 +174,9 @@ describe('dvb.find "Zellescher Weg"', function () {
             .then(function (data) {
                 assert.strictEqual('Zellescher Weg', data[0].stop);
                 done();
+            })
+            .catch(function (err) {
+                done(err);
             });
     });
 
@@ -181,6 +199,9 @@ describe('dvb.pins', function () {
                     assert(Array.isArray(data));
                     assert.notEqual(0, data.length);
                     done();
+                })
+                .catch(function (err) {
+                    done(err);
                 });
         });
 
@@ -202,6 +223,9 @@ describe('dvb.pins', function () {
                         });
                     });
                     done();
+                })
+                .catch(function (err) {
+                    done(err);
                 });
         });
 
@@ -229,6 +253,9 @@ describe('dvb.pins', function () {
                         assert(elem.platform_nr);
                     });
                     done();
+                })
+                .catch(function (err) {
+                    done(err);
                 });
         });
     });
@@ -249,6 +276,9 @@ describe('dvb.pins', function () {
                         assert.strictEqual(51, Math.floor(elem.coords[0]));
                     });
                     done();
+                })
+                .catch(function (err) {
+                    done(err);
                 });
         });
     });
@@ -262,6 +292,9 @@ describe('dvb.pins', function () {
                     assert(Array.isArray(data));
                     assert.equal(0, data.length);
                     done();
+                })
+                .catch(function (err) {
+                    done(err);
                 });
         });
     });
@@ -270,11 +303,15 @@ describe('dvb.pins', function () {
 describe('dvb.address "51.025451, 13.722943"', function () {
     mockRequest('address-51-13.json');
 
-    it('should resolve into an object with city and address properties', function () {
+    it('should resolve into an object with city and address properties', function (done) {
         dvb.address(51.025451, 13.722943)
             .then(function (data) {
                 assert.strictEqual("Nöthnitzer Straße 46", data.address);
                 assert.strictEqual("Dresden", data.city);
+                done()
+            })
+            .catch(function (err) {
+                done(err);
             });
     });
 
@@ -297,6 +334,9 @@ describe('dvb.coords "33000755"', function () {
                 assert.strictEqual(13, Math.floor(data[1]));
                 assert.strictEqual(51, Math.floor(data[0]));
                 done();
+            })
+            .catch(function (err) {
+                done(err);
             });
     });
 
@@ -330,6 +370,9 @@ describe('dvb.coords for id from dvb.pins', function () {
                     });
                     pins = data;
                     done();
+                })
+                .catch(function (err) {
+                    done(err);
                 });
         });
     });
@@ -342,6 +385,9 @@ describe('dvb.coords for id from dvb.pins', function () {
                 .then(function (coords) {
                     assert.deepEqual(coords, pins[0].coords);
                     done();
+                })
+                .catch(function (err) {
+                    done(err);
                 });
         });
     });
