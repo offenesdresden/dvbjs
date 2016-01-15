@@ -61,7 +61,7 @@ dvb.monitor(stopName, timeOffset, numResults, function(err, data) {
 ```
 Output:
 
-```json
+```js
 [
     {
         "line": "85",
@@ -99,7 +99,7 @@ dvb.route(origin, destination, time, deparr, function(err, data) {
 
 Output:
 
-```json
+```js
 {
     "origin": "Dresden, Helmholtzstraße",
     "destination": "Dresden, Zellescher Weg",
@@ -155,7 +155,7 @@ dvb.find('zellesch', function(err, data){
 
 Output:
 
-```json
+```js
 [{
     stop: 'Zellescher Weg',
     coords: [51.028366, 13.745847]
@@ -185,7 +185,7 @@ dvb.pins(swlat, swlng, nelat, nelng, pinType, function (err, data) {
 
 Output:
 
-```json
+```js
 [
     {
         "id": "33000143",
@@ -241,7 +241,7 @@ dvb.coords(id, function (err, data) {
 
 Output:
 
-```json
+```js
 [
     51.043733606562675,
     13.706279792263878
@@ -266,7 +266,7 @@ dvb.address(lat, lng, function (err, data) {
 
 Output:
 
-```json
+```js
 {
     "city": "Dresden",
     "address": "Kesselsdorfer Straße 1"
