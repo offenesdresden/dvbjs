@@ -288,6 +288,87 @@ describe('dvb.pins', function () {
                 done();
             }).then(assert);
         });
+
+        describe('test options', function () {
+
+            it('default: connections, not groued, only title of line type', function (done) {
+                var hasConnections = false;
+                dvb.pins(51.026578, 13.713899, 51.035565, 13.737974, dvb.pins.type.STOP, {})
+                    .then(function (data) {
+                        assert.notEqual(0, data.length);
+                        data.forEach(function (elem) {
+                            assert(elem.connections);
+                            if (elem.connections.length > 0) {
+                                hasConnections = true;
+                            }
+                            elem.connections.forEach(function (connection) {
+                                assert(connection.type);
+                                assert(connection.line);
+                                assert.equal(Array.isArray(connection.line), false);
+                            });
+                        });
+                        assert(hasConnections);
+                        done();
+                    })
+                    .catch(function (err) {
+                        done(err);
+                    });
+            });
+
+            it('showLines: false', function (done) {
+                dvb.pins(51.026578, 13.713899, 51.035565, 13.737974, dvb.pins.type.STOP, {showLines: false})
+                    .then(function (data) {
+                        assert.notEqual(0, data.length);
+                        data.forEach(function (elem) {
+                            assert.equal(elem.connections, undefined);
+                        });
+                        done();
+                    })
+                    .catch(function (err) {
+                        done(err);
+                    });
+            });
+
+            it('groupByType: true', function (done) {
+                dvb.pins(51.026578, 13.713899, 51.035565, 13.737974, dvb.pins.type.STOP, {groupByType: true})
+                    .then(function (data) {
+                        assert.notEqual(0, data.length);
+                        data.forEach(function (elem) {
+                            assert(elem.connections);
+                            elem.connections.forEach(function (connection) {
+                                assert(connection.type);
+                                assert(connection.lines);
+                                assert(Array.isArray(connection.lines));
+                            });
+                        });
+                        done();
+                    })
+                    .catch(function (err) {
+                        done(err);
+                    });
+            });
+
+            it('fullLineType: true', function (done) {
+                dvb.pins(51.026578, 13.713899, 51.035565, 13.737974, dvb.pins.type.STOP, {fullLineType: true})
+                    .then(function (data) {
+                        assert.notEqual(0, data.length);
+                        data.forEach(function (elem) {
+                            assert(elem.connections);
+                            elem.connections.forEach(function (connection) {
+                                assert(connection.type);
+                                assert(connection.type.name);
+                                assert(connection.type.title);
+                                assert(connection.type.icon_url);
+                            });
+                        });
+                        done();
+                    })
+                    .catch(function (err) {
+                        done(err);
+                    });
+            });
+
+        });
     });
 
     describe('dvb.pins "51.026578, 13.713899, 51.035565, 13.737974, platform"', function () {
@@ -380,7 +461,8 @@ describe('dvb.pins', function () {
                 });
         });
     });
-});
+})
+;
 
 describe('dvb.address', function () {
     describe('dvb.address "51.025451, 13.722943"', function () {
