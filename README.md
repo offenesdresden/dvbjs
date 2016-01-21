@@ -1,8 +1,6 @@
 # dvbjs
 
-[![travis-ci](http://img.shields.io/travis/kiliankoe/dvbjs.svg?style=flat)](https://travis-ci.org/kiliankoe/dvbjs)
-[![Coverage Status](https://coveralls.io/repos/kiliankoe/dvbjs/badge.svg?branch=master&service=github)](https://coveralls.io/github/kiliankoe/dvbjs?branch=master)
-[![npmversion](http://img.shields.io/npm/v/dvbjs.svg?style=flat)](https://www.npmjs.org/package/dvbjs)
+[![travis-ci](http://img.shields.io/travis/kiliankoe/dvbjs.svg?style=flat)](https://travis-ci.org/kiliankoe/dvbjs) [![Coverage Status](https://coveralls.io/repos/kiliankoe/dvbjs/badge.svg?branch=master&service=github)](https://coveralls.io/github/kiliankoe/dvbjs?branch=master) [![npmversion](http://img.shields.io/npm/v/dvbjs.svg?style=flat)](https://www.npmjs.org/package/dvbjs)
 
 This is an unofficial node module, giving you a few options to query Dresden's public transport system for current bus- and tramstop data.
 
@@ -176,8 +174,17 @@ var nelat = 51.04615;
 var nelng = 13.71368;
 
 var pinType = dvb.pins.type.STOP; // type of the Pins
+// or 
+var pinType = [dvb.pins.type.STOP, dvb.pins.type.PLATFORM]; // for multiple types
 
-dvb.pins(swlat, swlng, nelat, nelng, pinType, function (err, data) {
+// options for stops
+var options = {
+	showLines:    true, // show connections. default: true
+	groupByType:  true, // group lines by transport type. default: false
+	fullLineType: true  // show type name, title and icon_url or only the name. default: false
+};
+
+dvb.pins(swlat, swlng, nelat, nelng, pinType, options, function (err, data) {
     if (err) throw err;
     console.log(JSON.stringify(data, null, 4));
 });
@@ -196,12 +203,15 @@ Output:
         ],
         "connections": [
             {
-                "line": "7",
-                "type": "1"
-            },
-            {
-                "line": "8",
-                "type": "1"
+                "type": {
+                    "title": "Straßenbahn",
+                    "name": "tram",
+                    "icon_url": "https://www.dvb.de/assets/img/trans-icon/transport-tram.svg"
+                },
+                "lines": [
+                    "8",
+                    "1"
+                ]
             },
             {...}
         ]
@@ -211,7 +221,7 @@ Output:
 
 ```
 
-The default pin type is `STOP`, other posible types are:
+The default pin type is `STOP and POI`, other posible types are:
 
 ```js
 pins.type = {
