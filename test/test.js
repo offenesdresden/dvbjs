@@ -246,7 +246,7 @@ describe('dvb.pins', function () {
         mockRequest('pins-stop.json');
 
         it('should resolve into an array', function (done) {
-            dvb.pins(51.026578, 13.713899, 51.035565, 13.737974, 'stop')
+            dvb.pins(51.026578, 13.713899, 51.035565, 13.737974, dvb.pins.type.STOP, {})
                 .then(function (data) {
                     assert(Array.isArray(data));
                     assert.notEqual(0, data.length);
@@ -258,7 +258,7 @@ describe('dvb.pins', function () {
         });
 
         it('should contain objects with id, name, coords, type and connections', function (done) {
-            dvb.pins(51.026578, 13.713899, 51.035565, 13.737974, 'stop')
+            dvb.pins(51.026578, 13.713899, 51.035565, 13.737974, dvb.pins.type.STOP, {})
                 .then(function (data) {
                     data.forEach(function (elem) {
                         assert(elem.id);
@@ -283,7 +283,7 @@ describe('dvb.pins', function () {
         });
 
         it('should return a Promise but still accept a callback', function (done) {
-            dvb.pins(51.026578, 13.713899, 51.035565, 13.737974, 'stop', function (err, data) {
+            dvb.pins(51.026578, 13.713899, 51.035565, 13.737974, 'stop', {}, function (err, data) {
                 assert(data);
                 done();
             }).then(assert);
@@ -294,7 +294,7 @@ describe('dvb.pins', function () {
         mockRequest('pins-platform.json');
 
         it('should contain objects with name, coords, type and platform_nr', function (done) {
-            dvb.pins(51.026578, 13.713899, 51.035565, 13.737974, 'platform')
+            dvb.pins(51.026578, 13.713899, 51.035565, 13.737974, dvb.pins.type.PLATFORM, {})
                 .then(function (data) {
                     assert.notEqual(0, data.length);
                     data.forEach(function (elem) {
@@ -319,7 +319,7 @@ describe('dvb.pins', function () {
 
         it('should contain objects with name, coords, type and id', function (done) {
             var pinType = dvb.pins.type.POI;
-            dvb.pins(51.026578, 13.713899, 51.035565, 13.737974, pinType)
+            dvb.pins(51.026578, 13.713899, 51.035565, 13.737974, pinType, {})
                 .then(function (data) {
                     assert.notEqual(0, data.length);
                     data.forEach(function (elem) {
