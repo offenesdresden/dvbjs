@@ -52,7 +52,7 @@ describe('dvb.find', function () {
         utils.mockRequest('empty_json.json');
 
         it('should return an empty array', function (done) {
-            dvb.find('0')
+            dvb.find('0#')
                 .then(function (data) {
                     assert(Array.isArray(data));
                     assert.equal(data.length, 0);
