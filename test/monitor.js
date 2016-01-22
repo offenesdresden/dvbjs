@@ -1,7 +1,7 @@
 'use strict';
 
-var dvb = require('../index');
-var utils = require('./utils');
+var Utils = require('./utils');
+var utils = new Utils();
 var assert = require('assert');
 
 describe('dvb.monitor', function () {
@@ -16,7 +16,7 @@ describe('dvb.monitor', function () {
         }
 
         it('should return an array with elements', function (done) {
-            dvb.monitor('postplatz', 0, 5)
+            utils.dvb.monitor('postplatz', 0, 5)
                 .then(function (data) {
                     assert(Array.isArray(data));
                     assert(data.length > 0);
@@ -28,7 +28,7 @@ describe('dvb.monitor', function () {
         });
 
         it('should contain all four fields', function (done) {
-            dvb.monitor('postplatz', 0, 5)
+            utils.dvb.monitor('postplatz', 0, 5)
                 .then(function (data) {
                     data.forEach(assertTransport);
                     done();
@@ -39,7 +39,7 @@ describe('dvb.monitor', function () {
         });
 
         it('should return a Promise but still accept a callback', function () {
-            dvb.monitor('postplatz', 0, 5, function (err, data) {
+            utils.dvb.monitor('postplatz', 0, 5, function (err, data) {
                     assert(data);
                 })
                 .then(assert)
@@ -50,7 +50,7 @@ describe('dvb.monitor', function () {
         utils.mockRequest('empty_json.json');
 
         it('should return an empty array', function (done) {
-            dvb.monitor('xxx', 0, 5)
+            utils.dvb.monitor('xxx', 0, 5)
                 .then(function (data) {
                     assert(Array.isArray(data));
                     assert.equal(data.length, 0);

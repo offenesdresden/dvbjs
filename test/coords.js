@@ -1,15 +1,16 @@
 'use strict';
 
-var dvb = require('../index');
-var utils = require('./utils');
+var Utils = require('./utils');
+var utils = new Utils();
 var assert = require('assert');
+var pinTypes = require('../lib/pins').type;
 
 describe('dvb.coords', function () {
     describe('dvb.coords "33000755"', function () {
         utils.mockRequest('coords-33000755.json');
 
         it('should resolve into a coordinate array [lat, lng]', function (done) {
-            dvb.coords('33000755')
+            utils.dvb.coords('33000755')
                 .then(function (data) {
                     assert(Array.isArray(data));
                     assert.equal(data.length, 2);
@@ -23,7 +24,7 @@ describe('dvb.coords', function () {
         });
 
         it('should return a Promise but still accept a callback', function (done) {
-            dvb.coords('33000755', function (err, data) {
+            utils.dvb.coords('33000755', function (err, data) {
                 assert(data);
                 done();
             }).then(assert);
@@ -34,7 +35,7 @@ describe('dvb.coords', function () {
         utils.mockRequest('empty.json');
 
         it('should return null', function (done) {
-            dvb.coords("xxx")
+            utils.dvb.coords("xxx")
                 .then(function (data) {
                     assert.equal(null, data);
                     done();
@@ -54,7 +55,7 @@ describe('dvb.coords for id from dvb.pins', function () {
         utils.mockRequest('pins-poi.json');
 
         it('should contain objects with name, coords and id', function (done) {
-            dvb.pins(51.026578, 13.713899, 51.035565, 13.737974, dvb.pins.type.POI)
+            utils.dvb.pins(51.026578, 13.713899, 51.035565, 13.737974, pinTypes.POI)
                 .then(function (data) {
                     assert(Array.isArray(data));
                     assert.notEqual(0, data.length);
@@ -79,7 +80,7 @@ describe('dvb.coords for id from dvb.pins', function () {
         utils.mockRequest('coords-poi.json');
 
         it('coordinates should be equal', function (done) {
-            dvb.coords(pins[0].id)
+            utils.dvb.coords(pins[0].id)
                 .then(function (coords) {
                     assert.deepEqual(coords, pins[0].coords);
                     done();

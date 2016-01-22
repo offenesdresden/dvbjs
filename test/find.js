@@ -1,7 +1,7 @@
 'use strict';
 
-var dvb = require('../index');
-var utils = require('./utils');
+var Utils = require('./utils');
+var utils = new Utils();
 var assert = require('assert');
 
 describe('dvb.find', function () {
@@ -17,7 +17,7 @@ describe('dvb.find', function () {
         }
 
         it('should return an array', function (done) {
-            dvb.find('zellesch')
+            utils.dvb.find('zellesch')
                 .then(function (data) {
                     assert(Array.isArray(data));
                     assert(data.length > 0);
@@ -30,7 +30,7 @@ describe('dvb.find', function () {
         });
 
         it('should find the correct stop', function (done) {
-            dvb.find('zellesch')
+            utils.dvb.find('zellesch')
                 .then(function (data) {
                     assert.strictEqual('Zellescher Weg', data[0].stop);
                     done();
@@ -41,7 +41,7 @@ describe('dvb.find', function () {
         });
 
         it('should return a Promise but still accept a callback', function (done) {
-            dvb.find('zellesch', function (err, data) {
+            utils.dvb.find('zellesch', function (err, data) {
                 assert(data);
                 done();
             }).then(assert);
@@ -52,7 +52,7 @@ describe('dvb.find', function () {
         utils.mockRequest('empty_json.json');
 
         it('should return an empty array', function (done) {
-            dvb.find('0#')
+            utils.dvb.find('0#')
                 .then(function (data) {
                     assert(Array.isArray(data));
                     assert.equal(data.length, 0);

@@ -1,8 +1,9 @@
 'use strict';
 
-var dvb = require('../index');
-var utils = require('./utils');
+var Utils = require('./utils');
+var utils = new Utils();
 var assert = require('assert');
+var route = require('../lib/route');
 
 describe('dvb.route', function () {
     describe('dvb.route "Prager Straße -> Postplatz"', function () {
@@ -47,7 +48,7 @@ describe('dvb.route', function () {
         }
 
         it('should return the correct origin and destination', function (done) {
-            dvb.route('pragerstrasse', 'postplatz', new Date(), dvb.route.DEPARTURE)
+            utils.dvb.route('pragerstrasse', 'postplatz', new Date(), route.DEPARTURE)
                 .then(function (data) {
                     assert.strictEqual('Dresden, Prager Straße', data.origin);
                     assert.strictEqual('Dresden, Postplatz', data.destination);
@@ -59,7 +60,7 @@ describe('dvb.route', function () {
         });
 
         it('should return an array of trips', function (done) {
-            dvb.route('pragerstrasse', 'postplatz', new Date(), dvb.route.DEPARTURE)
+            utils.dvb.route('pragerstrasse', 'postplatz', new Date(), route.DEPARTURE)
                 .then(function (data) {
                     assert(Array.isArray(data.trips));
                     assert(data.trips.length > 0);
@@ -72,7 +73,7 @@ describe('dvb.route', function () {
         });
 
         it('should return a Promise but still accept a callback', function (done) {
-            dvb.route('pragerstrasse', 'postplatz', new Date(), dvb.route.DEPARTURE, function (err, data) {
+            utils.dvb.route('pragerstrasse', 'postplatz', new Date(), route.DEPARTURE, function (err, data) {
                 assert(data);
                 done();
             }).then(assert);
@@ -83,7 +84,7 @@ describe('dvb.route', function () {
         utils.mockRequest('empty_json.json');
 
         it('should return null', function (done) {
-            dvb.route('0', '0', new Date(), dvb.route.DEPARTURE)
+            utils.dvb.route('0', '0', new Date(), route.DEPARTURE)
                 .then(function (data) {
                     assert.equal(null, data);
                     done();
