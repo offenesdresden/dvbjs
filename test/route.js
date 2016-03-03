@@ -3,6 +3,7 @@
 var Utils = require('./utils');
 var utils = new Utils();
 var assert = require('assert');
+var _ = require('lodash');
 var route = require('../lib/route');
 
 describe('dvb.route', function () {
@@ -72,6 +73,27 @@ describe('dvb.route', function () {
                 });
         });
 
+        it('should return an times as Date', function (done) {
+            utils.dvb.route('pragerstrasse', 'postplatz', new Date(), route.DEPARTURE)
+                .then(function (data) {
+                    assert(Array.isArray(data.trips));
+                    assert(data.trips.length > 0);
+                    data.trips.forEach(function (trip) {
+                        assert(_.isDate(trip.departure));
+                        assert(_.isDate(trip.arrival));
+                        console.log(trip.arrival),
+                        trip.nodes.forEach(function (node) {
+                            assert(_.isDate(node.departure.time));
+                            assert(_.isDate(node.arrival.time));
+                        });
+                    });
+                    done();
+                })
+                .catch(function (err) {
+                    done(err);
+                });
+        });
+
         it('should return a Promise but still accept a callback', function (done) {
             utils.dvb.route('pragerstrasse', 'postplatz', new Date(), route.DEPARTURE, function (err, data) {
                 assert(data);
@@ -84,7 +106,7 @@ describe('dvb.route', function () {
         utils.mockRequest('empty_json.json');
 
         it('should return null', function (done) {
-            utils.dvb.route('0', '0', new Date(), route.DEPARTURE)
+            utils.dvb.route('0', '0', new Date(), route.ARRIVAL)
                 .then(function (data) {
                     assert.equal(null, data);
                     done();

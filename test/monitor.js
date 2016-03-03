@@ -18,6 +18,7 @@ describe('dvb.monitor', function () {
         it('should return an array with elements', function (done) {
             utils.dvb.monitor('postplatz', 0, 5)
                 .then(function (data) {
+                    console.log(data);
                     assert(Array.isArray(data));
                     assert(data.length > 0);
                     done()
