@@ -157,8 +157,9 @@ Output:
 
 ```js
 [{
-    stop: 'Zellescher Weg',
-    coords: [51.028366, 13.745847]
+    "stop":"Zellescher Weg",
+    "id":"33000312",
+    "coords":[51.028365791,13.74584705]
 }]
 ```
 
@@ -277,4 +278,4 @@ Output:
 
 By the way, stop names in queries are very forgiving. As long as the server sees it as an unique hit, it'll work. 'Helmholtzstraße' finds the same data as 'helmholtzstrasse', 'Nürnberger Platz' as 'nuernbergerplatz' etc.
 
-One last note, be sure not to run whatever it is you're building from inside the network of the TU Dresden (at least as far as I can tell). Calls to `.monitor()`,  `.find()` and `.route()` will time out. If I could tell you why their site won't give me much info from inside eduroam, I would.
+One last note, be sure to use `EDUROAM=TRUE` as environment variable from inside the network of the TU Dresden.
