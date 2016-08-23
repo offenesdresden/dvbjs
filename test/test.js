@@ -39,6 +39,7 @@ describe('dvb.monitor', function () {
             assert(transport.direction);
             assert.strictEqual('number', typeof transport.arrivalTimeRelative);
             assert.strictEqual('object', typeof transport.arrivalTime);
+            assert.strictEqual('string', typeof transport.mode);
         }
 
         it('should return an array with elements', function (done) {
@@ -53,7 +54,7 @@ describe('dvb.monitor', function () {
                 });
         });
 
-        it('should contain all four fields', function (done) {
+        it('should contain all five fields', function (done) {
             dvb.monitor('postplatz', 0, 5)
                 .then(function (data) {
                     data.forEach(assertTransport);
