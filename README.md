@@ -68,14 +68,22 @@ Output:
         "direction": "Striesen",
         "arrivalTimeRelative": 12,
         "arrivalTime": "2015-12-13T19:23:18.374Z",
-        "mode": "Stadtbus"
+        "mode": {
+            title: "Stadtbus",
+            name: "citybus",
+            icon_url: "https://www.dvb.de/assets/img/trans-icon/transport-bus.svg"
+        }
     },
     {
         "line": "85",
         "direction": "Löbtau Süd",
         "arrivalTimeRelative": 18,
         "arrivalTime": "2015-12-13T19:23:24.374Z",
-        "mode": "Stadtbus"
+        "mode": {
+            title: "Stadtbus",
+            name: "citybus",
+            icon_url: "https://www.dvb.de/assets/img/trans-icon/transport-bus.svg"
+        }
     }
 ]
 
