@@ -67,13 +67,15 @@ Output:
         "line": "85",
         "direction": "Striesen",
         "arrivalTimeRelative": 12,
-        "arrivalTime": "2015-12-13T19:23:18.374Z"
+        "arrivalTime": "2015-12-13T19:23:18.374Z",
+        "mode": "Stadtbus"
     },
     {
         "line": "85",
         "direction": "Löbtau Süd",
         "arrivalTimeRelative": 18,
-        "arrivalTime": "2015-12-13T19:23:24.374Z"
+        "arrivalTime": "2015-12-13T19:23:24.374Z",
+        "mode": "Stadtbus"
     }
 ]
 
