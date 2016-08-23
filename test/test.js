@@ -490,6 +490,7 @@ describe('internal utils', function () {
             assert.equal(utils.parseMode('11'), 'Straßenbahn');
             assert.equal(utils.parseMode('59'), 'Straßenbahn');
             assert.equal(utils.parseMode('E8'), 'Straßenbahn');
+            assert.equal(utils.parseMode('E11'), 'Straßenbahn');
             assert.notEqual(utils.parseMode('85'), 'Straßenbahn');
             done();
         });
@@ -507,6 +508,10 @@ describe('internal utils', function () {
             assert.equal(utils.parseMode('366'), 'Regionalbus');
             assert.equal(utils.parseMode('999'), 'Regionalbus');
             assert.equal(utils.parseMode('100'), 'Regionalbus');
+            assert.equal(utils.parseMode('A'), 'Regionalbus');
+            assert.equal(utils.parseMode('Z'), 'Regionalbus');
+            assert.equal(utils.parseMode('G/L'), 'Regionalbus');
+            assert.equal(utils.parseMode('H/S'), 'Regionalbus');
             assert.notEqual(utils.parseMode('85'), 'Regionalbus');
             done();
         });
@@ -519,6 +524,7 @@ describe('internal utils', function () {
 
         it('should identify correct values as `Fähre`', function (done) {
             assert.equal(utils.parseMode('F7'), 'Fähre');
+            assert.equal(utils.parseMode('F14'), 'Fähre');
             assert.notEqual(utils.parseMode('85'), 'Fähre');
             done();
         });
@@ -528,11 +534,15 @@ describe('internal utils', function () {
             assert.equal(utils.parseMode('IC 1717'), 'Zug');
             assert.equal(utils.parseMode('RB 1717'), 'Zug');
             assert.equal(utils.parseMode('TLX 1717'), 'Zug');
+            assert.equal(utils.parseMode('SB33'), 'Zug'); // Sächsische Städtebahn
+            assert.equal(utils.parseMode('SE19'), 'Zug'); // Wintersport Express o.O
+            assert.equal(utils.parseMode('U28'), 'Zug'); // Bad Schandau -> Děčín
             assert.notEqual(utils.parseMode('S 1717'), 'Zug');
             done();
         });
 
         it('should identify correct values as `S-Bahn`', function (done) {
+            assert.equal(utils.parseMode('S3'), 'S-Bahn');
             assert.equal(utils.parseMode('S 1717'), 'S-Bahn');
             assert.notEqual(utils.parseMode('IC 1717'), 'S-Bahn');
             assert.notEqual(utils.parseMode('RB 1717'), 'S-Bahn');
@@ -541,8 +551,14 @@ describe('internal utils', function () {
 
         it('should identify correct values as `Rufbus`', function (done) {
             assert.equal(utils.parseMode('alita'), 'Rufbus');
+            assert.equal(utils.parseMode('alita 95'), 'Rufbus');
             assert.notEqual(utils.parseMode('85'), 'Rufbus');
             done();
         });
+
+        it('should fail with `""`', function (done) {
+            assert.equal(utils.parseMode('Lorem Ipsum'), '');
+            done();
+        })
     });
 });
