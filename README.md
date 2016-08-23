@@ -6,7 +6,7 @@
 
 This is an unofficial node module, giving you a few options to query Dresden's public transport system for current bus- and tramstop data.
 
-In case you're looking for something like this for Python, check out [dvbpy](https://github.com/kiliankoe/dvbpy).
+Similar libs also exist for [Python](https://github.com/kiliankoe/dvbpy) and [Swift](https://github.com/kiliankoe/DVB) 😊
 
 ## Getting Started
 
