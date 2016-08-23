@@ -480,3 +480,69 @@ describe('dvb.coords for id from dvb.pins', function () {
         });
     });
 });
+
+describe('internal utils', function () {
+    var utils = require('../lib/utils');
+
+    describe('parseMode', function () {
+        it('should identify correct values as `Straßenbahn`', function (done) {
+            assert.equal(utils.parseMode('3'), 'Straßenbahn');
+            assert.equal(utils.parseMode('11'), 'Straßenbahn');
+            assert.equal(utils.parseMode('59'), 'Straßenbahn');
+            assert.equal(utils.parseMode('E8'), 'Straßenbahn');
+            assert.notEqual(utils.parseMode('85'), 'Straßenbahn');
+            done();
+        });
+
+        it('should identify correct values as `Stadtbus`', function (done) {
+            assert.equal(utils.parseMode('85'), 'Stadtbus');
+            assert.equal(utils.parseMode('99'), 'Stadtbus');
+            assert.equal(utils.parseMode('60'), 'Stadtbus');
+            assert.equal(utils.parseMode('E75'), 'Stadtbus');
+            assert.notEqual(utils.parseMode('100'), 'Stadtbus');
+            done();
+        });
+
+        it('should identify correct values as `Regionalbus`', function (done) {
+            assert.equal(utils.parseMode('366'), 'Regionalbus');
+            assert.equal(utils.parseMode('999'), 'Regionalbus');
+            assert.equal(utils.parseMode('100'), 'Regionalbus');
+            assert.notEqual(utils.parseMode('85'), 'Regionalbus');
+            done();
+        });
+
+        it('should identify correct values as `Seil-/Schwebebahn`', function (done) {
+            assert.equal(utils.parseMode('SWB'), 'Seil-/Schwebebahn');
+            assert.notEqual(utils.parseMode('85'), 'Seil-/Schwebebahn');
+            done();
+        });
+
+        it('should identify correct values as `Fähre`', function (done) {
+            assert.equal(utils.parseMode('F7'), 'Fähre');
+            assert.notEqual(utils.parseMode('85'), 'Fähre');
+            done();
+        });
+
+        it('should identify correct values as `Zug`', function (done) {
+            assert.equal(utils.parseMode('ICE 1717'), 'Zug');
+            assert.equal(utils.parseMode('IC 1717'), 'Zug');
+            assert.equal(utils.parseMode('RB 1717'), 'Zug');
+            assert.equal(utils.parseMode('TLX 1717'), 'Zug');
+            assert.notEqual(utils.parseMode('S 1717'), 'Zug');
+            done();
+        });
+
+        it('should identify correct values as `S-Bahn`', function (done) {
+            assert.equal(utils.parseMode('S 1717'), 'S-Bahn');
+            assert.notEqual(utils.parseMode('IC 1717'), 'S-Bahn');
+            assert.notEqual(utils.parseMode('RB 1717'), 'S-Bahn');
+            done();
+        });
+
+        it('should identify correct values as `Rufbus`', function (done) {
+            assert.equal(utils.parseMode('alita'), 'Rufbus');
+            assert.notEqual(utils.parseMode('85'), 'Rufbus');
+            done();
+        });
+    });
+});
