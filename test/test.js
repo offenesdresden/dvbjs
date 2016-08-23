@@ -39,7 +39,7 @@ describe('dvb.monitor', function () {
             assert(transport.direction);
             assert.strictEqual('number', typeof transport.arrivalTimeRelative);
             assert.strictEqual('object', typeof transport.arrivalTime);
-            assert.strictEqual('string', typeof transport.mode);
+            assert.strictEqual('object', typeof transport.mode);
         }
 
         it('should return an array with elements', function (done) {
@@ -486,78 +486,78 @@ describe('internal utils', function () {
 
     describe('parseMode', function () {
         it('should identify correct values as `Straßenbahn`', function (done) {
-            assert.equal(utils.parseMode('3'), 'Straßenbahn');
-            assert.equal(utils.parseMode('11'), 'Straßenbahn');
-            assert.equal(utils.parseMode('59'), 'Straßenbahn');
-            assert.equal(utils.parseMode('E8'), 'Straßenbahn');
-            assert.equal(utils.parseMode('E11'), 'Straßenbahn');
-            assert.notEqual(utils.parseMode('85'), 'Straßenbahn');
+            assert.equal(utils.parseMode('3').title, 'Straßenbahn');
+            assert.equal(utils.parseMode('11').title, 'Straßenbahn');
+            assert.equal(utils.parseMode('59').title, 'Straßenbahn');
+            assert.equal(utils.parseMode('E8').title, 'Straßenbahn');
+            assert.equal(utils.parseMode('E11').title, 'Straßenbahn');
+            assert.notEqual(utils.parseMode('85').title, 'Straßenbahn');
             done();
         });
 
         it('should identify correct values as `Stadtbus`', function (done) {
-            assert.equal(utils.parseMode('85'), 'Stadtbus');
-            assert.equal(utils.parseMode('99'), 'Stadtbus');
-            assert.equal(utils.parseMode('60'), 'Stadtbus');
-            assert.equal(utils.parseMode('E75'), 'Stadtbus');
-            assert.notEqual(utils.parseMode('100'), 'Stadtbus');
+            assert.equal(utils.parseMode('85').title, 'Stadtbus');
+            assert.equal(utils.parseMode('99').title, 'Stadtbus');
+            assert.equal(utils.parseMode('60').title, 'Stadtbus');
+            assert.equal(utils.parseMode('E75').title, 'Stadtbus');
+            assert.notEqual(utils.parseMode('100').title, 'Stadtbus');
             done();
         });
 
         it('should identify correct values as `Regionalbus`', function (done) {
-            assert.equal(utils.parseMode('366'), 'Regionalbus');
-            assert.equal(utils.parseMode('999'), 'Regionalbus');
-            assert.equal(utils.parseMode('100'), 'Regionalbus');
-            assert.equal(utils.parseMode('A'), 'Regionalbus');
-            assert.equal(utils.parseMode('Z'), 'Regionalbus');
-            assert.equal(utils.parseMode('G/L'), 'Regionalbus');
-            assert.equal(utils.parseMode('H/S'), 'Regionalbus');
-            assert.notEqual(utils.parseMode('85'), 'Regionalbus');
+            assert.equal(utils.parseMode('366').title, 'Regionalbus');
+            assert.equal(utils.parseMode('999').title, 'Regionalbus');
+            assert.equal(utils.parseMode('100').title, 'Regionalbus');
+            assert.equal(utils.parseMode('A').title, 'Regionalbus');
+            assert.equal(utils.parseMode('Z').title, 'Regionalbus');
+            assert.equal(utils.parseMode('G/L').title, 'Regionalbus');
+            assert.equal(utils.parseMode('H/S').title, 'Regionalbus');
+            assert.notEqual(utils.parseMode('85').title, 'Regionalbus');
             done();
         });
 
         it('should identify correct values as `Seil-/Schwebebahn`', function (done) {
-            assert.equal(utils.parseMode('SWB'), 'Seil-/Schwebebahn');
-            assert.notEqual(utils.parseMode('85'), 'Seil-/Schwebebahn');
+            assert.equal(utils.parseMode('SWB').title, 'Seil-/Schwebebahn');
+            assert.notEqual(utils.parseMode('85').title, 'Seil-/Schwebebahn');
             done();
         });
 
         it('should identify correct values as `Fähre`', function (done) {
-            assert.equal(utils.parseMode('F7'), 'Fähre');
-            assert.equal(utils.parseMode('F14'), 'Fähre');
-            assert.notEqual(utils.parseMode('85'), 'Fähre');
+            assert.equal(utils.parseMode('F7').title, 'Fähre');
+            assert.equal(utils.parseMode('F14').title, 'Fähre');
+            assert.notEqual(utils.parseMode('85').title, 'Fähre');
             done();
         });
 
         it('should identify correct values as `Zug`', function (done) {
-            assert.equal(utils.parseMode('ICE 1717'), 'Zug');
-            assert.equal(utils.parseMode('IC 1717'), 'Zug');
-            assert.equal(utils.parseMode('RB 1717'), 'Zug');
-            assert.equal(utils.parseMode('TLX 1717'), 'Zug');
-            assert.equal(utils.parseMode('SB33'), 'Zug'); // Sächsische Städtebahn
-            assert.equal(utils.parseMode('SE19'), 'Zug'); // Wintersport Express o.O
-            assert.equal(utils.parseMode('U28'), 'Zug'); // Bad Schandau -> Děčín
-            assert.notEqual(utils.parseMode('S 1717'), 'Zug');
+            assert.equal(utils.parseMode('ICE 1717').title, 'Zug');
+            assert.equal(utils.parseMode('IC 1717').title, 'Zug');
+            assert.equal(utils.parseMode('RB 1717').title, 'Zug');
+            assert.equal(utils.parseMode('TLX 1717').title, 'Zug');
+            assert.equal(utils.parseMode('SB33').title, 'Zug'); // Sächsische Städtebahn
+            assert.equal(utils.parseMode('SE19').title, 'Zug'); // Wintersport Express o.O
+            assert.equal(utils.parseMode('U28').title, 'Zug'); // Bad Schandau -> Děčín
+            assert.notEqual(utils.parseMode('S 1717').title, 'Zug');
             done();
         });
 
         it('should identify correct values as `S-Bahn`', function (done) {
-            assert.equal(utils.parseMode('S3'), 'S-Bahn');
-            assert.equal(utils.parseMode('S 1717'), 'S-Bahn');
-            assert.notEqual(utils.parseMode('IC 1717'), 'S-Bahn');
-            assert.notEqual(utils.parseMode('RB 1717'), 'S-Bahn');
+            assert.equal(utils.parseMode('S3').title, 'S-Bahn');
+            assert.equal(utils.parseMode('S 1717').title, 'S-Bahn');
+            assert.notEqual(utils.parseMode('IC 1717').title, 'S-Bahn');
+            assert.notEqual(utils.parseMode('RB 1717').title, 'S-Bahn');
             done();
         });
 
         it('should identify correct values as `Rufbus`', function (done) {
-            assert.equal(utils.parseMode('alita'), 'Rufbus');
-            assert.equal(utils.parseMode('alita 95'), 'Rufbus');
-            assert.notEqual(utils.parseMode('85'), 'Rufbus');
+            assert.equal(utils.parseMode('alita').title, 'Anrufsammeltaxi (AST)/ Rufbus');
+            assert.equal(utils.parseMode('alita 95').title, 'Anrufsammeltaxi (AST)/ Rufbus');
+            assert.notEqual(utils.parseMode('85').title, 'Anrufsammeltaxi (AST)/ Rufbus');
             done();
         });
 
-        it('should fail with `""`', function (done) {
-            assert.equal(utils.parseMode('Lorem Ipsum'), '');
+        it('should fail with `null`', function (done) {
+            assert.equal(utils.parseMode('Lorem Ipsum'), null);
             done();
         })
     });
