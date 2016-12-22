@@ -78,7 +78,7 @@ Output:
         "line": "85",
         "direction": "Löbtau Süd",
         "arrivalTimeRelative": 18,
-        "arrivalTime": "2015-12-13T19:23:24.374Z",
+        "arrivalTime": "2015-12-13T19:29:24.374Z",
         "mode": {
             title: "Stadtbus",
             name: "citybus",
