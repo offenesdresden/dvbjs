@@ -22,7 +22,6 @@ describe('dvb.find', function () {
                     assert(Array.isArray(data));
                     assert(data.length > 0);
                     data.forEach(assertStop);
-                    console.log(data);
                     done();
                 })
                 .catch(function (err) {

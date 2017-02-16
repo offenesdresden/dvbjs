@@ -81,7 +81,6 @@ describe('dvb.route', function () {
                     data.trips.forEach(function (trip) {
                         assert(_.isDate(trip.departure));
                         assert(_.isDate(trip.arrival));
-                        console.log(trip.arrival),
                         trip.nodes.forEach(function (node) {
                             assert(_.isDate(node.departure.time));
                             assert(_.isDate(node.arrival.time));

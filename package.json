@@ -5,7 +5,8 @@
   "main": "index",
   "scripts": {
     "test": "NODE_ENV=test istanbul cover ./node_modules/mocha/bin/_mocha -- -R spec",
-    "test-live": "NODE_ENV=test_live istanbul cover ./node_modules/mocha/bin/_mocha -- -R spec"
+    "test-live": "NODE_ENV=test_live istanbul cover ./node_modules/mocha/bin/_mocha -- -R spec",
+    "update-mocks": "NODE_ENV=test_live_update istanbul cover ./node_modules/mocha/bin/_mocha -- -R spec"
   },
   "repository": {
     "type": "git",
