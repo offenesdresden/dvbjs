@@ -102,7 +102,7 @@ describe('dvb.route', function () {
     });
 
     describe('dvb.route "0 -> 0"', function () {
-        utils.mockRequest('empty_json.json');
+        utils.mockRequest('route-empty.json');
 
         it('should return null', function (done) {
             utils.dvb.route('0', '0', new Date(), route.ARRIVAL)

@@ -32,7 +32,7 @@ describe('dvb.coords', function () {
     });
 
     describe('dvb.coords "123"', function () {
-        utils.mockRequest('empty.json');
+        utils.mockRequest('coords-empty.json');
 
         it('should return null', function (done) {
             utils.dvb.coords("123")

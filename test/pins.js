@@ -285,7 +285,7 @@ describe('dvb.pins', function () {
     });
 
     describe('dvb.pins "51.026578, 13.713899, 51.035565, 13.737974, POI+PLATFORM"', function () {
-        utils.mockRequest('pins-poi-pf.json');
+        utils.mockRequest('pins-poi-and-platform.json');
 
         it('should contain objects with pinType of RENT_A_BIKE or PLATFORM', function (done) {
             var hasPOI = false, hasSTOP = false;
@@ -311,7 +311,7 @@ describe('dvb.pins', function () {
     });
 
     describe('dvb.pins "0, 0, 0, 0, stop"', function () {
-        utils.mockRequest('empty.json');
+        utils.mockRequest('pins-empty.json');
 
         it('should resolve into an empty array', function (done) {
             utils.dvb.pins(0, 0, 0, 0, pinTypes.STOP)

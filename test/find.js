@@ -49,7 +49,7 @@ describe('dvb.find', function () {
     });
 
     describe('dvb.find "0"', function () {
-        utils.mockRequest('empty_json.json');
+        utils.mockRequest('find-empty.json');
 
         it('should return an empty array', function (done) {
             utils.dvb.find('0#')

@@ -46,7 +46,7 @@ describe('dvb.monitor', function () {
     });
 
     describe('dvb.monitor "xxx"', function () {
-        utils.mockRequest('empty_json.json');
+        utils.mockRequest('monitor-empty.json');
 
         it('should return an empty array', function (done) {
             utils.dvb.monitor('xxx', 0, 5)

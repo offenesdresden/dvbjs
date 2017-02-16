@@ -6,7 +6,7 @@ var assert = require('assert');
 
 describe('dvb.address', function () {
     describe('dvb.address "51.025451, 13.722943"', function () {
-        utils.mockRequest('address-51-13.json');
+        utils.mockRequest('address.json');
 
         it('should resolve into an object with city and address properties', function (done) {
             utils.dvb.address(51.025451, 13.722943)
@@ -29,7 +29,7 @@ describe('dvb.address', function () {
     });
 
     describe('dvb.address "0, 0"', function () {
-        utils.mockRequest('empty.json');
+        utils.mockRequest('address-empty.json');
 
         it('should return null', function (done) {
             utils.dvb.address(0, 0)
