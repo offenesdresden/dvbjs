@@ -1,10 +1,12 @@
 # dvbjs
 
-[![travis-ci](http://img.shields.io/travis/kiliankoe/dvbjs.svg?style=flat)](https://travis-ci.org/kiliankoe/dvbjs) [![Coverage Status](https://coveralls.io/repos/kiliankoe/dvbjs/badge.svg?branch=master&service=github)](https://coveralls.io/github/kiliankoe/dvbjs?branch=master) [![npmversion](http://img.shields.io/npm/v/dvbjs.svg?style=flat)](https://www.npmjs.org/package/dvbjs)
+[![travis-ci](http://img.shields.io/travis/kiliankoe/dvbjs.svg?style=flat)](https://travis-ci.org/kiliankoe/dvbjs)
+[![Coverage Status](https://coveralls.io/repos/kiliankoe/dvbjs/badge.svg?branch=master&service=github)](https://coveralls.io/github/kiliankoe/dvbjs?branch=master)
+[![npmversion](http://img.shields.io/npm/v/dvbjs.svg?style=flat)](https://www.npmjs.org/package/dvbjs)
 
 This is an unofficial node module, giving you a few options to query Dresden's public transport system for current bus- and tramstop data.
 
-In case you're looking for something like this for Python, check out [dvbpy](https://github.com/kiliankoe/dvbpy).
+Similar libs also exist for [Python](https://github.com/kiliankoe/dvbpy), [Swift](https://github.com/kiliankoe/DVB), [Go](https://github.com/kiliankoe/dvbgo) and [Ruby](https://github.com/kiliankoe/dvbrb) 😊
 
 ## Getting Started
 
@@ -48,33 +50,53 @@ Monitor a single stop to see every bus or tram leaving this stop after the speci
 Example:
 
 ```js
-var stopName = 'Helmholtzstraße'; // name of the stop
+var stop = 65498388;        // ID of the stop
+// var stop = 'Postplatz';  // or name of the stop (must be unambiguous)
 var timeOffset = 0; // how many minutes in the future, 0 for now
 var numResults = 2; // number of results
 
-dvb.monitor(stopName, timeOffset, numResults, function(err, data) {
+dvb.monitor(stop, timeOffset, numResults, function(err, data) {
     if (err) throw err;
     console.log(JSON.stringify(data, null, 4));
 });
 ```
 Output:
 
-```json
+```js
 [
     {
-        "line": "85",
-        "direction": "Striesen",
-        "arrivalTimeRelative": 12,
-        "arrivalTime": "2015-12-13T19:23:18.374Z"
+        "line": "4",
+        "direction": "Laubegast",
+        "platform": 1,
+        "arrivalTime": "2017-02-17T01:25:00.000Z",
+        "arrivalTimeRelative": 9,
+        "scheduledTime": "2017-02-17T01:25:00.000Z",
+        "scheduledTimeRelative": 9,
+        "delayTime": 0,
+        "state": "InTime",
+        "mode": {
+            "title": "Straßenbahn",
+            "name": "tram",
+            "icon_url": "https://www.dvb.de/assets/img/trans-icon/transport-tram.svg"
+        }
     },
     {
-        "line": "85",
-        "direction": "Löbtau Süd",
-        "arrivalTimeRelative": 18,
-        "arrivalTime": "2015-12-13T19:23:24.374Z"
+        "line": "2",
+        "direction": "Gorbitz",
+        "platform": 2,
+        "arrivalTime": "2017-02-17T01:25:00.000Z",
+        "arrivalTimeRelative": 9,
+        "scheduledTime": "2017-02-17T01:25:00.000Z",
+        "scheduledTimeRelative": 9,
+        "delayTime": 0,
+        "state": "InTime",
+        "mode": {
+            "title": "Straßenbahn",
+            "name": "tram",
+            "icon_url": "https://www.dvb.de/assets/img/trans-icon/transport-tram.svg"
+        }
     }
 ]
-
 ```
 
 ### Find routes
@@ -97,7 +119,7 @@ dvb.route(origin, destination, time, deparr, function(err, data) {
 
 Output:
 
-```json
+```js
 {
     "origin": "Dresden, Helmholtzstraße",
     "destination": "Dresden, Zellescher Weg",
@@ -153,10 +175,11 @@ dvb.find('zellesch', function(err, data){
 
 Output:
 
-```json
+```js
 [{
-    stop: 'Zellescher Weg',
-    coords: [51.028366, 13.745847]
+    "stop":"Zellescher Weg",
+    "id":"33000312",
+    "coords":[51.028365791,13.74584705]
 }]
 ```
 
@@ -174,17 +197,8 @@ var nelat = 51.04615;
 var nelng = 13.71368;
 
 var pinType = dvb.pins.type.STOP; // type of the Pins
-// or 
-var pinType = [dvb.pins.type.STOP, dvb.pins.type.PLATFORM]; // for multiple types
 
-// options for stops
-var options = {
-	showLines:    true, // show connections. default: true
-	groupByType:  true, // group lines by transport type. default: false
-	fullLineType: true  // show type name, title and icon_url or only the name. default: false
-};
-
-dvb.pins(swlat, swlng, nelat, nelng, pinType, options, function (err, data) {
+dvb.pins(swlat, swlng, nelat, nelng, pinType, function (err, data) {
     if (err) throw err;
     console.log(JSON.stringify(data, null, 4));
 });
@@ -192,7 +206,7 @@ dvb.pins(swlat, swlng, nelat, nelng, pinType, options, function (err, data) {
 
 Output:
 
-```json
+```js
 [
     {
         "id": "33000143",
@@ -201,18 +215,14 @@ Output:
             51.043733606562675,
             13.706279792263878
         ],
-        "type": "stop",
         "connections": [
             {
-                "type": {
-                    "title": "Straßenbahn",
-                    "name": "tram",
-                    "icon_url": "https://www.dvb.de/assets/img/trans-icon/transport-tram.svg"
-                },
-                "lines": [
-                    "8",
-                    "1"
-                ]
+                "line": "7",
+                "type": "1"
+            },
+            {
+                "line": "8",
+                "type": "1"
             },
             {...}
         ]
@@ -222,7 +232,7 @@ Output:
 
 ```
 
-The default pin type is `STOP and POI`, other posible types are:
+The default pin type is `STOP`, other posible types are:
 
 ```js
 pins.type = {
@@ -252,7 +262,7 @@ dvb.coords(id, function (err, data) {
 
 Output:
 
-```json
+```js
 [
     51.043733606562675,
     13.706279792263878
@@ -277,7 +287,7 @@ dvb.address(lat, lng, function (err, data) {
 
 Output:
 
-```json
+```js
 {
     "city": "Dresden",
     "address": "Kesselsdorfer Straße 1"
@@ -286,6 +296,6 @@ Output:
 
 ## Misc
 
-By the way, stop names in queries are very forgiving. As long as the server sees it as an unique hit, it'll work. 'Helmholtzstraße' finds the same data as 'helmholtzstrasse', 'Nürnberger Platz' as 'nuernbergerplatz' etc.
+By the way, stop names in queries are very forgiving. Better use the ID of the stop. As long as the server sees it as an unique hit, it'll work. 'Helmholtzstraße' finds the same data as 'helmholtzstrasse', 'Nürnberger Platz' as 'nuernbergerplatz' etc.
 
-One last note, be sure not to run whatever it is you're building from inside the network of the TU Dresden (at least as far as I can tell). Calls to `.monitor()`,  `.find()` and `.route()` will time out. If I could tell you why their site won't give me much info from inside eduroam, I would.
+One last note, be sure to use `EDUROAM=TRUE` as environment variable from inside the network of the TU Dresden.
