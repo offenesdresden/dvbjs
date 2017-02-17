@@ -4,10 +4,10 @@
   "description": "query Dresden's public transport system for current bus- and tramstop data",
   "main": "index",
   "scripts": {
-    "test": "mocha",
+    "test": "NODE_ENV=test mocha",
     "test-live": "NODE_ENV=test_live mocha",
     "update-mocks": "NODE_ENV=test_update mocha",
-    "coverage": "node node_modules/.bin/istanbul cover _mocha -- -R spec",
+    "coverage": "NODE_ENV=test node node_modules/.bin/istanbul cover _mocha -- -R spec",
     "coveralls": "cat ./coverage/lcov.info | node node_modules/.bin/coveralls"
   },
   "repository": {
