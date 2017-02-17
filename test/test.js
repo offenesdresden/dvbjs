@@ -5,6 +5,7 @@ var assert = require('assert');
 var mockery = require('mockery');
 var bluebird = require('bluebird');
 var requestP = require('request-promise');
+
 var dvb;
 
 function mockRequest(filename) {
