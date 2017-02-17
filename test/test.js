@@ -289,7 +289,7 @@ describe('dvb.find', function () {
     });
 
     describe('dvb.find "0"', function () {
-        mockRequest('empty_json.json');
+        mockRequest('find-empty_json.json');
 
         it('should return an empty array', function (done) {
             dvb.find('0')
