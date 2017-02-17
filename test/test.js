@@ -29,8 +29,6 @@ function mockRequest(filename) {
                     file_path = __dirname + "/data/" + filename;
                 }
 
-                console.log(file_path);
-
                 if (process.env.NODE_ENV == 'test_update') {
                     return requestP(request).then(function (data) {
                         fs.writeFileSync(file_path, data + "\n", 'utf8');
