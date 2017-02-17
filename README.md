@@ -50,11 +50,12 @@ Monitor a single stop to see every bus or tram leaving this stop after the speci
 Example:
 
 ```js
-var stopName = 'Helmholtzstraße'; // name of the stop
+var stop = 65498388;        // ID of the stop
+// var stop = 'Postplatz';  // or name of the stop (must be unambiguous)
 var timeOffset = 0; // how many minutes in the future, 0 for now
 var numResults = 2; // number of results
 
-dvb.monitor(stopName, timeOffset, numResults, function(err, data) {
+dvb.monitor(stop, timeOffset, numResults, function(err, data) {
     if (err) throw err;
     console.log(JSON.stringify(data, null, 4));
 });
@@ -64,29 +65,38 @@ Output:
 ```js
 [
     {
-        "line": "85",
-        "direction": "Striesen",
-        "arrivalTimeRelative": 12,
-        "arrivalTime": "2015-12-13T19:23:18.374Z",
+        "line": "4",
+        "direction": "Laubegast",
+        "platform": 1,
+        "arrivalTime": "2017-02-17T01:25:00.000Z",
+        "arrivalTimeRelative": 9,
+        "scheduledTime": "2017-02-17T01:25:00.000Z",
+        "scheduledTimeRelative": 9,
+        "delayTime": 0,
+        "state": "InTime",
         "mode": {
-            title: "Stadtbus",
-            name: "citybus",
-            icon_url: "https://www.dvb.de/assets/img/trans-icon/transport-bus.svg"
+            "title": "Straßenbahn",
+            "name": "tram",
+            "icon_url": "https://www.dvb.de/assets/img/trans-icon/transport-tram.svg"
         }
     },
     {
-        "line": "85",
-        "direction": "Löbtau Süd",
-        "arrivalTimeRelative": 18,
-        "arrivalTime": "2015-12-13T19:29:24.374Z",
+        "line": "2",
+        "direction": "Gorbitz",
+        "platform": 2,
+        "arrivalTime": "2017-02-17T01:25:00.000Z",
+        "arrivalTimeRelative": 9,
+        "scheduledTime": "2017-02-17T01:25:00.000Z",
+        "scheduledTimeRelative": 9,
+        "delayTime": 0,
+        "state": "InTime",
         "mode": {
-            title: "Stadtbus",
-            name: "citybus",
-            icon_url: "https://www.dvb.de/assets/img/trans-icon/transport-bus.svg"
+            "title": "Straßenbahn",
+            "name": "tram",
+            "icon_url": "https://www.dvb.de/assets/img/trans-icon/transport-tram.svg"
         }
     }
 ]
-
 ```
 
 ### Find routes
@@ -286,6 +296,6 @@ Output:
 
 ## Misc
 
-By the way, stop names in queries are very forgiving. As long as the server sees it as an unique hit, it'll work. 'Helmholtzstraße' finds the same data as 'helmholtzstrasse', 'Nürnberger Platz' as 'nuernbergerplatz' etc.
+By the way, stop names in queries are very forgiving. Better use the ID of the stop. As long as the server sees it as an unique hit, it'll work. 'Helmholtzstraße' finds the same data as 'helmholtzstrasse', 'Nürnberger Platz' as 'nuernbergerplatz' etc.
 
 One last note, be sure to use `EDUROAM=TRUE` as environment variable from inside the network of the TU Dresden.
