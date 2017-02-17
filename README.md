@@ -3,6 +3,9 @@
 [![travis-ci](http://img.shields.io/travis/kiliankoe/dvbjs.svg?style=flat)](https://travis-ci.org/kiliankoe/dvbjs)
 [![Coverage Status](https://coveralls.io/repos/kiliankoe/dvbjs/badge.svg?branch=master&service=github)](https://coveralls.io/github/kiliankoe/dvbjs?branch=master)
 [![npmversion](http://img.shields.io/npm/v/dvbjs.svg?style=flat)](https://www.npmjs.org/package/dvbjs)
+[![Downloads](https://img.shields.io/npm/dm/dvbjs.svg)](https://www.npmjs.com/package/dvbjs)
+
+[![NPM](https://nodei.co/npm/dvbjs.png?downloads=true)](https://nodei.co/npm/dvbjs/)
 
 This is an unofficial node module, giving you a few options to query Dresden's public transport system for current bus- and tramstop data.
 
@@ -50,7 +53,7 @@ Monitor a single stop to see every bus or tram leaving this stop after the speci
 Example:
 
 ```js
-var stop = 65498388;        // ID of the stop
+var stop = 33000037;        // ID of the stop
 // var stop = 'Postplatz';  // or name of the stop (must be unambiguous)
 var timeOffset = 0; // how many minutes in the future, 0 for now
 var numResults = 2; // number of results
@@ -65,35 +68,49 @@ Output:
 ```js
 [
     {
-        "line": "4",
-        "direction": "Laubegast",
-        "platform": 1,
-        "arrivalTime": "2017-02-17T01:25:00.000Z",
-        "arrivalTimeRelative": 9,
-        "scheduledTime": "2017-02-17T01:25:00.000Z",
-        "scheduledTimeRelative": 9,
+        "line": "8",
+        "direction": "Südvorstadt",
+        "platform": {
+            "name": "3",
+            "type": "Platform"
+        },
+        "arrivalTime": "2017-02-17T22:22:00.000Z",
+        "arrivalTimeRelative": 0,
+        "scheduledTime": "2017-02-17T22:22:00.000Z",
+        "scheduledTimeRelative": 0,
         "delayTime": 0,
         "state": "InTime",
         "mode": {
             "title": "Straßenbahn",
             "name": "tram",
             "icon_url": "https://www.dvb.de/assets/img/trans-icon/transport-tram.svg"
+        },
+        "diva": {
+            "number": 11008,
+            "network": "voe"
         }
     },
     {
-        "line": "2",
-        "direction": "Gorbitz",
-        "platform": 2,
-        "arrivalTime": "2017-02-17T01:25:00.000Z",
-        "arrivalTimeRelative": 9,
-        "scheduledTime": "2017-02-17T01:25:00.000Z",
-        "scheduledTimeRelative": 9,
-        "delayTime": 0,
-        "state": "InTime",
+        "line": "1",
+        "direction": "Bf. Mitte",
+        "platform": {
+            "name": "2",
+            "type": "Platform"
+        },
+        "arrivalTime": "2017-02-17T22:24:50.000Z",
+        "arrivalTimeRelative": 3,
+        "scheduledTime": "2017-02-17T22:23:00.000Z",
+        "scheduledTimeRelative": 1,
+        "delayTime": 2,
+        "state": "Delayed",
         "mode": {
             "title": "Straßenbahn",
             "name": "tram",
             "icon_url": "https://www.dvb.de/assets/img/trans-icon/transport-tram.svg"
+        },
+        "diva": {
+            "number": 11001,
+            "network": "voe"
         }
     }
 ]
