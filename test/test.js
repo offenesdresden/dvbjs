@@ -57,9 +57,9 @@ function mockRequest(filename) {
 describe('dvb.monitor', function () {
 
     function assertTransport(transport) {
-        assert(transport.line);
-        assert(transport.direction);
-        assert.strictEqual('number', typeof transport.platform);
+        assert.strictEqual('string', typeof transport.line);
+        assert.strictEqual('string', typeof transport.direction);
+        assert(transport.platform);
         assert.strictEqual('number', typeof transport.arrivalTimeRelative);
         assert.strictEqual('object', typeof transport.arrivalTime);
         assert.strictEqual('number', typeof transport.scheduledTimeRelative);
@@ -67,6 +67,7 @@ describe('dvb.monitor', function () {
         assert.strictEqual('number', typeof transport.delayTime);
         assert(transport.state);
         assert.strictEqual('object', typeof transport.mode);
+        assert(transport.diva);
     }
 
     describe('dvb.monitor "33000037" (Postplatz)', function () {
