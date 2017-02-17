@@ -4,21 +4,45 @@ var fs = require('fs');
 var assert = require('assert');
 var mockery = require('mockery');
 var bluebird = require('bluebird');
+var requestP = require('request-promise');
+
 var dvb;
 
 function mockRequest(filename) {
     before(function (done) {
-        if (process.env.NODE_ENV != 'test_live') {
+        var index = 0;
+
+        if (process.env.NODE_ENV && process.env.NODE_ENV.indexOf('live') == -1) {
             mockery.enable({
                 warnOnReplace: true,
                 warnOnUnregistered: false,
                 useCleanCache: true
             });
-            mockery.registerMock('request-promise', function () {
-                var response = fs.readFileSync(__dirname + '/data/' + filename, 'utf8');
-                return bluebird.resolve(response.trim());
+
+            mockery.registerMock('request-promise', function (request) {
+                var file_path;
+
+                if (filename instanceof Array) {
+                    file_path = __dirname + "/data/" + filename[index % filename.length];
+                    index++;
+                } else {
+                    file_path = __dirname + "/data/" + filename;
+                }
+
+                console.log(file_path);
+
+                if (process.env.NODE_ENV == 'test_update') {
+                    return requestP(request).then(function (data) {
+                        fs.writeFileSync(file_path, data + "\n", 'utf8');
+                        return data;
+                    });
+                } else {
+                    var result = fs.readFileSync(file_path, 'utf8');
+                    return bluebird.resolve(result.trim())
+                }
             });
         }
+
         dvb = require('../index');
         done();
     });
@@ -31,22 +55,28 @@ function mockRequest(filename) {
 }
 
 describe('dvb.monitor', function () {
-    describe('dvb.monitor "Postplatz"', function () {
-        mockRequest('monitor-postplatz.json');
 
-        function assertTransport(transport) {
-            assert(transport.line);
-            assert(transport.direction);
-            assert.strictEqual('number', typeof transport.arrivalTimeRelative);
-            assert.strictEqual('object', typeof transport.arrivalTime);
-            assert.strictEqual('object', typeof transport.mode);
-        }
+    function assertTransport(transport) {
+        assert(transport.line);
+        assert(transport.direction);
+        assert.strictEqual('number', typeof transport.platform);
+        assert.strictEqual('number', typeof transport.arrivalTimeRelative);
+        assert.strictEqual('object', typeof transport.arrivalTime);
+        assert.strictEqual('number', typeof transport.scheduledTimeRelative);
+        assert.strictEqual('object', typeof transport.scheduledTime);
+        assert.strictEqual('number', typeof transport.delayTime);
+        assert(transport.state);
+        assert.strictEqual('object', typeof transport.mode);
+    }
+
+    describe('dvb.monitor "33000037" (Postplatz)', function () {
+        mockRequest('monitor-33000037.json');
 
         it('should return an array with elements', function (done) {
-            dvb.monitor('postplatz', 0, 5)
+            dvb.monitor(33000037, 10, 5)
                 .then(function (data) {
                     assert(Array.isArray(data));
-                    assert(data.length > 0);
+                    assert.equal(data.length, 5);
                     done()
                 })
                 .catch(function (err) {
@@ -55,7 +85,7 @@ describe('dvb.monitor', function () {
         });
 
         it('should contain all five fields', function (done) {
-            dvb.monitor('postplatz', 0, 5)
+            dvb.monitor(33000037, 0, 5)
                 .then(function (data) {
                     data.forEach(assertTransport);
                     done();
@@ -66,10 +96,42 @@ describe('dvb.monitor', function () {
         });
 
         it('should return a Promise but still accept a callback', function () {
-            dvb.monitor('postplatz', 0, 5, function (err, data) {
-                    assert(data);
+            dvb.monitor(33000037, 0, 5, function (err, data) {
+                assert(data);
+            }).then(assert)
+        });
+    });
+
+    describe('dvb.monitor "Postplatz"', function () {
+        mockRequest(['find-postplatz.json', 'monitor-33000037.json']);
+
+        it('should return an array with elements', function (done) {
+            dvb.monitor('Postplatz', 10, 5)
+                .then(function (data) {
+                    assert(Array.isArray(data));
+                    assert.equal(data.length, 5);
+                    done()
                 })
-                .then(assert)
+                .catch(function (err) {
+                    done(err);
+                });
+        });
+
+        it('should contain all five fields', function (done) {
+            dvb.monitor('Postplatz', 0, 5)
+                .then(function (data) {
+                    data.forEach(assertTransport);
+                    done();
+                })
+                .catch(function (err) {
+                    done(err);
+                });
+        });
+
+        it('should return a Promise but still accept a callback', function () {
+            dvb.monitor('Postplatz', 0, 5, function (err, data) {
+                assert(data);
+            }).then(assert)
         });
     });
 
@@ -169,7 +231,7 @@ describe('dvb.route', function () {
         mockRequest('empty_json.json');
 
         it('should return null', function (done) {
-            dvb.route('0', '0', new Date(), dvb.route.DEPARTURE)
+            dvb.route('0', '0', new Date(), 'foo')
                 .then(function (data) {
                     assert.equal(null, data);
                     done();
@@ -182,8 +244,8 @@ describe('dvb.route', function () {
 });
 
 describe('dvb.find', function () {
-    describe('dvb.find "Zellescher Weg"', function () {
-        mockRequest('find-zellescherweg.json');
+    describe('dvb.find "Postplatz"', function () {
+        mockRequest('find-postplatz.json');
 
         function assertStop(stop) {
             assert(stop.stop);
@@ -195,7 +257,7 @@ describe('dvb.find', function () {
         }
 
         it('should return an array', function (done) {
-            dvb.find('zellesch')
+            dvb.find('Postpl')
                 .then(function (data) {
                     assert(Array.isArray(data));
                     assert(data.length > 0);
@@ -208,9 +270,9 @@ describe('dvb.find', function () {
         });
 
         it('should find the correct stop', function (done) {
-            dvb.find('zellesch')
+            dvb.find('Postpl')
                 .then(function (data) {
-                    assert.strictEqual('Zellescher Weg', data[0].stop);
+                    assert.strictEqual('Postplatz', data[0].stop);
                     done();
                 })
                 .catch(function (err) {
@@ -219,7 +281,7 @@ describe('dvb.find', function () {
         });
 
         it('should return a Promise but still accept a callback', function (done) {
-            dvb.find('zellesch', function (err, data) {
+            dvb.find('Postpl', function (err, data) {
                 assert(data);
                 done();
             }).then(assert);
@@ -338,7 +400,7 @@ describe('dvb.pins', function () {
     });
 
     describe('dvb.pins "0, 0, 0, 0, stop"', function () {
-        mockRequest('empty.json');
+        mockRequest('pins-empty.json');
 
         it('should resolve into an empty array', function (done) {
             dvb.pins(0, 0, 0, 0, dvb.pins.type.STOP)
@@ -420,11 +482,11 @@ describe('dvb.coords', function () {
         });
     });
 
-    describe('dvb.coords "xxx"', function () {
+    describe('dvb.coords "123"', function () {
         mockRequest('empty.json');
 
         it('should return null', function (done) {
-            dvb.coords("xxx")
+            dvb.coords("123")
                 .then(function (data) {
                     assert.equal(null, data);
                     done();
@@ -556,8 +618,8 @@ describe('internal utils', function () {
             done();
         });
 
-        it('should fail with `null`', function (done) {
-            assert.equal(utils.parseMode('Lorem Ipsum'), null);
+        it('should fail with undefined', function (done) {
+            assert.strictEqual(utils.parseMode('Lorem Ipsum'), undefined);
             done();
         })
     });

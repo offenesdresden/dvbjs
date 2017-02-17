@@ -1,11 +1,14 @@
 {
   "name": "dvbjs",
-  "version": "4.2.2",
+  "version": "4.3.0",
   "description": "query Dresden's public transport system for current bus- and tramstop data",
   "main": "index",
   "scripts": {
-    "test": "mocha",
-    "test-live": "NODE_ENV=test_live mocha"
+    "test": "NODE_ENV=test mocha",
+    "test-live": "NODE_ENV=test_live mocha",
+    "update-mocks": "NODE_ENV=test_update mocha",
+    "coverage": "NODE_ENV=test node node_modules/.bin/istanbul cover _mocha -- -R spec",
+    "coveralls": "cat ./coverage/lcov.info | node node_modules/.bin/coveralls"
   },
   "repository": {
     "type": "git",
@@ -38,6 +41,11 @@
       "name": "Andreas Hippler",
       "email": "andreas@tabaro.de",
       "url": "https://github.com/ronhippler"
+    },
+    {
+      "name": "Jens Maus",
+      "email": "mail@jens-maus.de",
+      "url": "https://github.com/jens-maus"
     }
   ],
   "license": "MIT",
@@ -46,15 +54,14 @@
   },
   "homepage": "https://github.com/kiliankoe/dvbjs",
   "dependencies": {
-    "lodash": "^3.10.0",
-    "proj4": "^2.3.12",
-    "request-promise": "^1.0.2"
+    "proj4": "^2.3.17",
+    "request-promise": "^4.1.1"
   },
   "devDependencies": {
-    "bluebird": "^3.0.6",
-    "coveralls": "^2.11.6",
-    "istanbul": "^0.4.1",
-    "mocha": "^2.2.5",
-    "mockery": "^1.4.0"
+    "bluebird": "^3.4.7",
+    "coveralls": "^2.11.16",
+    "istanbul": "^0.4.5",
+    "mocha": "^3.2.0",
+    "mockery": "^2.0.0"
   }
 }
