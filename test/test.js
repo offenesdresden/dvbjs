@@ -285,22 +285,6 @@ describe('dvb.find', function () {
             }).then(assert);
         });
     });
-
-    describe('dvb.find "0"', function () {
-        mockRequest('find-empty_json.json');
-
-        it('should return an empty array', function (done) {
-            dvb.find('0')
-                .then(function (data) {
-                    assert(Array.isArray(data));
-                    assert.equal(data.length, 0);
-                    done();
-                })
-                .catch(function (err) {
-                    done(err);
-                });
-        });
-    })
 });
 
 describe('dvb.pins', function () {
