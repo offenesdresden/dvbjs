@@ -249,6 +249,7 @@ describe('dvb.find', function () {
         function assertStop(stop) {
             assert(stop.stop);
             assert(stop.id);
+            assert(stop.city);
             assert(Array.isArray(stop.coords));
             assert.strictEqual(2, stop.coords.length);
             assert.strictEqual(51, Math.floor(stop.coords[0]));
