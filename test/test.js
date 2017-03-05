@@ -29,8 +29,6 @@ function mockRequest(filename) {
                     file_path = __dirname + "/data/" + filename;
                 }
 
-                console.log(file_path);
-
                 if (process.env.NODE_ENV == 'test_update') {
                     return requestP(request).then(function (data) {
                         fs.writeFileSync(file_path, data + "\n", 'utf8');
@@ -57,9 +55,9 @@ function mockRequest(filename) {
 describe('dvb.monitor', function () {
 
     function assertTransport(transport) {
-        assert(transport.line);
-        assert(transport.direction);
-        assert.strictEqual('number', typeof transport.platform);
+        assert.strictEqual('string', typeof transport.line);
+        assert.strictEqual('string', typeof transport.direction);
+        assert(transport.platform);
         assert.strictEqual('number', typeof transport.arrivalTimeRelative);
         assert.strictEqual('object', typeof transport.arrivalTime);
         assert.strictEqual('number', typeof transport.scheduledTimeRelative);
@@ -67,6 +65,7 @@ describe('dvb.monitor', function () {
         assert.strictEqual('number', typeof transport.delayTime);
         assert(transport.state);
         assert.strictEqual('object', typeof transport.mode);
+        assert(transport.diva);
     }
 
     describe('dvb.monitor "33000037" (Postplatz)', function () {
@@ -250,10 +249,9 @@ describe('dvb.find', function () {
         function assertStop(stop) {
             assert(stop.stop);
             assert(stop.id);
+            assert(stop.city);
             assert(Array.isArray(stop.coords));
             assert.strictEqual(2, stop.coords.length);
-            assert.strictEqual(51, Math.floor(stop.coords[0]));
-            assert.strictEqual(13, Math.floor(stop.coords[1]));
         }
 
         it('should return an array', function (done) {
@@ -289,7 +287,7 @@ describe('dvb.find', function () {
     });
 
     describe('dvb.find "0"', function () {
-        mockRequest('empty_json.json');
+        mockRequest('find-empty_json.json');
 
         it('should return an empty array', function (done) {
             dvb.find('0')
