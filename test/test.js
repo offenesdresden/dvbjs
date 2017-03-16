@@ -300,6 +300,22 @@ describe('dvb.find', function () {
                     done(err);
                 });
         });
+    });
+
+    describe('dvb.find "xyz"', function () {
+        mockRequest('find-xyz.json');
+
+        it('should return an empty array', function (done) {
+            dvb.find('xyz')
+                .then(function (data) {
+                    assert(Array.isArray(data));
+                    assert.equal(data.length, 0);
+                    done();
+                })
+                .catch(function (err) {
+                    done(err);
+                });
+        });
     })
 });
 
