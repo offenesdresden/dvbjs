@@ -102,7 +102,7 @@ describe('dvb.monitor', function () {
     });
 
     describe('dvb.monitor "Postplatz"', function () {
-        mockRequest(['find-postplatz.json', 'monitor-33000037.json']);
+        mockRequest(['find-Postplatz.json', 'monitor-33000037.json']);
 
         it('should return an array with elements', function (done) {
             dvb.monitor('Postplatz', 10, 5)
@@ -227,7 +227,7 @@ describe('dvb.route', function () {
     });
 
     describe('dvb.route "0 -> 0"', function () {
-        mockRequest('empty_json.json');
+        mockRequest('empty.json');
 
         it('should return null', function (done) {
             dvb.route('0', '0', new Date(), 'foo')
@@ -244,7 +244,7 @@ describe('dvb.route', function () {
 
 describe('dvb.find', function () {
     describe('dvb.find "Postplatz"', function () {
-        mockRequest('find-postplatz.json');
+        mockRequest('find-Postpl.json');
 
         function assertStop(stop) {
             assert(stop.stop);
@@ -287,7 +287,7 @@ describe('dvb.find', function () {
     });
 
     describe('dvb.find "0"', function () {
-        mockRequest('find-empty_json.json');
+        mockRequest('find-0.json');
 
         it('should return an empty array', function (done) {
             dvb.find('0')
@@ -455,7 +455,7 @@ describe('dvb.address', function () {
     });
 
     describe('dvb.address "0, 0"', function () {
-        mockRequest('empty.json');
+        mockRequest('address-0.json');
 
         it('should return null', function (done) {
             dvb.address(0, 0)
@@ -497,7 +497,7 @@ describe('dvb.coords', function () {
     });
 
     describe('dvb.coords "123"', function () {
-        mockRequest('empty.json');
+        mockRequest('coords-123.json');
 
         it('should return null', function (done) {
             dvb.coords("123")
