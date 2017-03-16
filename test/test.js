@@ -134,11 +134,11 @@ describe('dvb.monitor', function () {
         });
     });
 
-    describe('dvb.monitor "xxx"', function () {
-        mockRequest('empty_json.json');
+    describe('dvb.monitor "xyz"', function () {
+        mockRequest('monitor-xyz.json');
 
         it('should return an empty array', function (done) {
-            dvb.monitor('xxx', 0, 5)
+            dvb.monitor('xyz', 0, 5)
                 .then(function (data) {
                     assert(Array.isArray(data));
                     assert.equal(data.length, 0);
