@@ -1,8 +1,12 @@
 {
   "name": "dvbjs",
-  "version": "4.3.3",
+  "version": "4.3.4",
   "description": "query Dresden's public transport system for current bus- and tramstop data",
   "main": "index",
+  "files": [
+    "lib/",
+    "index.js"
+  ],
   "scripts": {
     "test": "NODE_ENV=test mocha",
     "test-live": "NODE_ENV=test_live mocha",
@@ -55,6 +59,7 @@
   "homepage": "https://github.com/kiliankoe/dvbjs",
   "dependencies": {
     "proj4": "^2.3.17",
+    "request": "^2.81.0",
     "request-promise": "^4.1.1"
   },
   "devDependencies": {
