@@ -244,7 +244,7 @@ describe('dvb.route', function () {
         mockRequest('route-0-0.json');
 
         it('should return null', function (done) {
-            dvb.route(0, 0, new Date(), 'foo')
+            dvb.route(0, 0)
                 .then(function (data) {
                     assert.isNull(data);
                     done();
