@@ -241,7 +241,7 @@ describe('dvb.route', function () {
     });
 
     describe('dvb.route "0 -> 0"', function () {
-        mockRequest('empty.json');
+        mockRequest('route-0-0.json');
 
         it('should return null', function (done) {
             dvb.route(0, 0, new Date(), 'foo')

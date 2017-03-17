@@ -1,1 +1,0 @@
-{ "parameters": [ { "name":"serverID", "value":"efa.vvo-online.de:8080" }, { "name":"requestID", "value":"0" }, { "name":"sessionID", "value":"0" } ], "stopFinder": { "message": [ { "name":"code", "value":"-2000" }, { "name":"error", "value":"stop invalid" } ], "input": { "input":"0" }, "points": null } }
