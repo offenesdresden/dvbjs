@@ -1,7 +1,7 @@
 'use strict';
 
 var fs = require('fs');
-var assert = require('assert');
+var assert = require('chai').assert;
 var mockery = require('mockery');
 var bluebird = require('bluebird');
 var requestP = require('request-promise');
@@ -152,52 +152,66 @@ describe('dvb.monitor', function () {
 });
 
 describe('dvb.route', function () {
-    describe('dvb.route "Prager Straße -> Postplatz"', function () {
-        mockRequest('route-pragerstr-postplatz.json');
+    describe('dvb.route "Helmholtzstraße -> Postplatz"', function () {
+        mockRequest('route-helmholtzstraße-postplatz.json');
 
         function assertTrip(trip) {
-            assert(trip.departure);
-            assert(trip.arrival);
-            assert(trip.duration);
-            assert.strictEqual('number', typeof trip.interchange);
+            assertStop(trip.departure);
+            assertStop(trip.arrival);
+            assert.isNumber(trip.duration);
+            assert.isNumber(trip.interchanges);
 
-            assert(Array.isArray(trip.nodes));
+            assert.isArray(trip.nodes);
             trip.nodes.forEach(assertNode);
         }
 
         function assertNode(node) {
-            assert(node.mode);
-            assert(node.line || node.line === '');
-            assert(node.direction || node.direction === '');
+            assert.isString(node.mode);
+            assert.isString(node.line);
+            assert.isString(node.direction);
+            assert.isNumber(node.duration);
 
-            assert.strictEqual('object', typeof node.departure);
-            assert(node.departure.stop);
-            assert(node.departure.time);
+            if (node.mode != 'Footpath') {
+                assertDiva(node.diva);
 
-            assert(Array.isArray(node.departure.coords));
-            assert.strictEqual(2, node.departure.coords.length);
+                assertStop(node.departure);
+                assertStop(node.arrival);
 
-            assert.strictEqual('object', typeof node.arrival);
-            assert(node.arrival.stop);
-            assert(node.arrival.time);
+                assert.isArray(node.stops);
+                node.stops.forEach(assertStop);
+            }
 
-            assert(Array.isArray(node.arrival.coords));
-            assert.strictEqual(2, node.arrival.coords.length);
+            assert.isArray(node.path);
+            assert.isAbove(node.path.length, 0);
+            node.path.forEach(assertCoords);
+        }
 
-            assert(Array.isArray(node.path));
-            node.path.forEach(function (path) {
-                assert(Array.isArray(path));
-                assert.strictEqual(2, path.length);
-                assert.strictEqual(51, Math.floor(path[0]));
-                assert.strictEqual(13, Math.floor(path[1]));
-            });
+        function assertStop(stop) {
+            assert.isString(stop.stop);
+            assert.isString(stop.city);
+            assertCoords(stop.coords);
+
+            assertPlatform(stop.platform);
+
+            if (stop.time) {
+                assert.instanceOf(stop.time, Date);
+            } else {
+                assert.instanceOf(stop.arrival, Date);
+                assert.instanceOf(stop.departure, Date);
+            }
         }
 
         it('should return the correct origin and destination', function (done) {
-            dvb.route('pragerstrasse', 'postplatz', new Date(), dvb.route.DEPARTURE)
+            dvb.route(33000742, 33000037, new Date(), dvb.route.DEPARTURE)
                 .then(function (data) {
-                    assert.strictEqual('Dresden, Prager Straße', data.origin);
-                    assert.strictEqual('Dresden, Postplatz', data.destination);
+                    assert.property(data, 'origin');
+                    assert.strictEqual(data.origin.stop, 'Helmholtzstraße');
+                    assert.strictEqual(data.origin.city, 'Dresden');
+
+                    assert.property(data, 'destination');
+                    assert.strictEqual(data.destination.stop, 'Postplatz');
+                    assert.strictEqual(data.destination.city, 'Dresden');
+
                     done();
                 })
                 .catch(function (err) {
@@ -206,10 +220,10 @@ describe('dvb.route', function () {
         });
 
         it('should return an array of trips', function (done) {
-            dvb.route('pragerstrasse', 'postplatz', new Date(), dvb.route.DEPARTURE)
+            dvb.route(33000742, 33000037, new Date(), dvb.route.DEPARTURE)
                 .then(function (data) {
-                    assert(Array.isArray(data.trips));
-                    assert(data.trips.length > 0);
+                    assert.isArray(data.trips);
+                    assert.isAbove(data.trips.length, 0);
                     data.trips.forEach(assertTrip);
                     done();
                 })
@@ -219,7 +233,7 @@ describe('dvb.route', function () {
         });
 
         it('should return a Promise but still accept a callback', function (done) {
-            dvb.route('pragerstrasse', 'postplatz', new Date(), dvb.route.DEPARTURE, function (err, data) {
+            dvb.route(33000742, 33000037, new Date(), dvb.route.DEPARTURE, function (err, data) {
                 assert(data);
                 done();
             }).then(assert);
@@ -230,9 +244,9 @@ describe('dvb.route', function () {
         mockRequest('empty.json');
 
         it('should return null', function (done) {
-            dvb.route('0', '0', new Date(), 'foo')
+            dvb.route(0, 0, new Date(), 'foo')
                 .then(function (data) {
-                    assert.equal(null, data);
+                    assert.isNull(data);
                     done();
                 })
                 .catch(function (err) {
@@ -638,3 +652,30 @@ describe('internal utils', function () {
         })
     });
 });
+
+function assertCoords(coords) {
+    assert.isArray(coords);
+    assert.lengthOf(coords, 2);
+    assert.approximately(coords[0], 51, 1);
+    assert.approximately(coords[1], 13, 1);
+}
+
+function assertPlatform(platform) {
+    assert.isObject(platform);
+
+    assert.property(platform, 'name');
+    assert.isNumber(platform.name);
+
+    assert.property(platform, 'type');
+    assert.isString(platform.type);
+}
+
+function assertDiva(diva) {
+    assert.isObject(diva);
+
+    assert.property(diva, 'number');
+    assert.isNumber(diva.number);
+
+    assert.property(diva, 'network');
+    assert.isString(diva.network);
+}
