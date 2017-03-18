@@ -202,7 +202,7 @@ describe('dvb.route', function () {
         }
 
         it('should return the correct origin and destination', function (done) {
-            dvb.route(33000742, 33000037, new Date(), dvb.route.DEPARTURE)
+            dvb.route(33000742, 33000037, new Date(), false)
                 .then(function (data) {
                     assert.property(data, 'origin');
                     assert.strictEqual(data.origin.stop, 'Helmholtzstraße');
@@ -220,7 +220,7 @@ describe('dvb.route', function () {
         });
 
         it('should return an array of trips', function (done) {
-            dvb.route(33000742, 33000037, new Date(), dvb.route.DEPARTURE)
+            dvb.route(33000742, 33000037, new Date(), false)
                 .then(function (data) {
                     assert.isArray(data.trips);
                     assert.isAbove(data.trips.length, 0);
@@ -233,7 +233,7 @@ describe('dvb.route', function () {
         });
 
         it('should return a Promise but still accept a callback', function (done) {
-            dvb.route(33000742, 33000037, new Date(), dvb.route.DEPARTURE, function (err, data) {
+            dvb.route(33000742, 33000037, new Date(), true, function (err, data) {
                 assert(data);
                 done();
             }).then(assert);
