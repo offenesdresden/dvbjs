@@ -55,27 +55,31 @@ function mockRequest(filename) {
 describe('dvb.monitor', function () {
 
     function assertTransport(transport) {
-        assert.strictEqual('string', typeof transport.line);
-        assert.strictEqual('string', typeof transport.direction);
-        assert(transport.platform);
-        assert.strictEqual('number', typeof transport.arrivalTimeRelative);
-        assert.strictEqual('object', typeof transport.arrivalTime);
-        assert.strictEqual('number', typeof transport.scheduledTimeRelative);
-        assert.strictEqual('object', typeof transport.scheduledTime);
-        assert.strictEqual('number', typeof transport.delayTime);
-        assert(transport.state);
-        assert.strictEqual('object', typeof transport.mode);
-        assert(transport.diva);
+        assert.isString(transport.line);
+        assert.isString(transport.direction);
+
+        assert.isNumber(transport.arrivalTimeRelative);
+        assert.isNumber(transport.scheduledTimeRelative);
+        assert.isNumber(transport.delayTime);
+
+        assert.instanceOf(transport.arrivalTime, Date);
+        assert.instanceOf(transport.scheduledTime, Date);
+
+        assert.property(transport, 'state');
+
+        assertMode(transport.mode);
+        assertDiva(transport.diva);
+        assertPlatform(transport.platform);
     }
 
-    describe('dvb.monitor "33000037" (Postplatz)', function () {
+    describe('dvb.monitor 33000037 (Postplatz)', function () {
         mockRequest('monitor-33000037.json');
 
         it('should return an array with elements', function (done) {
             dvb.monitor(33000037, 10, 5)
                 .then(function (data) {
-                    assert(Array.isArray(data));
-                    assert.equal(data.length, 5);
+                    assert.isArray(data);
+                    assert.lengthOf(data, 5);
                     done()
                 })
                 .catch(function (err) {
@@ -107,8 +111,8 @@ describe('dvb.monitor', function () {
         it('should return an array with elements', function (done) {
             dvb.monitor('Postplatz', 10, 5)
                 .then(function (data) {
-                    assert(Array.isArray(data));
-                    assert.equal(data.length, 5);
+                    assert.isArray(data);
+                    assert.lengthOf(data, 5);
                     done()
                 })
                 .catch(function (err) {
@@ -140,8 +144,8 @@ describe('dvb.monitor', function () {
         it('should return an empty array', function (done) {
             dvb.monitor('xyz', 0, 5)
                 .then(function (data) {
-                    assert(Array.isArray(data));
-                    assert.equal(data.length, 0);
+                    assert.isArray(data);
+                    assert.lengthOf(data, 0);
                     done();
                 })
                 .catch(function (err) {
@@ -166,12 +170,13 @@ describe('dvb.route', function () {
         }
 
         function assertNode(node) {
-            assert.isString(node.mode);
             assert.isString(node.line);
             assert.isString(node.direction);
             assert.isNumber(node.duration);
 
-            if (node.mode != 'Footpath') {
+            assertMode(node.mode);
+
+            if (node.mode.name != 'Footpath') {
                 assertDiva(node.diva);
 
                 assertStop(node.departure);
@@ -191,7 +196,11 @@ describe('dvb.route', function () {
             assert.isString(stop.city);
             assertCoords(stop.coords);
 
-            assertPlatform(stop.platform);
+            if (stop.platform) {
+                // workaround for station without platform
+                // eg Lennéplatz
+                assertPlatform(stop.platform);
+            }
 
             if (stop.time) {
                 assert.instanceOf(stop.time, Date);
@@ -575,81 +584,35 @@ describe('internal utils', function () {
     var utils = require('../lib/utils');
 
     describe('parseMode', function () {
-        it('should identify correct values as `Straßenbahn`', function (done) {
-            assert.equal(utils.parseMode('3').title, 'Straßenbahn');
-            assert.equal(utils.parseMode('11').title, 'Straßenbahn');
-            assert.equal(utils.parseMode('59').title, 'Straßenbahn');
-            assert.equal(utils.parseMode('E8').title, 'Straßenbahn');
-            assert.equal(utils.parseMode('E11').title, 'Straßenbahn');
-            assert.notEqual(utils.parseMode('85').title, 'Straßenbahn');
-            done();
-        });
+        var mots = [
+            ['Tram', 'Tram'],
+            ['Bus', 'Bus'],
+            ['Citybus', 'Bus'],
+            ['Intercitybus', 'Bus'],
+            ['Suburbanrailway', 'SuburbanRailway'],
+            ['Train', 'Train'],
+            ['Rapidtransit', 'Train'],
+            ['Footpath', 'Footpath'],
+            ['Cableway', 'Cableway'],
+            ['Overheadrailway', 'Cableway'],
+            ['Ferry', 'Ferry'],
+            ['Hailedsharedtaxi', 'HailedSharedTaxi'],
+            ['Mobilitystairsup', 'StairsUp'],
+            ['Mobilitystairsdown', 'StairsDown'],
+            ['Mobilityescalatorup', 'EscalatorUp'],
+            ['Mobilityescalatordown', 'EscalatorDown'],
+            ['Mobilityelevatorup', 'ElevatorUp'],
+            ['Mobilityelevatordown', 'ElevatorDown']
+        ];
 
-        it('should identify correct values as `Stadtbus`', function (done) {
-            assert.equal(utils.parseMode('85').title, 'Stadtbus');
-            assert.equal(utils.parseMode('99').title, 'Stadtbus');
-            assert.equal(utils.parseMode('60').title, 'Stadtbus');
-            assert.equal(utils.parseMode('E75').title, 'Stadtbus');
-            assert.notEqual(utils.parseMode('100').title, 'Stadtbus');
-            done();
+        mots.forEach(function (mot) {
+            it('should parse `' + mot[0] + '` to `' + mot[1] + '`', function (done) {
+                var mode = utils.parseMot(mot[0]);
+                assertMode(mode);
+                assert.strictEqual(mode.name, mot[1]);
+                done();
+            })
         });
-
-        it('should identify correct values as `Regionalbus`', function (done) {
-            assert.equal(utils.parseMode('366').title, 'Regionalbus');
-            assert.equal(utils.parseMode('999').title, 'Regionalbus');
-            assert.equal(utils.parseMode('100').title, 'Regionalbus');
-            assert.equal(utils.parseMode('A').title, 'Regionalbus');
-            assert.equal(utils.parseMode('Z').title, 'Regionalbus');
-            assert.equal(utils.parseMode('G/L').title, 'Regionalbus');
-            assert.equal(utils.parseMode('H/S').title, 'Regionalbus');
-            assert.notEqual(utils.parseMode('85').title, 'Regionalbus');
-            done();
-        });
-
-        it('should identify correct values as `Seil-/Schwebebahn`', function (done) {
-            assert.equal(utils.parseMode('SWB').title, 'Seil-/Schwebebahn');
-            assert.notEqual(utils.parseMode('85').title, 'Seil-/Schwebebahn');
-            done();
-        });
-
-        it('should identify correct values as `Fähre`', function (done) {
-            assert.equal(utils.parseMode('F7').title, 'Fähre');
-            assert.equal(utils.parseMode('F14').title, 'Fähre');
-            assert.notEqual(utils.parseMode('85').title, 'Fähre');
-            done();
-        });
-
-        it('should identify correct values as `Zug`', function (done) {
-            assert.equal(utils.parseMode('ICE 1717').title, 'Zug');
-            assert.equal(utils.parseMode('IC 1717').title, 'Zug');
-            assert.equal(utils.parseMode('RB 1717').title, 'Zug');
-            assert.equal(utils.parseMode('TLX 1717').title, 'Zug');
-            assert.equal(utils.parseMode('SB33').title, 'Zug'); // Sächsische Städtebahn
-            assert.equal(utils.parseMode('SE19').title, 'Zug'); // Wintersport Express o.O
-            assert.equal(utils.parseMode('U28').title, 'Zug'); // Bad Schandau -> Děčín
-            assert.notEqual(utils.parseMode('S 1717').title, 'Zug');
-            done();
-        });
-
-        it('should identify correct values as `S-Bahn`', function (done) {
-            assert.equal(utils.parseMode('S3').title, 'S-Bahn');
-            assert.equal(utils.parseMode('S 1717').title, 'S-Bahn');
-            assert.notEqual(utils.parseMode('IC 1717').title, 'S-Bahn');
-            assert.notEqual(utils.parseMode('RB 1717').title, 'S-Bahn');
-            done();
-        });
-
-        it('should identify correct values as `Rufbus`', function (done) {
-            assert.equal(utils.parseMode('alita').title, 'Anrufsammeltaxi (AST)/ Rufbus');
-            assert.equal(utils.parseMode('alita 95').title, 'Anrufsammeltaxi (AST)/ Rufbus');
-            assert.notEqual(utils.parseMode('85').title, 'Anrufsammeltaxi (AST)/ Rufbus');
-            done();
-        });
-
-        it('should fail with undefined', function (done) {
-            assert.strictEqual(utils.parseMode('Lorem Ipsum'), undefined);
-            done();
-        })
     });
 });
 
@@ -664,7 +627,7 @@ function assertPlatform(platform) {
     assert.isObject(platform);
 
     assert.property(platform, 'name');
-    assert.isNumber(platform.name);
+    assert.isString(platform.name);
 
     assert.property(platform, 'type');
     assert.isString(platform.type);
@@ -678,4 +641,12 @@ function assertDiva(diva) {
 
     assert.property(diva, 'network');
     assert.isString(diva.network);
+}
+
+function assertMode(mode) {
+    assert.isObject(mode);
+
+    assert.isString(mode.name);
+    assert.isString(mode.title);
+    assert.isString(mode.icon_url);
 }
