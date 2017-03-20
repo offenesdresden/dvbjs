@@ -363,6 +363,21 @@ describe('dvb.findPOI', function () {
             }).then(assert);
         });
     });
+
+    describe('dvb.findPOI "xyz"', function () {
+        mockRequest('findPOI-xyz.json');
+
+        it('should return an empty array', function (done) {
+            dvb.findPOI('0')
+                .then(function (data) {
+                    assertEmptyArray(data);
+                    done();
+                })
+                .catch(function (err) {
+                    done(err);
+                });
+        });
+    })
 });
 
 describe('dvb.pins', function () {
