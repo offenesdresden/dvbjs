@@ -9,7 +9,8 @@ var dvb = {
     route: require('./lib/route'),
     monitor: require('./lib/monitor'),
     pins: require('./lib/pins'),
-    coords: require('./lib/coords')
+    coords: require('./lib/coords'),
+    lines: require('./lib/lines')
 };
 
 module.exports = dvb;

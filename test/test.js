@@ -88,7 +88,7 @@ describe('dvb.monitor', function () {
                 });
         });
 
-        it('should contain all five fields', function (done) {
+        it('should contain all fields', function (done) {
             dvb.monitor(33000037, 0, 5)
                 .then(function (data) {
                     data.forEach(assertTransport);
@@ -638,6 +638,71 @@ describe('internal utils', function () {
                 assert.strictEqual(mode.name, mot[1]);
                 done();
             })
+        });
+    });
+});
+
+describe('dvb.lines', function () {
+    describe('dvb.lines "33000037" (Postplatz)', function () {
+        mockRequest('lines-33000037.json');
+
+        it('should return an array', function (done) {
+            dvb.lines(33000037)
+                .then(function (data) {
+                    assertNonEmptyArray(data);
+                    done();
+                })
+                .catch(function (err) {
+                    done(err);
+                });
+        });
+
+        it('should contain objects with name, mode, diva and directions', function (done) {
+            dvb.lines(33000037)
+                .then(function (data) {
+                    data.forEach(function (line) {
+                        assert.isString(line.name);
+                        assertMode(line.mode);
+                        assertDiva(line.diva);
+                        assertNonEmptyArray(line.directions);
+                        line.directions.forEach(function (direction) {
+                            assert.isString(direction);
+                        })
+                    });
+                    done();
+                })
+                .catch(function (err) {
+                    done(err);
+                });
+        });
+
+        it('should return a Promise but still accept a callback', function (done) {
+            dvb.lines(33000037, function (err, data) {
+                assert(data);
+                done();
+            }).then(assert);
+        });
+    });
+
+    describe('dvb.lines "123"', function () {
+        mockRequest('lines-123.json');
+
+        it('should return an empty array', function (done) {
+            dvb.lines(123)
+                .then(function (data) {
+                    assertEmptyArray(data);
+                    done();
+                })
+                .catch(function (err) {
+                    done(err);
+                });
+        });
+
+        it('should return a Promise but still accept a callback', function (done) {
+            dvb.lines(123, function (err, data) {
+                assert(data);
+                done();
+            }).then(assert);
         });
     });
 });
