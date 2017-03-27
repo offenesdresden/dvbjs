@@ -5,9 +5,9 @@ var find = require('./lib/find');
 var dvb = {
     findStop: find.findStop,
     findPOI: find.findPOI,
-    address: find.findAddress,
-    route: require('./lib/route'),
+    findAddress: find.findAddress,
     monitor: require('./lib/monitor'),
+    route: require('./lib/route'),
     pins: require('./lib/pins'),
     coords: require('./lib/coords'),
     lines: require('./lib/lines')
