@@ -1,10 +1,14 @@
 'use strict';
+var chai = require('chai');
+var chaiAsPromised = require("chai-as-promised");
+chai.use(chaiAsPromised);
+var assert = chai.assert;
 
-var fs = require('fs');
-var assert = require('chai').assert;
 var mockery = require('mockery');
 var bluebird = require('bluebird');
 var requestP = require('request-promise');
+var fs = bluebird.promisifyAll(require('fs'));
+
 
 var utils = require('../lib/utils');
 var dvb;
@@ -13,7 +17,7 @@ function mockRequest(filename) {
     before(function (done) {
         var index = 0;
 
-        if (process.env.NODE_ENV && process.env.NODE_ENV.indexOf('live') == -1) {
+        if (process.env.NODE_ENV && process.env.NODE_ENV.indexOf('live') === -1) {
             mockery.enable({
                 warnOnReplace: true,
                 warnOnUnregistered: false,
@@ -30,14 +34,38 @@ function mockRequest(filename) {
                     file_path = __dirname + "/data/" + filename;
                 }
 
-                if (process.env.NODE_ENV == 'test_update') {
-                    return requestP(request).then(function (data) {
-                        fs.writeFileSync(file_path, data + "\n", 'utf8');
-                        return data;
-                    });
+                if (process.env.NODE_ENV === 'test_update') {
+                    return requestP(request)
+                        .catch(function (err) {
+                            try {
+                                utils.convertError(err);
+                            } catch (error) {
+                                var data = {
+                                    Error: {
+                                        name: error.name,
+                                        message: error.message
+                                    }
+                                };
+                                fs.writeFileSync(file_path, JSON.stringify(data) + "\n", 'utf8');
+                                throw error;
+                            }
+                        })
+                        .then(function (data) {
+                            return fs.writeFileAsync(file_path, JSON.stringify(data) + "\n", 'utf8')
+                                .then(function () {
+                                    return data
+                                });
+                        })
                 } else {
-                    var result = fs.readFileSync(file_path, 'utf8');
-                    return bluebird.resolve(result.trim())
+                    return fs.readFileAsync(file_path, 'utf8')
+                        .then(JSON.parse)
+                        .then(function (data) {
+                            if (data.Error) {
+                                throw utils.constructError(data.Error.name, data.Error.message);
+                            }
+
+                            return data;
+                        })
                 }
             });
         }
@@ -56,6 +84,7 @@ function mockRequest(filename) {
 describe('dvb.monitor', function () {
 
     function assertTransport(transport) {
+        assert.isString(transport.id);
         assert.isString(transport.line);
         assert.isString(transport.direction);
 
@@ -76,65 +105,25 @@ describe('dvb.monitor', function () {
     describe('dvb.monitor 33000037 (Postplatz)', function () {
         mockRequest('monitor-33000037.json');
 
-        it('should return an array with elements', function (done) {
-            dvb.monitor(33000037, 10, 5)
+        it('should return an array with elements', function () {
+            return dvb.monitor(33000037, 10, 5)
                 .then(function (data) {
                     assert.isArray(data);
                     assert.lengthOf(data, 5);
-                    done()
                 })
-                .catch(function (err) {
-                    done(err);
-                });
         });
 
-        it('should contain all fields', function (done) {
-            dvb.monitor(33000037, 0, 5)
+        it('should contain all fields', function () {
+            return dvb.monitor(33000037, 0, 5)
                 .then(function (data) {
                     data.forEach(assertTransport);
-                    done();
                 })
-                .catch(function (err) {
-                    done(err);
-                });
         });
 
-        it('should return a Promise but still accept a callback', function () {
+        it('should return a Promise but still accept a callback', function (done) {
             dvb.monitor(33000037, 0, 5, function (err, data) {
                 assert(data);
-            }).then(assert)
-        });
-    });
-
-    describe('dvb.monitor "Postplatz"', function () {
-        mockRequest(['find-Postplatz.json', 'monitor-33000037.json']);
-
-        it('should return an array with elements', function (done) {
-            dvb.monitor('Postplatz', 10, 5)
-                .then(function (data) {
-                    assert.isArray(data);
-                    assert.lengthOf(data, 5);
-                    done()
-                })
-                .catch(function (err) {
-                    done(err);
-                });
-        });
-
-        it('should contain all five fields', function (done) {
-            dvb.monitor('Postplatz', 0, 5)
-                .then(function (data) {
-                    data.forEach(assertTransport);
-                    done();
-                })
-                .catch(function (err) {
-                    done(err);
-                });
-        });
-
-        it('should return a Promise but still accept a callback', function () {
-            dvb.monitor('Postplatz', 0, 5, function (err, data) {
-                assert(data);
+                done();
             }).then(assert)
         });
     });
@@ -142,22 +131,42 @@ describe('dvb.monitor', function () {
     describe('dvb.monitor "xyz"', function () {
         mockRequest('monitor-xyz.json');
 
-        it('should return an empty array', function (done) {
-            dvb.monitor('xyz', 0, 5)
-                .then(function (data) {
-                    assert.isArray(data);
-                    assert.lengthOf(data, 0);
-                    done();
-                })
-                .catch(function (err) {
-                    done(err);
-                });
+        it('should reject with ValidationError', function () {
+            return assert.isRejected(dvb.monitor('xyz'), 'stopid has to be not null and must be a number');
         });
-    })
+
+        it('should return ValidationError with callback', function (done) {
+            dvb.monitor('xyz', 0, 5, function (err, data) {
+                assert.isUndefined(data);
+                assert.instanceOf(err, Error);
+                assert.strictEqual(err.message, 'stopid has to be not null and must be a number');
+                assert.strictEqual(err.name, 'ValidationError');
+                done();
+            })
+        });
+    });
+
+    describe('dvb.monitor 123 (invalid id)', function () {
+        mockRequest('monitor-123.json');
+
+        it('should reject with ServiceError', function () {
+            return assert.isRejected(dvb.monitor(1242142343), 'stop invalid');
+        });
+
+        it('should return ServiceError with callback', function (done) {
+            dvb.monitor(123, 0, 5, function (err, data) {
+                assert.isUndefined(data);
+                assert.instanceOf(err, Error);
+                assert.strictEqual(err.name, 'ServiceError');
+                assert.strictEqual(err.message, 'stop invalid');
+                done();
+            })
+        });
+    });
 });
 
 describe('dvb.route', function () {
-    describe('dvb.route "Helmholtzstraße -> Postplatz"', function () {
+    describe('dvb.route "33000742 (Helmholtzstraße) -> 33000037 (Postplatz)"', function () {
         mockRequest('route-helmholtzstraße-postplatz.json');
 
         function assertTrip(trip) {
@@ -177,7 +186,7 @@ describe('dvb.route', function () {
 
             assertMode(node.mode);
 
-            if (node.mode.name != 'Footpath') {
+            if (node.mode.name !== 'Footpath') {
                 assertDiva(node.diva);
 
                 assertStopWithTimes(node.departure);
@@ -192,8 +201,8 @@ describe('dvb.route', function () {
             node.path.forEach(assertCoords);
         }
 
-        it('should return the correct origin and destination', function (done) {
-            dvb.route(33000742, 33000037, new Date(), false)
+        it('should return the correct origin and destination', function () {
+            return dvb.route(33000742, 33000037, new Date(), false)
                 .then(function (data) {
                     assert.isObject(data, 'origin');
                     assert.strictEqual(data.origin.name, 'Helmholtzstraße');
@@ -202,24 +211,15 @@ describe('dvb.route', function () {
                     assert.property(data, 'destination');
                     assert.strictEqual(data.destination.name, 'Postplatz');
                     assert.strictEqual(data.destination.city, 'Dresden');
-
-                    done();
                 })
-                .catch(function (err) {
-                    done(err);
-                });
         });
 
-        it('should return an array of trips', function (done) {
-            dvb.route(33000742, 33000037, new Date(), false)
+        it('should return an array of trips', function () {
+            return dvb.route(33000742, 33000037, new Date(), false)
                 .then(function (data) {
                     assertNonEmptyArray(data.trips);
                     data.trips.forEach(assertTrip);
-                    done();
                 })
-                .catch(function (err) {
-                    done(err);
-                });
         });
 
         it('should return a Promise but still accept a callback', function (done) {
@@ -233,15 +233,29 @@ describe('dvb.route', function () {
     describe('dvb.route "0 -> 0"', function () {
         mockRequest('route-0-0.json');
 
-        it('should return null', function (done) {
-            dvb.route(0, 0)
+        it('should return null', function () {
+            return dvb.route(0, 0)
                 .then(function (data) {
                     assert.isNull(data);
-                    done();
                 })
-                .catch(function (err) {
-                    done(err);
-                });
+        });
+    });
+
+    describe('dvb.route "123 -> 1234"', function () {
+        mockRequest('route-123-1234.json');
+
+        it('should reject with ServiceError', function () {
+            return assert.isRejected(dvb.route(123, 1234), 'stop invalid');
+        });
+
+        it('should return ServiceError with callback', function (done) {
+            dvb.route(123, 1234, new Date(), true, function (err, data) {
+                assert.isUndefined(data);
+                assert.instanceOf(err, Error);
+                assert.strictEqual(err.message, 'stop invalid');
+                assert.strictEqual(err.name, 'ServiceError');
+                done();
+            })
         });
     });
 });
@@ -250,38 +264,26 @@ describe('dvb.findStop', function () {
     describe('dvb.findStop "Postplatz"', function () {
         mockRequest('find-Postpl.json');
 
-        it('should return an array', function (done) {
-            dvb.findStop('Postpl')
+        it('should return an array', function () {
+            return dvb.findStop('Postpl')
                 .then(function (data) {
                     assertNonEmptyArray(data);
-                    done();
                 })
-                .catch(function (err) {
-                    done(err);
-                });
         });
 
-        it('should contain objects with name, city, coords and type', function (done) {
-            dvb.findStop('Postpl')
+        it('should contain objects with name, city, coords and type', function () {
+            return dvb.findStop('Postpl')
                 .then(function (data) {
                     assertNonEmptyArray(data);
                     data.forEach(assertStop);
-                    done();
                 })
-                .catch(function (err) {
-                    done(err);
-                });
         });
 
-        it('should find the correct stop', function (done) {
-            dvb.findStop('Postpl')
+        it('should find the correct stop', function () {
+            return dvb.findStop('Postpl')
                 .then(function (data) {
                     assert.strictEqual('Postplatz', data[0].name);
-                    done();
                 })
-                .catch(function (err) {
-                    done(err);
-                });
         });
 
         it('should return a Promise but still accept a callback', function (done) {
@@ -295,51 +297,73 @@ describe('dvb.findStop', function () {
     describe('dvb.findStop "0"', function () {
         mockRequest('find-0.json');
 
-        it('should return an empty array', function (done) {
-            dvb.findStop('0')
+        it('should return an empty array', function () {
+            return dvb.findStop('0')
                 .then(function (data) {
                     assertEmptyArray(data);
-                    done();
                 })
-                .catch(function (err) {
-                    done(err);
-                });
         });
     });
 
     describe('dvb.findStop "xyz"', function () {
         mockRequest('find-xyz.json');
 
-        it('should return an empty array', function (done) {
-            dvb.findStop('xyz')
+        it('should return an empty array', function () {
+            return dvb.findStop("xyz")
                 .then(function (data) {
                     assertEmptyArray(data);
-                    done();
                 })
-                .catch(function (err) {
-                    done(err);
-                });
         });
-    })
+    });
+
+    describe('dvb.findStop "123"', function () {
+        mockRequest('find-123.json');
+
+        it('should reject with ServiceError', function () {
+            return assert.isRejected(dvb.findStop("123"), 'stop invalid');
+        });
+
+        it('should return ServiceError with callback', function (done) {
+            dvb.findStop("123", function (err, data) {
+                assert.isUndefined(data);
+                assert.strictEqual(err.message, 'stop invalid');
+                assert.strictEqual(err.name, 'ServiceError');
+                done();
+            })
+        });
+    });
+
+    describe('dvb.findStop 123 (as number)', function () {
+        mockRequest('find-123-number.json');
+
+        it('should reject with ValidationError', function () {
+            return assert.isRejected(dvb.findStop(123), 'query has to be a string');
+        });
+
+        it('should return ValidationError with callback', function (done) {
+            dvb.findStop(123, function (err, data) {
+                assert.isUndefined(data);
+                assert.strictEqual(err.message, 'query has to be a string');
+                assert.strictEqual(err.name, 'ValidationError');
+                done();
+            })
+        });
+    });
 });
 
 describe('dvb.findPOI', function () {
     describe('dvb.findPOI "Frauenkirche Dresden"', function () {
         mockRequest('find-Frauenkirche.json');
 
-        it('should return an array', function (done) {
-            dvb.findPOI('Frauenkirche Dresden')
+        it('should return an array', function () {
+            return dvb.findPOI('Frauenkirche Dresden')
                 .then(function (data) {
                     assertNonEmptyArray(data);
-                    done();
                 })
-                .catch(function (err) {
-                    done(err);
-                });
         });
 
-        it('should find the correct POIS', function (done) {
-            dvb.findPOI('Frauenkirche Dresden')
+        it('should find the correct POIS', function () {
+            return dvb.findPOI('Frauenkirche Dresden')
                 .then(function (data) {
                     data.forEach(function (data) {
                         assert.include(data.name, 'Frauenkirche');
@@ -348,12 +372,7 @@ describe('dvb.findPOI', function () {
                         assertCoords(data.coords);
                         assert.oneOf(data.type, [utils.POI_TYPE.STOP, utils.POI_TYPE.COORDS, utils.POI_TYPE.ADDRESS, utils.POI_TYPE.POI]);
                     });
-
-                    done();
                 })
-                .catch(function (err) {
-                    done(err);
-                });
         });
 
         it('should return a Promise but still accept a callback', function (done) {
@@ -367,15 +386,28 @@ describe('dvb.findPOI', function () {
     describe('dvb.findPOI "xyz"', function () {
         mockRequest('findPOI-xyz.json');
 
-        it('should return an empty array', function (done) {
-            dvb.findPOI('0')
+        it('should return an empty array', function () {
+            return dvb.findPOI('xyz')
                 .then(function (data) {
                     assertEmptyArray(data);
-                    done();
                 })
-                .catch(function (err) {
-                    done(err);
-                });
+        });
+    });
+
+    describe('dvb.findPOI "123"', function () {
+        mockRequest('findPOI-0.json');
+
+        it('should reject with SeviceError', function () {
+            return assert.isRejected(dvb.findPOI('123'), 'stop invalid');
+        });
+
+        it('should return ServiceError with callback', function (done) {
+            dvb.findPOI("123", function (err, data) {
+                assert.isUndefined(data);
+                assert.strictEqual(err.message, 'stop invalid');
+                assert.strictEqual(err.name, 'ServiceError');
+                done();
+            })
         });
     })
 });
@@ -384,19 +416,15 @@ describe('dvb.pins', function () {
     describe('dvb.pins "51.026578, 13.713899, 51.035565, 13.737974, stop"', function () {
         mockRequest('pins-stop.json');
 
-        it('should resolve into an array', function (done) {
-            dvb.pins(51.026578, 13.713899, 51.035565, 13.737974, 'stop')
+        it('should resolve into an array', function () {
+            return dvb.pins(51.026578, 13.713899, 51.035565, 13.737974, 'stop')
                 .then(function (data) {
                     assertNonEmptyArray(data);
-                    done();
                 })
-                .catch(function (err) {
-                    done(err);
-                });
         });
 
-        it('should contain objects with id, name, coords and connections', function (done) {
-            dvb.pins(51.026578, 13.713899, 51.035565, 13.737974, 'stop')
+        it('should contain objects with id, name, coords and connections', function () {
+            return dvb.pins(51.026578, 13.713899, 51.035565, 13.737974, 'stop')
                 .then(function (data) {
                     data.forEach(function (elem) {
                         assert.isString(elem.id);
@@ -409,11 +437,7 @@ describe('dvb.pins', function () {
                             assert.isString(con.type);
                         });
                     });
-                    done();
                 })
-                .catch(function (err) {
-                    done(err);
-                });
         });
 
         it('should return a Promise but still accept a callback', function (done) {
@@ -427,8 +451,8 @@ describe('dvb.pins', function () {
     describe('dvb.pins "51.026578, 13.713899, 51.035565, 13.737974, platform"', function () {
         mockRequest('pins-platform.json');
 
-        it('should contain objects with name, coords and platform_nr', function (done) {
-            dvb.pins(51.026578, 13.713899, 51.035565, 13.737974, 'platform')
+        it('should contain objects with name, coords and platform_nr', function () {
+            return dvb.pins(51.026578, 13.713899, 51.035565, 13.737974, 'platform')
                 .then(function (data) {
                     assert.notEqual(0, data.length);
                     data.forEach(function (elem) {
@@ -436,19 +460,15 @@ describe('dvb.pins', function () {
                         assertCoords(elem.coords);
                         assert.isString(elem.platform_nr);
                     });
-                    done();
                 })
-                .catch(function (err) {
-                    done(err);
-                });
         });
     });
 
     describe('dvb.pins "51.026578, 13.713899, 51.035565, 13.737974, POI"', function () {
         mockRequest('pins-poi.json');
 
-        it('should contain objects with name, coords and id', function (done) {
-            dvb.pins(51.026578, 13.713899, 51.035565, 13.737974, dvb.pins.type.POI)
+        it('should contain objects with name, coords and id', function () {
+            return dvb.pins(51.026578, 13.713899, 51.035565, 13.737974, dvb.pins.type.POI)
                 .then(function (data) {
                     assert.notEqual(0, data.length);
                     data.forEach(function (elem) {
@@ -456,40 +476,32 @@ describe('dvb.pins', function () {
                         assert.isString(elem.name);
                         assertCoords(elem.coords);
                     });
-                    done();
                 })
-                .catch(function (err) {
-                    done(err);
-                });
         });
     });
 
     describe('dvb.pins "0, 0, 0, 0, stop"', function () {
         mockRequest('pins-empty.json');
 
-        it('should resolve into an empty array', function (done) {
-            dvb.pins(0, 0, 0, 0, dvb.pins.type.STOP)
+        it('should resolve into an empty array', function () {
+            return dvb.pins(0, 0, 0, 0, dvb.pins.type.STOP)
                 .then(function (data) {
                     assert.isArray(data);
                     assert.lengthOf(data, 0);
-                    done();
                 })
-                .catch(function (err) {
-                    done(err);
-                });
         });
     });
 });
 
-describe('dvb.address', function () {
-    describe('dvb.address "51.025451, 13.722943"', function () {
+describe('dvb.findAddress', function () {
+    describe('dvb.findAddress "51.025451, 13.722943"', function () {
         mockRequest('address-51-13.json');
 
         var lat = 51.025451;
         var lng = 13.722943;
 
-        it('should resolve into an object with city, address and coords properties', function (done) {
-            dvb.address(lat, lng)
+        it('should resolve into an object with city, address and coords properties', function () {
+            return dvb.findAddress(lat, lng)
                 .then(function (address) {
                     assert.strictEqual(address.name, "Nöthnitzer Straße 46");
                     assert.strictEqual(address.city, "Dresden");
@@ -498,45 +510,39 @@ describe('dvb.address', function () {
                     assertCoords(address.coords);
                     assert.approximately(address.coords[0], lat, 0.01);
                     assert.approximately(address.coords[1], lng, 0.01);
-                    done()
                 })
-                .catch(function (err) {
-                    done(err);
-                });
         });
 
-        it('should contain nearby stops', function (done) {
-            dvb.address(lat, lng)
+        it('should contain nearby stops', function () {
+            return dvb.findAddress(lat, lng)
                 .then(function (address) {
                     assertNonEmptyArray(address.stops);
                     address.stops.forEach(assertStop);
-                    done()
                 })
-                .catch(function (err) {
-                    done(err);
-                });
         });
 
         it('should return a Promise but still accept a callback', function (done) {
-            dvb.address(lat, lng, function (err, data) {
+            dvb.findAddress(lat, lng, function (err, data) {
                 assert(data);
                 done();
             }).then(assert);
         });
     });
 
-    describe('dvb.address "0, 0"', function () {
-        mockRequest('address-0.json');
+    describe('dvb.findAddress "0, 0"', function () {
+        mockRequest('address-0-0.json');
 
-        it('should return null', function (done) {
-            dvb.address(0, 0)
-                .then(function (data) {
-                    assert.isNull(data);
-                    done();
-                })
-                .catch(function (err) {
-                    done(err);
-                });
+        it('should reject with ServiceError', function () {
+            return assert.isRejected(dvb.findAddress(0, 0), 'no it connection');
+        });
+
+        it('should return ServiceError with callback', function (done) {
+            dvb.findAddress(0, 0, function (err, data) {
+                assert.isUndefined(data);
+                assert.strictEqual(err.message, 'no it connection');
+                assert.strictEqual(err.name, 'ServiceError');
+                done();
+            })
         });
     });
 });
@@ -545,15 +551,11 @@ describe('dvb.coords', function () {
     describe('dvb.coords "33000755"', function () {
         mockRequest('coords-33000755.json');
 
-        it('should resolve into a coordinate array [lat, lng]', function (done) {
-            dvb.coords('33000755')
+        it('should resolve into a coordinate array [lat, lng]', function () {
+            return dvb.coords('33000755')
                 .then(function (data) {
                     assertCoords(data);
-                    done();
                 })
-                .catch(function (err) {
-                    done(err);
-                });
         });
 
         it('should return a Promise but still accept a callback', function (done) {
@@ -567,15 +569,11 @@ describe('dvb.coords', function () {
     describe('dvb.coords "123"', function () {
         mockRequest('coords-123.json');
 
-        it('should return null', function (done) {
-            dvb.coords("123")
+        it('should return null', function () {
+            return dvb.coords("123")
                 .then(function (data) {
                     assert.isNull(data);
-                    done();
                 })
-                .catch(function (err) {
-                    done(err);
-                });
         });
     });
 });
@@ -583,8 +581,8 @@ describe('dvb.coords', function () {
 describe('dvb.coords for id from dvb.pins', function () {
     mockRequest(['pins-poi.json', 'coords-poi.json']);
 
-    it('coordinates should be equal for first pin', function (done) {
-        dvb.pins(51.026578, 13.713899, 51.035565, 13.737974, dvb.pins.type.POI)
+    it('coordinates should be equal for first pin', function () {
+        return dvb.pins(51.026578, 13.713899, 51.035565, 13.737974, dvb.pins.type.POI)
             .then(function (pins) {
                 assertNonEmptyArray(pins);
                 pins.forEach(function (elem) {
@@ -592,18 +590,63 @@ describe('dvb.coords for id from dvb.pins', function () {
                     assertCoords(elem.coords);
                 });
 
-                dvb.coords(pins[0].id)
+                return dvb.coords(pins[0].id)
                     .then(function (coords) {
                         assert.deepEqual(coords, pins[0].coords);
-                        done();
                     })
-                    .catch(function (err) {
-                        done(err);
-                    });
             })
-            .catch(function (err) {
-                done(err);
-            });
+    });
+});
+
+describe('dvb.lines', function () {
+    describe('dvb.lines "33000037" (Postplatz)', function () {
+        mockRequest('lines-33000037.json');
+
+        it('should return an array', function () {
+            return dvb.lines(33000037)
+                .then(function (data) {
+                    assertNonEmptyArray(data);
+                })
+        });
+
+        it('should contain objects with name, mode, diva and directions', function () {
+            return dvb.lines(33000037)
+                .then(function (data) {
+                    data.forEach(function (line) {
+                        assert.isString(line.name);
+                        assertMode(line.mode);
+                        assertDiva(line.diva);
+                        assertNonEmptyArray(line.directions);
+                        line.directions.forEach(function (direction) {
+                            assert.isString(direction);
+                        })
+                    });
+                })
+        });
+
+        it('should return a Promise but still accept a callback', function (done) {
+            dvb.lines(33000037, function (err, data) {
+                assert(data);
+                done();
+            }).then(assert);
+        });
+    });
+
+    describe('dvb.lines "123"', function () {
+        mockRequest('lines-123.json');
+
+        it('should reject with ServiceError', function () {
+            return assert.isRejected(dvb.lines(123), 'stop invalid');
+        });
+
+        it('should return ServiceError with callback', function (done) {
+            dvb.lines(123, function (err, data) {
+                assert.isUndefined(data);
+                assert.strictEqual(err.message, 'stop invalid');
+                assert.strictEqual(err.name, 'ServiceError');
+                done();
+            })
+        });
     });
 });
 
@@ -640,69 +683,60 @@ describe('internal utils', function () {
             })
         });
     });
-});
 
-describe('dvb.lines', function () {
-    describe('dvb.lines "33000037" (Postplatz)', function () {
-        mockRequest('lines-33000037.json');
-
-        it('should return an array', function (done) {
-            dvb.lines(33000037)
-                .then(function (data) {
-                    assertNonEmptyArray(data);
-                    done();
-                })
-                .catch(function (err) {
-                    done(err);
-                });
+    describe('checkStatus', function () {
+        it('should throw "unexpected error"', function () {
+            assert.throws(utils.checkStatus, 'unexpected error');
         });
 
-        it('should contain objects with name, mode, diva and directions', function (done) {
-            dvb.lines(33000037)
-                .then(function (data) {
-                    data.forEach(function (line) {
-                        assert.isString(line.name);
-                        assertMode(line.mode);
-                        assertDiva(line.diva);
-                        assertNonEmptyArray(line.directions);
-                        line.directions.forEach(function (direction) {
-                            assert.isString(direction);
-                        })
-                    });
-                    done();
-                })
-                .catch(function (err) {
-                    done(err);
-                });
-        });
-
-        it('should return a Promise but still accept a callback', function (done) {
-            dvb.lines(33000037, function (err, data) {
-                assert(data);
-                done();
-            }).then(assert);
+        it('should throw error: "foo: bar"', function () {
+            try {
+                utils.checkStatus({Status: {Code: 'foo', Message: 'bar'}});
+                assert.fail('checkStatus did not throw an error');
+            } catch (error) {
+                assert.strictEqual(error.name, 'foo');
+                assert.strictEqual(error.message, 'bar');
+            }
         });
     });
 
-    describe('dvb.lines "123"', function () {
-        mockRequest('lines-123.json');
+    describe('construct error', function () {
+        it('should throw error: "foo: bar"', function () {
+            var error = utils.constructError("foo", "bar");
 
-        it('should return an empty array', function (done) {
-            dvb.lines(123)
-                .then(function (data) {
-                    assertEmptyArray(data);
-                    done();
-                })
-                .catch(function (err) {
-                    done(err);
-                });
+            assert.instanceOf(error, Error);
+            assert.strictEqual(error.name, 'foo');
+            assert.strictEqual(error.message, 'bar');
         });
 
-        it('should return a Promise but still accept a callback', function (done) {
-            dvb.lines(123, function (err, data) {
-                assert(data);
-                done();
-            }).then(assert);
+        it('should throw error: "foo"', function () {
+            var error = utils.constructError("foo");
+
+            assert.instanceOf(error, Error);
+            assert.strictEqual(error.name, 'foo');
+            assert.strictEqual(error.message, '');
+        });
+
+        it('should throw error: "Error: bar"', function () {
+            var error = utils.constructError(undefined, "bar");
+
+            assert.instanceOf(error, Error);
+            assert.strictEqual(error.name, 'Error');
+            assert.strictEqual(error.message, 'bar');
+        });
+    });
+
+    describe('convert error', function () {
+        it('should throw error: "foo: bar"', function () {
+            try {
+                var err = new Error('400 - foo: bar');
+                err.error = {Status: {Code: 'foo', Message: 'bar'}};
+                utils.convertError(err);
+                assert.fail('checkStatus did not throw an error');
+            } catch (error) {
+                assert.strictEqual(error.name, 'foo');
+                assert.strictEqual(error.message, 'bar');
+            }
         });
     });
 });
