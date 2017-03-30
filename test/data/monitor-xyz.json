@@ -1,1 +1,1 @@
-{"PointStatus":"NotIdentified","Status":{"Code":"Ok"},"ExpirationTime":"\/Date(1490113451340+0100)\/"}
+{"Error":{"name":"ValidationError","message":"stopid has to be not null and must be a number"}}
