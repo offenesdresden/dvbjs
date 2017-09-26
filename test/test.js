@@ -17,7 +17,7 @@ function mockRequest(filename) {
     before(function (done) {
         var index = 0;
 
-        if (process.env.NODE_ENV && process.env.NODE_ENV.indexOf('live') === -1) {
+        if (!process.env.NODE_ENV || (process.env.NODE_ENV && process.env.NODE_ENV.indexOf('live') === -1)) {
             mockery.enable({
                 warnOnReplace: true,
                 warnOnUnregistered: false,
@@ -98,7 +98,12 @@ describe('dvb.monitor', function () {
         assert.property(transport, 'state');
 
         assertMode(transport.mode);
-        assertDiva(transport.diva);
+
+        if (transport.line !== "E") {
+            assertDiva(transport.diva);
+        } else {
+            assert.isUndefined(transport.diva);
+        }
         assertPlatform(transport.platform);
     }
 
@@ -167,7 +172,7 @@ describe('dvb.monitor', function () {
 
 describe('dvb.route', function () {
     describe('dvb.route "33000742 (Helmholtzstraße) -> 33000037 (Postplatz)"', function () {
-        mockRequest('route-helmholtzstraße-postplatz.json');
+        mockRequest('route-33000742-33000037.json');
 
         function assertTrip(trip) {
             assertStopWithTimes(trip.departure);
@@ -186,19 +191,31 @@ describe('dvb.route', function () {
 
             assertMode(node.mode);
 
-            if (node.mode.name !== 'Footpath') {
+            if (node.mode.name !== 'Footpath' && node.mode.name !== 'StayForConnection') {
                 assertDiva(node.diva);
+            } else {
+                assert.isUndefined(node.diva);
+            }
 
+            if (node.mode.name !== 'Footpath' || node.line === 'Fussweg') {
                 assertStopWithTimes(node.departure);
                 assertStopWithTimes(node.arrival);
 
                 assert.isArray(node.stops);
                 node.stops.forEach(assertStopWithTimes);
+            } else {
+                assert.isUndefined(node.departure);
+                assert.isUndefined(node.arrival);
+                assert.isUndefined(node.stops);
             }
 
             assert.isArray(node.path);
-            assert.isAbove(node.path.length, 0);
-            node.path.forEach(assertCoords);
+            if (node.mode.name !== 'StayForConnection') {
+                assert.isNotEmpty(node.path);
+                node.path.forEach(assertCoords);
+            } else {
+                assert.strictEqual(node.path.length, 0);
+            }
         }
 
         it('should return the correct origin and destination', function () {
@@ -217,7 +234,7 @@ describe('dvb.route', function () {
         it('should return an array of trips', function () {
             return dvb.route(33000742, 33000037, new Date(), false)
                 .then(function (data) {
-                    assertNonEmptyArray(data.trips);
+                    assert.isNotEmpty(data.trips);
                     data.trips.forEach(assertTrip);
                 })
         });
@@ -233,11 +250,50 @@ describe('dvb.route', function () {
     describe('dvb.route "0 -> 0"', function () {
         mockRequest('route-0-0.json');
 
-        it('should return null', function () {
+        it('should return empty trips', function () {
             return dvb.route(0, 0)
                 .then(function (data) {
-                    assert.isNull(data);
-                })
+                    assert.isObject(data);
+                    assert.isUndefined(data.origin);
+                    assert.isUndefined(data.destination);
+                    assert.isEmpty(data.trips);
+                });
+        });
+
+        it('should return empty trips with callback', function (done) {
+            dvb.route(0, 0, new Date(), true, function (err, data) {
+                assert.isObject(data);
+                assert.isUndefined(data.origin);
+                assert.isUndefined(data.destination);
+                assert.isEmpty(data.trips);
+                assert.isNull(err);
+                done();
+            })
+        });
+    });
+
+    describe('dvb.route "Helmholtzstraße -> Postplatz"', function () {
+        mockRequest('route-Helmholtzstrasse-Postplatz.json');
+
+        it('should return empty trips', function () {
+            return dvb.route("Helmholtzstraße", "Postplatz")
+                .then(function (data) {
+                    assert.isObject(data);
+                    assert.isUndefined(data.origin);
+                    assert.isUndefined(data.destination);
+                    assert.isEmpty(data.trips);
+                });
+        });
+
+        it('should return empty trips with callback', function (done) {
+            dvb.route("Helmholtzstraße", "Postplatz", new Date(), true, function (err, data) {
+                assert.isObject(data);
+                assert.isUndefined(data.origin);
+                assert.isUndefined(data.destination);
+                assert.isEmpty(data.trips);
+                assert.isNull(err);
+                done();
+            })
         });
     });
 
@@ -267,14 +323,14 @@ describe('dvb.findStop', function () {
         it('should return an array', function () {
             return dvb.findStop('Postpl')
                 .then(function (data) {
-                    assertNonEmptyArray(data);
+                    assert.isNotEmpty(data);
                 })
         });
 
         it('should contain objects with name, city, coords and type', function () {
             return dvb.findStop('Postpl')
                 .then(function (data) {
-                    assertNonEmptyArray(data);
+                    assert.isNotEmpty(data);
                     data.forEach(assertStop);
                 })
         });
@@ -300,7 +356,7 @@ describe('dvb.findStop', function () {
         it('should return an empty array', function () {
             return dvb.findStop('0')
                 .then(function (data) {
-                    assertEmptyArray(data);
+                    assert.isEmpty(data);
                 })
         });
     });
@@ -311,7 +367,7 @@ describe('dvb.findStop', function () {
         it('should return an empty array', function () {
             return dvb.findStop("xyz")
                 .then(function (data) {
-                    assertEmptyArray(data);
+                    assert.isEmpty(data);
                 })
         });
     });
@@ -358,7 +414,7 @@ describe('dvb.findPOI', function () {
         it('should return an array', function () {
             return dvb.findPOI('Frauenkirche Dresden')
                 .then(function (data) {
-                    assertNonEmptyArray(data);
+                    assert.isNotEmpty(data);
                 })
         });
 
@@ -389,7 +445,7 @@ describe('dvb.findPOI', function () {
         it('should return an empty array', function () {
             return dvb.findPOI('xyz')
                 .then(function (data) {
-                    assertEmptyArray(data);
+                    assert.isEmpty(data);
                 })
         });
     });
@@ -419,7 +475,7 @@ describe('dvb.pins', function () {
         it('should resolve into an array', function () {
             return dvb.pins(51.026578, 13.713899, 51.035565, 13.737974, 'stop')
                 .then(function (data) {
-                    assertNonEmptyArray(data);
+                    assert.isNotEmpty(data);
                 })
         });
 
@@ -431,7 +487,7 @@ describe('dvb.pins', function () {
                         assert.isString(elem.name);
                         assertCoords(elem.coords);
 
-                        assertNonEmptyArray(elem.connections);
+                        assert.isNotEmpty(elem.connections);
                         elem.connections.forEach(function (con) {
                             assert.isString(con.line);
                             assert.isString(con.type);
@@ -516,7 +572,7 @@ describe('dvb.findAddress', function () {
         it('should contain nearby stops', function () {
             return dvb.findAddress(lat, lng)
                 .then(function (address) {
-                    assertNonEmptyArray(address.stops);
+                    assert.isNotEmpty(address.stops);
                     address.stops.forEach(assertStop);
                 })
         });
@@ -584,7 +640,7 @@ describe('dvb.coords for id from dvb.pins', function () {
     it('coordinates should be equal for first pin', function () {
         return dvb.pins(51.026578, 13.713899, 51.035565, 13.737974, dvb.pins.type.POI)
             .then(function (pins) {
-                assertNonEmptyArray(pins);
+                assert.isNotEmpty(pins);
                 pins.forEach(function (elem) {
                     assert.isString(elem.id);
                     assertCoords(elem.coords);
@@ -605,7 +661,7 @@ describe('dvb.lines', function () {
         it('should return an array', function () {
             return dvb.lines(33000037)
                 .then(function (data) {
-                    assertNonEmptyArray(data);
+                    assert.isNotEmpty(data);
                 })
         });
 
@@ -616,7 +672,7 @@ describe('dvb.lines', function () {
                         assert.isString(line.name);
                         assertMode(line.mode);
                         assertDiva(line.diva);
-                        assertNonEmptyArray(line.directions);
+                        assert.isNotEmpty(line.directions);
                         line.directions.forEach(function (direction) {
                             assert.isString(direction);
                         })
@@ -741,16 +797,6 @@ describe('internal utils', function () {
     });
 });
 
-function assertEmptyArray(array) {
-    assert.isArray(array);
-    assert.equal(array.length, 0, 'array should be empty')
-}
-
-function assertNonEmptyArray(array) {
-    assert.isArray(array);
-    assert.isAbove(array.length, 0, 'array should not be empty')
-}
-
 function assertCoords(coords, delta) {
     delta = delta ? delta : 75;
 
@@ -792,6 +838,7 @@ function assertMode(mode) {
 
     assert.isString(mode.name);
     assert.isString(mode.title);
+
     assert.isString(mode.icon_url);
 }
 

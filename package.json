@@ -1,6 +1,6 @@
 {
   "name": "dvbjs",
-  "version": "4.3.5",
+  "version": "5.0.0",
   "description": "query Dresden's public transport system for current bus- and tramstop data",
   "main": "index",
   "files": [
@@ -58,17 +58,17 @@
   },
   "homepage": "https://github.com/kiliankoe/dvbjs",
   "dependencies": {
-    "proj4": "^2.3.17",
-    "request": "^2.81.0",
-    "request-promise": "^4.1.1"
+    "proj4": "^2.4.4",
+    "request": "^2.82.0",
+    "request-promise": "^4.2.2"
   },
   "devDependencies": {
-    "bluebird": "^3.4.7",
-    "chai": "^3.5.0",
-    "chai-as-promised": "^6.0.0",
-    "coveralls": "^2.11.16",
+    "bluebird": "^3.5.0",
+    "chai": "^4.1.2",
+    "chai-as-promised": "^7.1.1",
+    "coveralls": "^2.13.1",
     "istanbul": "^0.4.5",
-    "mocha": "^3.2.0",
-    "mockery": "^2.0.0"
+    "mocha": "^3.5.3",
+    "mockery": "^2.1.0"
   }
 }
