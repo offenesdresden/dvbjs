@@ -1,0 +1,6 @@
+{
+  "Error": {
+    "name": "ValidationError",
+    "message": "stopid has to be not null and must be a number"
+  }
+}

@@ -1,0 +1,1452 @@
+{
+  "SessionId": "3484152494:efa4",
+  "Status": {
+    "Code": "Ok"
+  },
+  "Routes": [
+    {
+      "PriceLevel": 1,
+      "Price": "2,30",
+      "Duration": 28,
+      "Interchanges": 2,
+      "MotChain": [
+        {
+          "Type": "Bus",
+          "Name": "85",
+          "Direction": " Hp. Plauen",
+          "Changes": [
+            "509434",
+            "511137",
+            "511102"
+          ],
+          "Diva": {
+            "Number": "21085",
+            "Network": "voe"
+          }
+        },
+        {
+          "Type": "Bus",
+          "Name": "62",
+          "Direction": " Johannstadt",
+          "Changes": [
+            "510970"
+          ],
+          "Diva": {
+            "Number": "21062",
+            "Network": "voe"
+          }
+        },
+        {
+          "Type": "Tram",
+          "Name": "11",
+          "Direction": " Bühlau",
+          "Changes": [
+            "511102",
+            "510690"
+          ],
+          "Diva": {
+            "Number": "11011",
+            "Network": "voe"
+          }
+        }
+      ],
+      "FareZoneOrigin": 10,
+      "FareZoneDestination": 10,
+      "MapPdfId": "VVO_59D782690",
+      "RouteId": 0,
+      "PartialRoutes": [
+        {
+          "PartialRouteId": 0,
+          "Duration": 4,
+          "Mot": {
+            "Type": "Bus",
+            "Name": "85",
+            "Direction": " Hp. Plauen",
+            "Changes": [
+              "509434",
+              "511137",
+              "511102"
+            ],
+            "Diva": {
+              "Number": "21085",
+              "Network": "voe"
+            }
+          },
+          "MapDataIndex": 0,
+          "Shift": "None",
+          "RegularStops": [
+            {
+              "ArrivalTime": "/Date(1507290300000-0000)/",
+              "DepartureTime": "/Date(1507290300000-0000)/",
+              "Place": "Dresden",
+              "Name": "Helmholtzstraße",
+              "Type": "Stop",
+              "DataId": "33000742",
+              "Platform": {
+                "Name": "2",
+                "Type": "Platform"
+              },
+              "Latitude": 5655904,
+              "Longitude": 4621157,
+              "MapPdfId": "VVO_59D782691"
+            },
+            {
+              "ArrivalTime": "/Date(1507290360000-0000)/",
+              "DepartureTime": "/Date(1507290360000-0000)/",
+              "Place": "Dresden",
+              "Name": "Regensburger Straße",
+              "Type": "Stop",
+              "DataId": "33000513",
+              "Platform": {
+                "Name": "2",
+                "Type": "Platform"
+              },
+              "Latitude": 5655992,
+              "Longitude": 4620811
+            },
+            {
+              "ArrivalTime": "/Date(1507290420000-0000)/",
+              "DepartureTime": "/Date(1507290420000-0000)/",
+              "Place": "Dresden",
+              "Name": "Plauen Nöthnitzer Straße",
+              "Type": "Stop",
+              "DataId": "33000135",
+              "Platform": {
+                "Name": "6",
+                "Type": "Platform"
+              },
+              "Latitude": 5656060,
+              "Longitude": 4620527
+            },
+            {
+              "ArrivalTime": "/Date(1507290480000-0000)/",
+              "DepartureTime": "/Date(1507290480000-0000)/",
+              "Place": "Dresden",
+              "Name": "Kaitzer Straße",
+              "Type": "Stop",
+              "DataId": "33000510",
+              "Platform": {
+                "Name": "2",
+                "Type": "Platform"
+              },
+              "Latitude": 5656183,
+              "Longitude": 4620155
+            },
+            {
+              "ArrivalTime": "/Date(1507290540000-0000)/",
+              "DepartureTime": "/Date(1507290540000-0000)/",
+              "Place": "Dresden",
+              "Name": "Plauen Rathaus",
+              "Type": "Stop",
+              "DataId": "33000719",
+              "Platform": {
+                "Name": "4",
+                "Type": "Platform"
+              },
+              "Latitude": 5656309,
+              "Longitude": 4619830,
+              "MapPdfId": "VVO_59D782692"
+            }
+          ]
+        },
+        {
+          "Duration": 2,
+          "Mot": {
+            "Type": "Footpath"
+          },
+          "MapDataIndex": 1,
+          "Shift": "None"
+        },
+        {
+          "PartialRouteId": 1,
+          "Duration": 10,
+          "Mot": {
+            "Type": "Bus",
+            "Name": "62",
+            "Direction": " Johannstadt",
+            "Changes": [
+              "510970"
+            ],
+            "Diva": {
+              "Number": "21062",
+              "Network": "voe"
+            }
+          },
+          "MapDataIndex": 2,
+          "Shift": "None",
+          "RegularStops": [
+            {
+              "ArrivalTime": "/Date(1507290960000-0000)/",
+              "DepartureTime": "/Date(1507290960000-0000)/",
+              "Place": "Dresden",
+              "Name": "Plauen Rathaus",
+              "Type": "Stop",
+              "DataId": "33000719",
+              "Platform": {
+                "Name": "1",
+                "Type": "Platform"
+              },
+              "Latitude": 5656371,
+              "Longitude": 4619915,
+              "MapPdfId": "VVO_59D782692"
+            },
+            {
+              "ArrivalTime": "/Date(1507291020000-0000)/",
+              "DepartureTime": "/Date(1507291020000-0000)/",
+              "Place": "Dresden",
+              "Name": "Bamberger Straße",
+              "Type": "Stop",
+              "DataId": "33000720",
+              "Platform": {
+                "Name": "1",
+                "Type": "Platform"
+              },
+              "Latitude": 5656804,
+              "Longitude": 4620215
+            },
+            {
+              "ArrivalTime": "/Date(1507291140000-0000)/",
+              "DepartureTime": "/Date(1507291140000-0000)/",
+              "Place": "Dresden",
+              "Name": "Chemnitzer Straße",
+              "Type": "Stop",
+              "DataId": "33000723",
+              "Platform": {
+                "Name": "3",
+                "Type": "Platform"
+              },
+              "Latitude": 5657172,
+              "Longitude": 4620468
+            },
+            {
+              "ArrivalTime": "/Date(1507291200000-0000)/",
+              "DepartureTime": "/Date(1507291200000-0000)/",
+              "Place": "Dresden",
+              "Name": "Agentur für Arbeit",
+              "Type": "Stop",
+              "DataId": "33000721",
+              "Platform": {
+                "Name": "1",
+                "Type": "Platform"
+              },
+              "Latitude": 5657424,
+              "Longitude": 4620648
+            },
+            {
+              "ArrivalTime": "/Date(1507291260000-0000)/",
+              "DepartureTime": "/Date(1507291260000-0000)/",
+              "Place": "Dresden",
+              "Name": "Schweizer Straße",
+              "Type": "Stop",
+              "DataId": "33000725",
+              "Platform": {
+                "Name": "1",
+                "Type": "Platform"
+              },
+              "Latitude": 5657673,
+              "Longitude": 4620812
+            },
+            {
+              "ArrivalTime": "/Date(1507291320000-0000)/",
+              "DepartureTime": "/Date(1507291320000-0000)/",
+              "Place": "Dresden",
+              "Name": "Budapester Straße",
+              "Type": "Stop",
+              "DataId": "33000027",
+              "Platform": {
+                "Name": "3",
+                "Type": "Platform"
+              },
+              "Latitude": 5657899,
+              "Longitude": 4621055
+            },
+            {
+              "ArrivalTime": "/Date(1507291380000-0000)/",
+              "DepartureTime": "/Date(1507291380000-0000)/",
+              "Place": "Dresden",
+              "Name": "Josephinenstraße",
+              "Type": "Stop",
+              "DataId": "33000763",
+              "Platform": {
+                "Name": "1",
+                "Type": "Platform"
+              },
+              "Latitude": 5658141,
+              "Longitude": 4621369
+            },
+            {
+              "ArrivalTime": "/Date(1507291440000-0000)/",
+              "DepartureTime": "/Date(1507291440000-0000)/",
+              "Place": "Dresden",
+              "Name": "Reitbahnstraße",
+              "Type": "Stop",
+              "DataId": "33000990",
+              "Platform": {
+                "Name": "1",
+                "Type": "Platform"
+              },
+              "Latitude": 5658241,
+              "Longitude": 4621615
+            },
+            {
+              "ArrivalTime": "/Date(1507291560000-0000)/",
+              "DepartureTime": "/Date(1507291560000-0000)/",
+              "Place": "Dresden",
+              "Name": "Prager Straße",
+              "Type": "Stop",
+              "DataId": "33000003",
+              "Platform": {
+                "Name": "2",
+                "Type": "Platform"
+              },
+              "Latitude": 5658324,
+              "Longitude": 4622011,
+              "MapPdfId": "VVO_59D782693"
+            }
+          ]
+        },
+        {
+          "PartialRouteId": 2,
+          "Duration": 2,
+          "Mot": {
+            "Type": "Tram",
+            "Name": "11",
+            "Direction": " Bühlau",
+            "Changes": [
+              "511102",
+              "510690"
+            ],
+            "Diva": {
+              "Number": "11011",
+              "Network": "voe"
+            }
+          },
+          "MapDataIndex": 4,
+          "Shift": "None",
+          "RegularStops": [
+            {
+              "ArrivalTime": "/Date(1507291860000-0000)/",
+              "DepartureTime": "/Date(1507291860000-0000)/",
+              "Place": "Dresden",
+              "Name": "Prager Straße",
+              "Type": "Stop",
+              "DataId": "33000003",
+              "Platform": {
+                "Name": "1",
+                "Type": "Platform"
+              },
+              "Latitude": 5658327,
+              "Longitude": 4621935,
+              "MapPdfId": "VVO_59D782693"
+            },
+            {
+              "ArrivalTime": "/Date(1507291980000-0000)/",
+              "DepartureTime": "/Date(1507291980000-0000)/",
+              "Place": "Dresden",
+              "Name": "Postplatz",
+              "Type": "Stop",
+              "DataId": "33000037",
+              "Platform": {
+                "Name": "4",
+                "Type": "Platform"
+              },
+              "Latitude": 5658699,
+              "Longitude": 4621660,
+              "MapPdfId": "VVO_59D782694"
+            }
+          ]
+        }
+      ],
+      "MapData": [
+        "Bus|5655903|4621157|5655906|4621145|5655927|4621050|5655945|4620983|5655961|4620933|5655987|4620832|5655987|4620832|5656014|4620717|5656014|4620717|5656036|4620626|5656060|4620527|5656060|4620527|5656069|4620487|5656071|4620479|5656075|4620462|5656087|4620419|5656102|4620379|5656116|4620339|5656122|4620325|5656173|4620180|5656182|4620155|5656182|4620155|5656218|4620056|5656226|4620034|5656272|4619907|5656290|4619861|5656309|4619830|",
+        "Footpath|5656309|4619830|5656290|4619861|5656314|4619876|5656371|4619916|5656371|4619915|",
+        "Bus|5656371|4619916|5656427|4619955|5656656|4620108|5656806|4620212|5656806|4620212|5656823|4620223|5656870|4620256|5656958|4620315|5656991|4620337|5657025|4620360|5657076|4620394|5657147|4620442|5657155|4620456|5657172|4620468|5657172|4620468|5657247|4620521|5657364|4620599|5657364|4620599|5657436|4620647|5657436|4620647|5657523|4620707|5657617|4620771|5657673|4620812|5657673|4620812|5657681|4620818|5657709|4620838|5657791|4620923|5657824|4620963|5657861|4621010|5657898|4621056|5657898|4621056|5657910|4621072|5657934|4621102|5658053|4621249|5658143|4621368|5658143|4621368|5658155|4621384|5658215|4621487|5658245|4621584|5658245|4621615|5658245|4621615|5658245|4621624|5658245|4621663|5658263|4621733|5658268|4621756|5658269|4621762|5658300|4621894|5658301|4621900|5658315|4621971|5658317|4621994|5658316|4622025|5658317|4622063|5658327|4622063|5658326|4622011|",
+        "Footpath|5658324|4622011|5658326|4622011|5658326|4621984|5658324|4621935|5658327|4621935|",
+        "Tram|5658324|4621935|5658323|4621900|5658322|4621836|5658320|4621814|5658315|4621782|5658315|4621774|5658317|4621768|5658322|4621760|5658326|4621756|5658328|4621754|5658335|4621751|5658344|4621748|5658366|4621743|5658425|4621728|5658465|4621718|5658583|4621688|5658659|4621668|5658690|4621660|5658698|4621658|"
+      ]
+    },
+    {
+      "PriceLevel": 1,
+      "Price": "2,30",
+      "Duration": 23,
+      "Interchanges": 2,
+      "MotChain": [
+        {
+          "Type": "Bus",
+          "Name": "85",
+          "Direction": " Löbtau Süd",
+          "Changes": [
+            "509434",
+            "511137",
+            "511102"
+          ],
+          "Diva": {
+            "Number": "21085",
+            "Network": "voe"
+          }
+        },
+        {
+          "Type": "Bus",
+          "Name": "62",
+          "Direction": " Johannstadt",
+          "Changes": [
+            "510970"
+          ],
+          "Diva": {
+            "Number": "21062",
+            "Network": "voe"
+          }
+        },
+        {
+          "Type": "Tram",
+          "Name": "12",
+          "Direction": " Leutewitz",
+          "Changes": [
+            "510972",
+            "511102"
+          ],
+          "Diva": {
+            "Number": "11012",
+            "Network": "voe"
+          }
+        }
+      ],
+      "FareZoneOrigin": 10,
+      "FareZoneDestination": 10,
+      "MapPdfId": "VVO_59D78269B",
+      "RouteId": 2,
+      "PartialRoutes": [
+        {
+          "PartialRouteId": 0,
+          "Duration": 4,
+          "Mot": {
+            "Type": "Bus",
+            "Name": "85",
+            "Direction": " Löbtau Süd",
+            "Changes": [
+              "509434",
+              "511137",
+              "511102"
+            ],
+            "Diva": {
+              "Number": "21085",
+              "Network": "voe"
+            }
+          },
+          "MapDataIndex": 0,
+          "Shift": "None",
+          "RegularStops": [
+            {
+              "ArrivalTime": "/Date(1507290960000-0000)/",
+              "DepartureTime": "/Date(1507290960000-0000)/",
+              "Place": "Dresden",
+              "Name": "Helmholtzstraße",
+              "Type": "Stop",
+              "DataId": "33000742",
+              "Platform": {
+                "Name": "2",
+                "Type": "Platform"
+              },
+              "Latitude": 5655904,
+              "Longitude": 4621157,
+              "MapPdfId": "VVO_59D78269C"
+            },
+            {
+              "ArrivalTime": "/Date(1507291020000-0000)/",
+              "DepartureTime": "/Date(1507291020000-0000)/",
+              "Place": "Dresden",
+              "Name": "Regensburger Straße",
+              "Type": "Stop",
+              "DataId": "33000513",
+              "Platform": {
+                "Name": "2",
+                "Type": "Platform"
+              },
+              "Latitude": 5655992,
+              "Longitude": 4620811
+            },
+            {
+              "ArrivalTime": "/Date(1507291080000-0000)/",
+              "DepartureTime": "/Date(1507291080000-0000)/",
+              "Place": "Dresden",
+              "Name": "Plauen Nöthnitzer Straße",
+              "Type": "Stop",
+              "DataId": "33000135",
+              "Platform": {
+                "Name": "6",
+                "Type": "Platform"
+              },
+              "Latitude": 5656060,
+              "Longitude": 4620527
+            },
+            {
+              "ArrivalTime": "/Date(1507291140000-0000)/",
+              "DepartureTime": "/Date(1507291140000-0000)/",
+              "Place": "Dresden",
+              "Name": "Kaitzer Straße",
+              "Type": "Stop",
+              "DataId": "33000510",
+              "Platform": {
+                "Name": "2",
+                "Type": "Platform"
+              },
+              "Latitude": 5656183,
+              "Longitude": 4620155
+            },
+            {
+              "ArrivalTime": "/Date(1507291200000-0000)/",
+              "DepartureTime": "/Date(1507291200000-0000)/",
+              "Place": "Dresden",
+              "Name": "Plauen Rathaus",
+              "Type": "Stop",
+              "DataId": "33000719",
+              "Platform": {
+                "Name": "4",
+                "Type": "Platform"
+              },
+              "Latitude": 5656309,
+              "Longitude": 4619830,
+              "MapPdfId": "VVO_59D78269D"
+            }
+          ]
+        },
+        {
+          "Duration": 2,
+          "Mot": {
+            "Type": "Footpath"
+          },
+          "MapDataIndex": 1,
+          "Shift": "None"
+        },
+        {
+          "PartialRouteId": 1,
+          "Duration": 10,
+          "Mot": {
+            "Type": "Bus",
+            "Name": "62",
+            "Direction": " Johannstadt",
+            "Changes": [
+              "510970"
+            ],
+            "Diva": {
+              "Number": "21062",
+              "Network": "voe"
+            }
+          },
+          "MapDataIndex": 2,
+          "Shift": "None",
+          "RegularStops": [
+            {
+              "ArrivalTime": "/Date(1507291380000-0000)/",
+              "DepartureTime": "/Date(1507291380000-0000)/",
+              "Place": "Dresden",
+              "Name": "Plauen Rathaus",
+              "Type": "Stop",
+              "DataId": "33000719",
+              "Platform": {
+                "Name": "1",
+                "Type": "Platform"
+              },
+              "Latitude": 5656371,
+              "Longitude": 4619915,
+              "MapPdfId": "VVO_59D78269D"
+            },
+            {
+              "ArrivalTime": "/Date(1507291440000-0000)/",
+              "DepartureTime": "/Date(1507291440000-0000)/",
+              "Place": "Dresden",
+              "Name": "Bamberger Straße",
+              "Type": "Stop",
+              "DataId": "33000720",
+              "Platform": {
+                "Name": "1",
+                "Type": "Platform"
+              },
+              "Latitude": 5656804,
+              "Longitude": 4620215
+            },
+            {
+              "ArrivalTime": "/Date(1507291560000-0000)/",
+              "DepartureTime": "/Date(1507291560000-0000)/",
+              "Place": "Dresden",
+              "Name": "Chemnitzer Straße",
+              "Type": "Stop",
+              "DataId": "33000723",
+              "Platform": {
+                "Name": "3",
+                "Type": "Platform"
+              },
+              "Latitude": 5657172,
+              "Longitude": 4620468
+            },
+            {
+              "ArrivalTime": "/Date(1507291620000-0000)/",
+              "DepartureTime": "/Date(1507291620000-0000)/",
+              "Place": "Dresden",
+              "Name": "Agentur für Arbeit",
+              "Type": "Stop",
+              "DataId": "33000721",
+              "Platform": {
+                "Name": "1",
+                "Type": "Platform"
+              },
+              "Latitude": 5657424,
+              "Longitude": 4620648
+            },
+            {
+              "ArrivalTime": "/Date(1507291680000-0000)/",
+              "DepartureTime": "/Date(1507291680000-0000)/",
+              "Place": "Dresden",
+              "Name": "Schweizer Straße",
+              "Type": "Stop",
+              "DataId": "33000725",
+              "Platform": {
+                "Name": "1",
+                "Type": "Platform"
+              },
+              "Latitude": 5657673,
+              "Longitude": 4620812
+            },
+            {
+              "ArrivalTime": "/Date(1507291740000-0000)/",
+              "DepartureTime": "/Date(1507291740000-0000)/",
+              "Place": "Dresden",
+              "Name": "Budapester Straße",
+              "Type": "Stop",
+              "DataId": "33000027",
+              "Platform": {
+                "Name": "3",
+                "Type": "Platform"
+              },
+              "Latitude": 5657899,
+              "Longitude": 4621055
+            },
+            {
+              "ArrivalTime": "/Date(1507291800000-0000)/",
+              "DepartureTime": "/Date(1507291800000-0000)/",
+              "Place": "Dresden",
+              "Name": "Josephinenstraße",
+              "Type": "Stop",
+              "DataId": "33000763",
+              "Platform": {
+                "Name": "1",
+                "Type": "Platform"
+              },
+              "Latitude": 5658141,
+              "Longitude": 4621369
+            },
+            {
+              "ArrivalTime": "/Date(1507291860000-0000)/",
+              "DepartureTime": "/Date(1507291860000-0000)/",
+              "Place": "Dresden",
+              "Name": "Reitbahnstraße",
+              "Type": "Stop",
+              "DataId": "33000990",
+              "Platform": {
+                "Name": "1",
+                "Type": "Platform"
+              },
+              "Latitude": 5658241,
+              "Longitude": 4621615
+            },
+            {
+              "ArrivalTime": "/Date(1507291980000-0000)/",
+              "DepartureTime": "/Date(1507291980000-0000)/",
+              "Place": "Dresden",
+              "Name": "Prager Straße",
+              "Type": "Stop",
+              "DataId": "33000003",
+              "Platform": {
+                "Name": "2",
+                "Type": "Platform"
+              },
+              "Latitude": 5658324,
+              "Longitude": 4622011,
+              "MapPdfId": "VVO_59D78269E"
+            }
+          ]
+        },
+        {
+          "PartialRouteId": 2,
+          "Duration": 2,
+          "Mot": {
+            "Type": "Tram",
+            "Name": "12",
+            "Direction": " Leutewitz",
+            "Changes": [
+              "510972",
+              "511102"
+            ],
+            "Diva": {
+              "Number": "11012",
+              "Network": "voe"
+            }
+          },
+          "MapDataIndex": 4,
+          "Shift": "None",
+          "RegularStops": [
+            {
+              "ArrivalTime": "/Date(1507292220000-0000)/",
+              "DepartureTime": "/Date(1507292220000-0000)/",
+              "Place": "Dresden",
+              "Name": "Prager Straße",
+              "Type": "Stop",
+              "DataId": "33000003",
+              "Platform": {
+                "Name": "1",
+                "Type": "Platform"
+              },
+              "Latitude": 5658327,
+              "Longitude": 4621935,
+              "MapPdfId": "VVO_59D78269E"
+            },
+            {
+              "ArrivalTime": "/Date(1507292340000-0000)/",
+              "DepartureTime": "/Date(1507292340000-0000)/",
+              "Place": "Dresden",
+              "Name": "Postplatz",
+              "Type": "Stop",
+              "DataId": "33000037",
+              "Platform": {
+                "Name": "4",
+                "Type": "Platform"
+              },
+              "Latitude": 5658699,
+              "Longitude": 4621660,
+              "MapPdfId": "VVO_59D78269F"
+            }
+          ]
+        }
+      ],
+      "MapData": [
+        "Bus|5655903|4621157|5655906|4621145|5655927|4621050|5655945|4620983|5655961|4620933|5655987|4620832|5655987|4620832|5656014|4620717|5656014|4620717|5656036|4620626|5656060|4620527|5656060|4620527|5656069|4620487|5656071|4620479|5656075|4620462|5656087|4620419|5656102|4620379|5656116|4620339|5656122|4620325|5656173|4620180|5656182|4620155|5656182|4620155|5656218|4620056|5656226|4620034|5656272|4619907|5656290|4619861|5656309|4619830|",
+        "Footpath|5656309|4619830|5656290|4619861|5656314|4619876|5656371|4619916|5656371|4619915|",
+        "Bus|5656371|4619916|5656427|4619955|5656656|4620108|5656806|4620212|5656806|4620212|5656823|4620223|5656870|4620256|5656958|4620315|5656991|4620337|5657025|4620360|5657076|4620394|5657147|4620442|5657155|4620456|5657172|4620468|5657172|4620468|5657247|4620521|5657364|4620599|5657364|4620599|5657436|4620647|5657436|4620647|5657523|4620707|5657617|4620771|5657673|4620812|5657673|4620812|5657681|4620818|5657709|4620838|5657791|4620923|5657824|4620963|5657861|4621010|5657898|4621056|5657898|4621056|5657910|4621072|5657934|4621102|5658053|4621249|5658143|4621368|5658143|4621368|5658155|4621384|5658215|4621487|5658245|4621584|5658245|4621615|5658245|4621615|5658245|4621624|5658245|4621663|5658263|4621733|5658268|4621756|5658269|4621762|5658300|4621894|5658301|4621900|5658315|4621971|5658317|4621994|5658316|4622025|5658317|4622063|5658327|4622063|5658326|4622011|",
+        "Footpath|5658324|4622011|5658326|4622011|5658326|4621984|5658324|4621935|5658327|4621935|",
+        "Tram|5658324|4621935|5658323|4621900|5658322|4621836|5658320|4621814|5658315|4621782|5658315|4621774|5658317|4621768|5658322|4621760|5658326|4621756|5658328|4621754|5658335|4621751|5658344|4621748|5658366|4621743|5658425|4621728|5658465|4621718|5658583|4621688|5658659|4621668|5658690|4621660|5658698|4621658|"
+      ]
+    },
+    {
+      "PriceLevel": 1,
+      "Price": "2,30",
+      "Duration": 23,
+      "Interchanges": 2,
+      "MotChain": [
+        {
+          "Type": "Bus",
+          "Name": "85",
+          "Direction": " Löbtau Süd",
+          "Changes": [
+            "509434",
+            "511137",
+            "511102"
+          ],
+          "Diva": {
+            "Number": "21085",
+            "Network": "voe"
+          }
+        },
+        {
+          "Type": "Bus",
+          "Name": "62",
+          "Direction": " Johannstadt",
+          "Changes": [
+            "510970"
+          ],
+          "Diva": {
+            "Number": "21062",
+            "Network": "voe"
+          }
+        },
+        {
+          "Type": "Tram",
+          "Name": "12",
+          "Direction": " Leutewitz",
+          "Changes": [
+            "510972",
+            "511102"
+          ],
+          "Diva": {
+            "Number": "11012",
+            "Network": "voe"
+          }
+        }
+      ],
+      "FareZoneOrigin": 10,
+      "FareZoneDestination": 10,
+      "MapPdfId": "VVO_59D78269B",
+      "RouteId": 4,
+      "PartialRoutes": [
+        {
+          "PartialRouteId": 0,
+          "Duration": 4,
+          "Mot": {
+            "Type": "Bus",
+            "Name": "85",
+            "Direction": " Löbtau Süd",
+            "Changes": [
+              "509434",
+              "511137",
+              "511102"
+            ],
+            "Diva": {
+              "Number": "21085",
+              "Network": "voe"
+            }
+          },
+          "MapDataIndex": 0,
+          "Shift": "None",
+          "RegularStops": [
+            {
+              "ArrivalTime": "/Date(1507292160000-0000)/",
+              "DepartureTime": "/Date(1507292160000-0000)/",
+              "Place": "Dresden",
+              "Name": "Helmholtzstraße",
+              "Type": "Stop",
+              "DataId": "33000742",
+              "Platform": {
+                "Name": "2",
+                "Type": "Platform"
+              },
+              "Latitude": 5655904,
+              "Longitude": 4621157,
+              "MapPdfId": "VVO_59D78269C"
+            },
+            {
+              "ArrivalTime": "/Date(1507292220000-0000)/",
+              "DepartureTime": "/Date(1507292220000-0000)/",
+              "Place": "Dresden",
+              "Name": "Regensburger Straße",
+              "Type": "Stop",
+              "DataId": "33000513",
+              "Platform": {
+                "Name": "2",
+                "Type": "Platform"
+              },
+              "Latitude": 5655992,
+              "Longitude": 4620811
+            },
+            {
+              "ArrivalTime": "/Date(1507292280000-0000)/",
+              "DepartureTime": "/Date(1507292280000-0000)/",
+              "Place": "Dresden",
+              "Name": "Plauen Nöthnitzer Straße",
+              "Type": "Stop",
+              "DataId": "33000135",
+              "Platform": {
+                "Name": "6",
+                "Type": "Platform"
+              },
+              "Latitude": 5656060,
+              "Longitude": 4620527
+            },
+            {
+              "ArrivalTime": "/Date(1507292340000-0000)/",
+              "DepartureTime": "/Date(1507292340000-0000)/",
+              "Place": "Dresden",
+              "Name": "Kaitzer Straße",
+              "Type": "Stop",
+              "DataId": "33000510",
+              "Platform": {
+                "Name": "2",
+                "Type": "Platform"
+              },
+              "Latitude": 5656183,
+              "Longitude": 4620155
+            },
+            {
+              "ArrivalTime": "/Date(1507292400000-0000)/",
+              "DepartureTime": "/Date(1507292400000-0000)/",
+              "Place": "Dresden",
+              "Name": "Plauen Rathaus",
+              "Type": "Stop",
+              "DataId": "33000719",
+              "Platform": {
+                "Name": "4",
+                "Type": "Platform"
+              },
+              "Latitude": 5656309,
+              "Longitude": 4619830,
+              "MapPdfId": "VVO_59D78269D"
+            }
+          ]
+        },
+        {
+          "Duration": 2,
+          "Mot": {
+            "Type": "Footpath"
+          },
+          "MapDataIndex": 1,
+          "Shift": "None"
+        },
+        {
+          "PartialRouteId": 1,
+          "Duration": 10,
+          "Mot": {
+            "Type": "Bus",
+            "Name": "62",
+            "Direction": " Johannstadt",
+            "Changes": [
+              "510970"
+            ],
+            "Diva": {
+              "Number": "21062",
+              "Network": "voe"
+            }
+          },
+          "MapDataIndex": 2,
+          "Shift": "None",
+          "RegularStops": [
+            {
+              "ArrivalTime": "/Date(1507292580000-0000)/",
+              "DepartureTime": "/Date(1507292580000-0000)/",
+              "Place": "Dresden",
+              "Name": "Plauen Rathaus",
+              "Type": "Stop",
+              "DataId": "33000719",
+              "Platform": {
+                "Name": "1",
+                "Type": "Platform"
+              },
+              "Latitude": 5656371,
+              "Longitude": 4619915,
+              "MapPdfId": "VVO_59D78269D"
+            },
+            {
+              "ArrivalTime": "/Date(1507292640000-0000)/",
+              "DepartureTime": "/Date(1507292640000-0000)/",
+              "Place": "Dresden",
+              "Name": "Bamberger Straße",
+              "Type": "Stop",
+              "DataId": "33000720",
+              "Platform": {
+                "Name": "1",
+                "Type": "Platform"
+              },
+              "Latitude": 5656804,
+              "Longitude": 4620215
+            },
+            {
+              "ArrivalTime": "/Date(1507292760000-0000)/",
+              "DepartureTime": "/Date(1507292760000-0000)/",
+              "Place": "Dresden",
+              "Name": "Chemnitzer Straße",
+              "Type": "Stop",
+              "DataId": "33000723",
+              "Platform": {
+                "Name": "3",
+                "Type": "Platform"
+              },
+              "Latitude": 5657172,
+              "Longitude": 4620468
+            },
+            {
+              "ArrivalTime": "/Date(1507292820000-0000)/",
+              "DepartureTime": "/Date(1507292820000-0000)/",
+              "Place": "Dresden",
+              "Name": "Agentur für Arbeit",
+              "Type": "Stop",
+              "DataId": "33000721",
+              "Platform": {
+                "Name": "1",
+                "Type": "Platform"
+              },
+              "Latitude": 5657424,
+              "Longitude": 4620648
+            },
+            {
+              "ArrivalTime": "/Date(1507292880000-0000)/",
+              "DepartureTime": "/Date(1507292880000-0000)/",
+              "Place": "Dresden",
+              "Name": "Schweizer Straße",
+              "Type": "Stop",
+              "DataId": "33000725",
+              "Platform": {
+                "Name": "1",
+                "Type": "Platform"
+              },
+              "Latitude": 5657673,
+              "Longitude": 4620812
+            },
+            {
+              "ArrivalTime": "/Date(1507292940000-0000)/",
+              "DepartureTime": "/Date(1507292940000-0000)/",
+              "Place": "Dresden",
+              "Name": "Budapester Straße",
+              "Type": "Stop",
+              "DataId": "33000027",
+              "Platform": {
+                "Name": "3",
+                "Type": "Platform"
+              },
+              "Latitude": 5657899,
+              "Longitude": 4621055
+            },
+            {
+              "ArrivalTime": "/Date(1507293000000-0000)/",
+              "DepartureTime": "/Date(1507293000000-0000)/",
+              "Place": "Dresden",
+              "Name": "Josephinenstraße",
+              "Type": "Stop",
+              "DataId": "33000763",
+              "Platform": {
+                "Name": "1",
+                "Type": "Platform"
+              },
+              "Latitude": 5658141,
+              "Longitude": 4621369
+            },
+            {
+              "ArrivalTime": "/Date(1507293060000-0000)/",
+              "DepartureTime": "/Date(1507293060000-0000)/",
+              "Place": "Dresden",
+              "Name": "Reitbahnstraße",
+              "Type": "Stop",
+              "DataId": "33000990",
+              "Platform": {
+                "Name": "1",
+                "Type": "Platform"
+              },
+              "Latitude": 5658241,
+              "Longitude": 4621615
+            },
+            {
+              "ArrivalTime": "/Date(1507293180000-0000)/",
+              "DepartureTime": "/Date(1507293180000-0000)/",
+              "Place": "Dresden",
+              "Name": "Prager Straße",
+              "Type": "Stop",
+              "DataId": "33000003",
+              "Platform": {
+                "Name": "2",
+                "Type": "Platform"
+              },
+              "Latitude": 5658324,
+              "Longitude": 4622011,
+              "MapPdfId": "VVO_59D78269E"
+            }
+          ]
+        },
+        {
+          "PartialRouteId": 2,
+          "Duration": 2,
+          "Mot": {
+            "Type": "Tram",
+            "Name": "12",
+            "Direction": " Leutewitz",
+            "Changes": [
+              "510972",
+              "511102"
+            ],
+            "Diva": {
+              "Number": "11012",
+              "Network": "voe"
+            }
+          },
+          "MapDataIndex": 4,
+          "Shift": "None",
+          "RegularStops": [
+            {
+              "ArrivalTime": "/Date(1507293420000-0000)/",
+              "DepartureTime": "/Date(1507293420000-0000)/",
+              "Place": "Dresden",
+              "Name": "Prager Straße",
+              "Type": "Stop",
+              "DataId": "33000003",
+              "Platform": {
+                "Name": "1",
+                "Type": "Platform"
+              },
+              "Latitude": 5658327,
+              "Longitude": 4621935,
+              "MapPdfId": "VVO_59D78269E"
+            },
+            {
+              "ArrivalTime": "/Date(1507293540000-0000)/",
+              "DepartureTime": "/Date(1507293540000-0000)/",
+              "Place": "Dresden",
+              "Name": "Postplatz",
+              "Type": "Stop",
+              "DataId": "33000037",
+              "Platform": {
+                "Name": "4",
+                "Type": "Platform"
+              },
+              "Latitude": 5658699,
+              "Longitude": 4621660,
+              "MapPdfId": "VVO_59D78269F"
+            }
+          ]
+        }
+      ],
+      "MapData": [
+        "Bus|5655903|4621157|5655906|4621145|5655927|4621050|5655945|4620983|5655961|4620933|5655987|4620832|5655987|4620832|5656014|4620717|5656014|4620717|5656036|4620626|5656060|4620527|5656060|4620527|5656069|4620487|5656071|4620479|5656075|4620462|5656087|4620419|5656102|4620379|5656116|4620339|5656122|4620325|5656173|4620180|5656182|4620155|5656182|4620155|5656218|4620056|5656226|4620034|5656272|4619907|5656290|4619861|5656309|4619830|",
+        "Footpath|5656309|4619830|5656290|4619861|5656314|4619876|5656371|4619916|5656371|4619915|",
+        "Bus|5656371|4619916|5656427|4619955|5656656|4620108|5656806|4620212|5656806|4620212|5656823|4620223|5656870|4620256|5656958|4620315|5656991|4620337|5657025|4620360|5657076|4620394|5657147|4620442|5657155|4620456|5657172|4620468|5657172|4620468|5657247|4620521|5657364|4620599|5657364|4620599|5657436|4620647|5657436|4620647|5657523|4620707|5657617|4620771|5657673|4620812|5657673|4620812|5657681|4620818|5657709|4620838|5657791|4620923|5657824|4620963|5657861|4621010|5657898|4621056|5657898|4621056|5657910|4621072|5657934|4621102|5658053|4621249|5658143|4621368|5658143|4621368|5658155|4621384|5658215|4621487|5658245|4621584|5658245|4621615|5658245|4621615|5658245|4621624|5658245|4621663|5658263|4621733|5658268|4621756|5658269|4621762|5658300|4621894|5658301|4621900|5658315|4621971|5658317|4621994|5658316|4622025|5658317|4622063|5658327|4622063|5658326|4622011|",
+        "Footpath|5658324|4622011|5658326|4622011|5658326|4621984|5658324|4621935|5658327|4621935|",
+        "Tram|5658324|4621935|5658323|4621900|5658322|4621836|5658320|4621814|5658315|4621782|5658315|4621774|5658317|4621768|5658322|4621760|5658326|4621756|5658328|4621754|5658335|4621751|5658344|4621748|5658366|4621743|5658425|4621728|5658465|4621718|5658583|4621688|5658659|4621668|5658690|4621660|5658698|4621658|"
+      ]
+    },
+    {
+      "PriceLevel": 1,
+      "Price": "2,30",
+      "Duration": 23,
+      "Interchanges": 2,
+      "MotChain": [
+        {
+          "Type": "Bus",
+          "Name": "85",
+          "Direction": " Löbtau Süd",
+          "Changes": [
+            "509434",
+            "511137",
+            "511102"
+          ],
+          "Diva": {
+            "Number": "21085",
+            "Network": "voe"
+          }
+        },
+        {
+          "Type": "Bus",
+          "Name": "62",
+          "Direction": " Johannstadt",
+          "Changes": [
+            "510970"
+          ],
+          "Diva": {
+            "Number": "21062",
+            "Network": "voe"
+          }
+        },
+        {
+          "Type": "Tram",
+          "Name": "12",
+          "Direction": " Leutewitz",
+          "Changes": [
+            "510972",
+            "511102"
+          ],
+          "Diva": {
+            "Number": "11012",
+            "Network": "voe"
+          }
+        }
+      ],
+      "FareZoneOrigin": 10,
+      "FareZoneDestination": 10,
+      "MapPdfId": "VVO_59D78269B",
+      "RouteId": 6,
+      "PartialRoutes": [
+        {
+          "PartialRouteId": 0,
+          "Duration": 4,
+          "Mot": {
+            "Type": "Bus",
+            "Name": "85",
+            "Direction": " Löbtau Süd",
+            "Changes": [
+              "509434",
+              "511137",
+              "511102"
+            ],
+            "Diva": {
+              "Number": "21085",
+              "Network": "voe"
+            }
+          },
+          "MapDataIndex": 0,
+          "Shift": "None",
+          "RegularStops": [
+            {
+              "ArrivalTime": "/Date(1507293360000-0000)/",
+              "DepartureTime": "/Date(1507293360000-0000)/",
+              "Place": "Dresden",
+              "Name": "Helmholtzstraße",
+              "Type": "Stop",
+              "DataId": "33000742",
+              "Platform": {
+                "Name": "2",
+                "Type": "Platform"
+              },
+              "Latitude": 5655904,
+              "Longitude": 4621157,
+              "MapPdfId": "VVO_59D78269C"
+            },
+            {
+              "ArrivalTime": "/Date(1507293420000-0000)/",
+              "DepartureTime": "/Date(1507293420000-0000)/",
+              "Place": "Dresden",
+              "Name": "Regensburger Straße",
+              "Type": "Stop",
+              "DataId": "33000513",
+              "Platform": {
+                "Name": "2",
+                "Type": "Platform"
+              },
+              "Latitude": 5655992,
+              "Longitude": 4620811
+            },
+            {
+              "ArrivalTime": "/Date(1507293480000-0000)/",
+              "DepartureTime": "/Date(1507293480000-0000)/",
+              "Place": "Dresden",
+              "Name": "Plauen Nöthnitzer Straße",
+              "Type": "Stop",
+              "DataId": "33000135",
+              "Platform": {
+                "Name": "6",
+                "Type": "Platform"
+              },
+              "Latitude": 5656060,
+              "Longitude": 4620527
+            },
+            {
+              "ArrivalTime": "/Date(1507293540000-0000)/",
+              "DepartureTime": "/Date(1507293540000-0000)/",
+              "Place": "Dresden",
+              "Name": "Kaitzer Straße",
+              "Type": "Stop",
+              "DataId": "33000510",
+              "Platform": {
+                "Name": "2",
+                "Type": "Platform"
+              },
+              "Latitude": 5656183,
+              "Longitude": 4620155
+            },
+            {
+              "ArrivalTime": "/Date(1507293600000-0000)/",
+              "DepartureTime": "/Date(1507293600000-0000)/",
+              "Place": "Dresden",
+              "Name": "Plauen Rathaus",
+              "Type": "Stop",
+              "DataId": "33000719",
+              "Platform": {
+                "Name": "4",
+                "Type": "Platform"
+              },
+              "Latitude": 5656309,
+              "Longitude": 4619830,
+              "MapPdfId": "VVO_59D78269D"
+            }
+          ]
+        },
+        {
+          "Duration": 2,
+          "Mot": {
+            "Type": "Footpath"
+          },
+          "MapDataIndex": 1,
+          "Shift": "None"
+        },
+        {
+          "PartialRouteId": 1,
+          "Duration": 10,
+          "Mot": {
+            "Type": "Bus",
+            "Name": "62",
+            "Direction": " Johannstadt",
+            "Changes": [
+              "510970"
+            ],
+            "Diva": {
+              "Number": "21062",
+              "Network": "voe"
+            }
+          },
+          "MapDataIndex": 2,
+          "Shift": "None",
+          "RegularStops": [
+            {
+              "ArrivalTime": "/Date(1507293780000-0000)/",
+              "DepartureTime": "/Date(1507293780000-0000)/",
+              "Place": "Dresden",
+              "Name": "Plauen Rathaus",
+              "Type": "Stop",
+              "DataId": "33000719",
+              "Platform": {
+                "Name": "1",
+                "Type": "Platform"
+              },
+              "Latitude": 5656371,
+              "Longitude": 4619915,
+              "MapPdfId": "VVO_59D78269D"
+            },
+            {
+              "ArrivalTime": "/Date(1507293840000-0000)/",
+              "DepartureTime": "/Date(1507293840000-0000)/",
+              "Place": "Dresden",
+              "Name": "Bamberger Straße",
+              "Type": "Stop",
+              "DataId": "33000720",
+              "Platform": {
+                "Name": "1",
+                "Type": "Platform"
+              },
+              "Latitude": 5656804,
+              "Longitude": 4620215
+            },
+            {
+              "ArrivalTime": "/Date(1507293960000-0000)/",
+              "DepartureTime": "/Date(1507293960000-0000)/",
+              "Place": "Dresden",
+              "Name": "Chemnitzer Straße",
+              "Type": "Stop",
+              "DataId": "33000723",
+              "Platform": {
+                "Name": "3",
+                "Type": "Platform"
+              },
+              "Latitude": 5657172,
+              "Longitude": 4620468
+            },
+            {
+              "ArrivalTime": "/Date(1507294020000-0000)/",
+              "DepartureTime": "/Date(1507294020000-0000)/",
+              "Place": "Dresden",
+              "Name": "Agentur für Arbeit",
+              "Type": "Stop",
+              "DataId": "33000721",
+              "Platform": {
+                "Name": "1",
+                "Type": "Platform"
+              },
+              "Latitude": 5657424,
+              "Longitude": 4620648
+            },
+            {
+              "ArrivalTime": "/Date(1507294080000-0000)/",
+              "DepartureTime": "/Date(1507294080000-0000)/",
+              "Place": "Dresden",
+              "Name": "Schweizer Straße",
+              "Type": "Stop",
+              "DataId": "33000725",
+              "Platform": {
+                "Name": "1",
+                "Type": "Platform"
+              },
+              "Latitude": 5657673,
+              "Longitude": 4620812
+            },
+            {
+              "ArrivalTime": "/Date(1507294140000-0000)/",
+              "DepartureTime": "/Date(1507294140000-0000)/",
+              "Place": "Dresden",
+              "Name": "Budapester Straße",
+              "Type": "Stop",
+              "DataId": "33000027",
+              "Platform": {
+                "Name": "3",
+                "Type": "Platform"
+              },
+              "Latitude": 5657899,
+              "Longitude": 4621055
+            },
+            {
+              "ArrivalTime": "/Date(1507294200000-0000)/",
+              "DepartureTime": "/Date(1507294200000-0000)/",
+              "Place": "Dresden",
+              "Name": "Josephinenstraße",
+              "Type": "Stop",
+              "DataId": "33000763",
+              "Platform": {
+                "Name": "1",
+                "Type": "Platform"
+              },
+              "Latitude": 5658141,
+              "Longitude": 4621369
+            },
+            {
+              "ArrivalTime": "/Date(1507294260000-0000)/",
+              "DepartureTime": "/Date(1507294260000-0000)/",
+              "Place": "Dresden",
+              "Name": "Reitbahnstraße",
+              "Type": "Stop",
+              "DataId": "33000990",
+              "Platform": {
+                "Name": "1",
+                "Type": "Platform"
+              },
+              "Latitude": 5658241,
+              "Longitude": 4621615
+            },
+            {
+              "ArrivalTime": "/Date(1507294380000-0000)/",
+              "DepartureTime": "/Date(1507294380000-0000)/",
+              "Place": "Dresden",
+              "Name": "Prager Straße",
+              "Type": "Stop",
+              "DataId": "33000003",
+              "Platform": {
+                "Name": "2",
+                "Type": "Platform"
+              },
+              "Latitude": 5658324,
+              "Longitude": 4622011,
+              "MapPdfId": "VVO_59D78269E"
+            }
+          ]
+        },
+        {
+          "PartialRouteId": 2,
+          "Duration": 2,
+          "Mot": {
+            "Type": "Tram",
+            "Name": "12",
+            "Direction": " Leutewitz",
+            "Changes": [
+              "510972",
+              "511102"
+            ],
+            "Diva": {
+              "Number": "11012",
+              "Network": "voe"
+            }
+          },
+          "MapDataIndex": 4,
+          "Shift": "None",
+          "RegularStops": [
+            {
+              "ArrivalTime": "/Date(1507294620000-0000)/",
+              "DepartureTime": "/Date(1507294620000-0000)/",
+              "Place": "Dresden",
+              "Name": "Prager Straße",
+              "Type": "Stop",
+              "DataId": "33000003",
+              "Platform": {
+                "Name": "1",
+                "Type": "Platform"
+              },
+              "Latitude": 5658327,
+              "Longitude": 4621935,
+              "MapPdfId": "VVO_59D78269E"
+            },
+            {
+              "ArrivalTime": "/Date(1507294740000-0000)/",
+              "DepartureTime": "/Date(1507294740000-0000)/",
+              "Place": "Dresden",
+              "Name": "Postplatz",
+              "Type": "Stop",
+              "DataId": "33000037",
+              "Platform": {
+                "Name": "4",
+                "Type": "Platform"
+              },
+              "Latitude": 5658699,
+              "Longitude": 4621660,
+              "MapPdfId": "VVO_59D78269F"
+            }
+          ]
+        }
+      ],
+      "MapData": [
+        "Bus|5655903|4621157|5655906|4621145|5655927|4621050|5655945|4620983|5655961|4620933|5655987|4620832|5655987|4620832|5656014|4620717|5656014|4620717|5656036|4620626|5656060|4620527|5656060|4620527|5656069|4620487|5656071|4620479|5656075|4620462|5656087|4620419|5656102|4620379|5656116|4620339|5656122|4620325|5656173|4620180|5656182|4620155|5656182|4620155|5656218|4620056|5656226|4620034|5656272|4619907|5656290|4619861|5656309|4619830|",
+        "Footpath|5656309|4619830|5656290|4619861|5656314|4619876|5656371|4619916|5656371|4619915|",
+        "Bus|5656371|4619916|5656427|4619955|5656656|4620108|5656806|4620212|5656806|4620212|5656823|4620223|5656870|4620256|5656958|4620315|5656991|4620337|5657025|4620360|5657076|4620394|5657147|4620442|5657155|4620456|5657172|4620468|5657172|4620468|5657247|4620521|5657364|4620599|5657364|4620599|5657436|4620647|5657436|4620647|5657523|4620707|5657617|4620771|5657673|4620812|5657673|4620812|5657681|4620818|5657709|4620838|5657791|4620923|5657824|4620963|5657861|4621010|5657898|4621056|5657898|4621056|5657910|4621072|5657934|4621102|5658053|4621249|5658143|4621368|5658143|4621368|5658155|4621384|5658215|4621487|5658245|4621584|5658245|4621615|5658245|4621615|5658245|4621624|5658245|4621663|5658263|4621733|5658268|4621756|5658269|4621762|5658300|4621894|5658301|4621900|5658315|4621971|5658317|4621994|5658316|4622025|5658317|4622063|5658327|4622063|5658326|4622011|",
+        "Footpath|5658324|4622011|5658326|4622011|5658326|4621984|5658324|4621935|5658327|4621935|",
+        "Tram|5658324|4621935|5658323|4621900|5658322|4621836|5658320|4621814|5658315|4621782|5658315|4621774|5658317|4621768|5658322|4621760|5658326|4621756|5658328|4621754|5658335|4621751|5658344|4621748|5658366|4621743|5658425|4621728|5658465|4621718|5658583|4621688|5658659|4621668|5658690|4621660|5658698|4621658|"
+      ]
+    }
+  ]
+}

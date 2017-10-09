@@ -4,15 +4,17 @@
     "target": "es5",
     "moduleResolution": "node",
     "sourceMap": true,
-    "outDir": "lib",
+    "outDir": "js",
     "declaration": true,
-    "noImplicitAny": true
+    "noImplicitAny": true,
+    "lib": [
+      "es6"
+    ]
   },
   "include": [
-    "src/**/*.ts",
-    "test/**/*.ts"
+    "ts/**/*.ts"
   ],
   "exclude": [
-    "node_modules"
+    "node_modules/**/*ts"
   ]
 }

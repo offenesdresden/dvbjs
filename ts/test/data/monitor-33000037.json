@@ -1,0 +1,104 @@
+{
+  "Name": "Postplatz",
+  "Status": {
+    "Code": "Ok"
+  },
+  "Place": "Dresden",
+  "ExpirationTime": "/Date(1507295905762+0200)/",
+  "Departures": [
+    {
+      "Id": "70009036",
+      "LineName": "1",
+      "Direction": "Prohlis",
+      "Platform": {
+        "Name": "1",
+        "Type": "Platform"
+      },
+      "Mot": "Tram",
+      "RealTime": "/Date(1507295927000+0200)/",
+      "ScheduledTime": "/Date(1507295820000+0200)/",
+      "State": "Delayed",
+      "Diva": {
+        "Number": "11001",
+        "Network": "voe"
+      }
+    },
+    {
+      "Id": "70011713",
+      "LineName": "12",
+      "Direction": "Leutewitz",
+      "Platform": {
+        "Name": "4",
+        "Type": "Platform"
+      },
+      "Mot": "Tram",
+      "RealTime": "/Date(1507295940000+0200)/",
+      "ScheduledTime": "/Date(1507295940000+0200)/",
+      "State": "InTime",
+      "RouteChanges": [
+        "510972",
+        "511102"
+      ],
+      "Diva": {
+        "Number": "11012",
+        "Network": "voe"
+      }
+    },
+    {
+      "Id": "70008933",
+      "LineName": "1",
+      "Direction": "Leutewitz",
+      "Platform": {
+        "Name": "2",
+        "Type": "Platform"
+      },
+      "Mot": "Tram",
+      "RealTime": "/Date(1507296060000+0200)/",
+      "ScheduledTime": "/Date(1507296060000+0200)/",
+      "State": "InTime",
+      "Diva": {
+        "Number": "11001",
+        "Network": "voe"
+      }
+    },
+    {
+      "Id": "70010111",
+      "LineName": "4",
+      "Direction": "Striesen",
+      "Platform": {
+        "Name": "1",
+        "Type": "Platform"
+      },
+      "Mot": "Tram",
+      "RealTime": "/Date(1507296101000+0200)/",
+      "ScheduledTime": "/Date(1507295940000+0200)/",
+      "State": "Delayed",
+      "RouteChanges": [
+        "511023",
+        "510972",
+        "510690"
+      ],
+      "Diva": {
+        "Number": "11004",
+        "Network": "voe"
+      }
+    },
+    {
+      "Id": "70009252",
+      "LineName": "2",
+      "Direction": "Kleinzschachwitz",
+      "Platform": {
+        "Name": "1",
+        "Type": "Platform"
+      },
+      "Mot": "Tram",
+      "RealTime": "/Date(1507296173000+0200)/",
+      "ScheduledTime": "/Date(1507296120000+0200)/",
+      "State": "InTime",
+      "Diva": {
+        "Number": "11002",
+        "Network": "voe"
+      }
+    }
+  ]
+}

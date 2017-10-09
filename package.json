@@ -2,19 +2,15 @@
   "name": "dvbjs",
   "version": "5.0.0",
   "description": "query Dresden's public transport system for current bus- and tramstop data",
-  "main": "lib/index.js",
-  "typings": "js/index.d.ts",
-  "files": [
-    "lib/",
-    "index.js"
-  ],
+  "main": "js/lib/index.js",
+  "typings": "js/lib/index.d.ts",
   "scripts": {
     "build": "tsc -p .",
     "clean": "rimraf coverage lib",
-    "test": "NODE_ENV=test mocha",
-    "test-live": "NODE_ENV=test_live mocha",
-    "update-mocks": "NODE_ENV=test_update mocha",
-    "coverage": "NODE_ENV=test node node_modules/.bin/istanbul cover _mocha -- -R spec",
+    "test": "npm run build && NODE_ENV=test mocha js/test ts/test",
+    "test-live": "npm run build && NODE_ENV=test_live mocha js/test ts/test",
+    "update-mocks": "npm run build && NODE_ENV=test_update mocha js/test ts/test",
+    "coverage": "npm run build && NODE_ENV=test node node_modules/.bin/istanbul cover _mocha -- -R spec js/test ts/test",
     "coveralls": "cat ./coverage/lcov.info | node node_modules/.bin/coveralls",
     "lint": "tslint {src,test}/**/*.ts"
   },
@@ -63,6 +59,7 @@
   "homepage": "https://github.com/kiliankoe/dvbjs",
   "dependencies": {
     "bluebird": "^3.5.0",
+    "fs-extra-promise": "^1.0.1",
     "proj4": "^2.4.4",
     "request": "^2.82.0",
     "request-promise": "^4.2.2"
@@ -70,7 +67,10 @@
   "devDependencies": {
     "@types/bluebird": "^3.5.12",
     "@types/chai": "^4.0.4",
+    "@types/chai-as-promised": "^7.1.0",
+    "@types/fs-extra-promise": "^1.0.2",
     "@types/mocha": "^2.2.43",
+    "@types/mockery": "^1.4.29",
     "@types/node": "^8.0.31",
     "@types/proj4": "^2.3.4",
     "@types/request": "^2.0.3",
