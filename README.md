@@ -116,67 +116,6 @@ Output:
 ]
 ```
 
-### Find routes
-
-Query the server for possible routes from one stop to another. Returns multiple possible trips, the bus-/tramlines to be taken, the single stops, their arrival and departure times and their GPS coordinates.
-
-Example:
-
-```js
-var origin = 'Helmholtzstraße';
-var destination = 'Zellescher Weg';
-var time = new Date(); // starting at what time
-var deparr = dvb.route.DEPARTURE; // set to dvb.route.DEPARTURE for the time to be the departure time, dvb.route.ARRIVAL for arrival time
-
-dvb.route(origin, destination, time, deparr, function(err, data) {
-    if (err) throw err;
-    console.log(JSON.stringify(data, null, 4));
-});
-```
-
-Output:
-
-```js
-{
-    "origin": "Dresden, Helmholtzstraße",
-    "destination": "Dresden, Zellescher Weg",
-    "trips": [{
-        "departure": "13:34",
-        "arrival": "13:56",
-        "duration": "00:22",
-        "interchange": 2,
-        "nodes": [{
-            "mode": "Stadtbus",
-            "line": "85",
-            "direction": "DD Löbtau Süd Mohorner Str.",
-            "departure": {
-                "stop": "Helmholtzstraße",
-                "time": "13:34",
-                "coords": [ 51.025549, 13.725457 ]
-            },
-            "arrival": {
-                "stop": "Plauen Nöthnitzer Straße",
-                "time": "13:36",
-                "coords": [ 51.027625, 13.715769 ]
-            },
-            "path": [[ 51.02554, 13.725471 ],[ 51.02557, 13.725286 ], ...]
-        },
-        {...}
-        ]
-    }, {
-        "departure": "14:02",
-        "arrival": "14:11",
-        "duration": "00:09",
-        "interchange": 1,
-        "nodes": [...]
-    },
-    {...}
-    ]
-}
-```
-
-The path property contains an array consisting of all the coordinates describing the path of this node. This can be useful to draw the route on a map.
-
 ### Find stops by name
 
 Search for a single stop in the network of the DVB. Returns an array of all possible hits including their GPS coordinates.
