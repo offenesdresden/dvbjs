@@ -7,6 +7,9 @@
     "lib/",
     "index.js"
   ],
+  "engines": {
+    "node": ">=4.2"
+  },
   "scripts": {
     "test": "NODE_ENV=test mocha",
     "test-live": "NODE_ENV=test_live mocha",
@@ -50,6 +53,10 @@
       "name": "Jens Maus",
       "email": "mail@jens-maus.de",
       "url": "https://github.com/jens-maus"
+    },
+    {
+      "name": "mimimi1968",
+      "url": "https://github.com/mimimi1968"
     }
   ],
   "license": "MIT",
@@ -64,9 +71,9 @@
   },
   "devDependencies": {
     "bluebird": "^3.4.7",
-    "coveralls": "^2.11.16",
+    "coveralls": "^3.0.0",
     "istanbul": "^0.4.5",
-    "mocha": "^3.2.0",
+    "mocha": "^4.0.1",
     "mockery": "^2.0.0"
   }
 }

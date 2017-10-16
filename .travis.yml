@@ -5,8 +5,8 @@ branches:
     - master
 
 node_js:
-  - "0.12"
-  - "lts/*"
+  - "lts/argon"
+  - "lts/boron"
   - "node"
 
 notifications:
