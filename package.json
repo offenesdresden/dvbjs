@@ -2,16 +2,16 @@
   "name": "dvbjs",
   "version": "5.0.0",
   "description": "query Dresden's public transport system for current bus- and tramstop data",
-  "main": "js/lib/index.js",
-  "typings": "js/lib/index.d.ts",
+  "main": "dist/index.js",
+  "typings": "dist/index.d.ts",
   "scripts": {
-    "build": "tsc -p .",
+    "build": "yarn lint && tsc -p .",
     "clean": "rimraf coverage lib",
-    "test": "npm run build && NODE_ENV=test mocha js/test ts/test",
-    "test-live": "npm run build && NODE_ENV=test_live mocha js/test ts/test",
-    "update-mocks": "npm run build && NODE_ENV=test_update mocha js/test ts/test",
-    "coverage": "npm run build && NODE_ENV=test node node_modules/.bin/istanbul cover _mocha -- -R spec js/test ts/test",
-    "coveralls": "cat ./coverage/lcov.info | node node_modules/.bin/coveralls",
+    "test": "cross-env NODE_ENV=test mocha",
+    "test-live": "cross-env NODE_ENV=test_live mocha",
+    "update-mocks": "cross-env NODE_ENV=test_update mocha js/test ts/test",
+    "coverage": "cross-env TS_NODE_FILES=true nyc mocha",
+    "coveralls": "nyc report --reporter=text-lcov | coveralls",
     "lint": "tslint {src,test}/**/*.ts"
   },
   "repository": {
@@ -58,32 +58,42 @@
   },
   "homepage": "https://github.com/kiliankoe/dvbjs",
   "dependencies": {
-    "bluebird": "^3.5.0",
-    "fs-extra-promise": "^1.0.1",
-    "proj4": "^2.4.4",
-    "request": "^2.82.0",
-    "request-promise": "^4.2.2"
+    "axios": "^0.18.0",
+    "proj4": "^2.4.4"
   },
   "devDependencies": {
-    "@types/bluebird": "^3.5.12",
-    "@types/chai": "^4.0.4",
+    "@types/chai": "^4.1.4",
     "@types/chai-as-promised": "^7.1.0",
-    "@types/fs-extra-promise": "^1.0.2",
-    "@types/mocha": "^2.2.43",
+    "@types/fs-extra-promise": "^1.0.7",
+    "@types/mocha": "^5.2.5",
     "@types/mockery": "^1.4.29",
-    "@types/node": "^8.0.31",
+    "@types/node": "^10.5.3",
     "@types/proj4": "^2.3.4",
-    "@types/request": "^2.0.3",
-    "@types/request-promise": "^4.1.38",
     "chai": "^4.1.2",
     "chai-as-promised": "^7.1.1",
-    "coveralls": "^2.13.1",
-    "istanbul": "^0.4.5",
-    "mocha": "^3.5.3",
+    "coveralls": "^3.0.2",
+    "cross-env": "^5.2.0",
+    "fs-extra-promise": "^1.0.1",
+    "mocha": "^5.2.0",
     "mockery": "^2.1.0",
+    "nyc": "^12.0.2",
     "rimraf": "^2.6.2",
-    "tslint": "^5.7.0",
-    "tslint-config-airbnb": "^5.3.0",
-    "typescript": "^2.5.3"
+    "ts-node": "^7.0.0",
+    "tslint": "^5.11.0",
+    "typescript": "^2.9.2"
+  },
+  "nyc": {
+    "extension": [
+      ".ts"
+    ],
+    "include": [
+      "src"
+    ],
+    "reporter": [
+      "text",
+      "html"
+    ],
+    "all": true,
+    "cache": false
   }
 }

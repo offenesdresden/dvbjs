@@ -1,0 +1,105 @@
+{
+  "Name": "Postplatz",
+  "Status": {
+    "Code": "Ok"
+  },
+  "Place": "Dresden",
+  "ExpirationTime": "/Date(1510331485778+0100)/",
+  "Departures": [
+    {
+      "Id": "70753871",
+      "LineName": "4",
+      "Direction": "Radebeul West",
+      "Platform": {
+        "Name": "2",
+        "Type": "Platform"
+      },
+      "Mot": "Tram",
+      "RealTime": "/Date(1510331463000+0100)/",
+      "ScheduledTime": "/Date(1510331160000+0100)/",
+      "State": "Delayed",
+      "RouteChanges": [
+        "510972",
+        "510690"
+      ],
+      "Diva": {
+        "Number": "11004",
+        "Network": "voe"
+      }
+    },
+    {
+      "Id": "70755678",
+      "LineName": "11",
+      "Direction": "Bühlau",
+      "Platform": {
+        "Name": "4",
+        "Type": "Platform"
+      },
+      "Mot": "Tram",
+      "RealTime": "/Date(1510331580000+0100)/",
+      "ScheduledTime": "/Date(1510331580000+0100)/",
+      "State": "InTime",
+      "RouteChanges": [
+        "510690"
+      ],
+      "Diva": {
+        "Number": "11011",
+        "Network": "voe"
+      }
+    },
+    {
+      "Id": "70760601",
+      "LineName": "EV12",
+      "Direction": "12 Rosenstraße",
+      "Platform": {
+        "Name": "4",
+        "Type": "Platform"
+      },
+      "Mot": "CityBus",
+      "RealTime": "/Date(1510331580000+0100)/",
+      "ScheduledTime": "/Date(1510331580000+0100)/",
+      "State": "InTime"
+    },
+    {
+      "Id": "70753416",
+      "LineName": "2",
+      "Direction": "Gorbitz",
+      "Platform": {
+        "Name": "2",
+        "Type": "Platform"
+      },
+      "Mot": "Tram",
+      "RealTime": "/Date(1510331584000+0100)/",
+      "ScheduledTime": "/Date(1510331520000+0100)/",
+      "State": "Delayed",
+      "RouteChanges": [
+        "511363"
+      ],
+      "Diva": {
+        "Number": "11002",
+        "Network": "voe"
+      }
+    },
+    {
+      "Id": "70754075",
+      "LineName": "4",
+      "Direction": "Striesen",
+      "Platform": {
+        "Name": "1",
+        "Type": "Platform"
+      },
+      "Mot": "Tram",
+      "RealTime": "/Date(1510331604000+0100)/",
+      "ScheduledTime": "/Date(1510331340000+0100)/",
+      "State": "Delayed",
+      "RouteChanges": [
+        "510972",
+        "510690"
+      ],
+      "Diva": {
+        "Number": "11004",
+        "Network": "voe"
+      }
+    }
+  ]
+}

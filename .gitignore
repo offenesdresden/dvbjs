@@ -1,4 +1,7 @@
 node_modules/
 coverage/
+.nyc_output/
 .idea/
+dist/
 npm-debug.log
+yarn-error.log
