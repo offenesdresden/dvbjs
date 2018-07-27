@@ -2,4 +2,6 @@
 --timeout 5000
 --slow 700
 --require ts-node/register
-test/**/*.ts
+--require source-map-support/register
+--recursive
+src/**/*.spec.ts

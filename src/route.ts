@@ -8,19 +8,19 @@ function extractStop(stop: any): IStop {
     city: stop.Place,
     type: stop.Type,
     platform: utils.parsePlatform(stop.Platform),
-    coords: utils.gk4toWgs84(stop.Latitude, stop.Longitude),
+    coords: utils.gk4toWgs84(stop.Latitude, stop.Longitude) || [0, 0],
     arrival: utils.parseDate(stop.ArrivalTime),
     departure: utils.parseDate(stop.DepartureTime),
   };
 }
 
 function extractNode(node: any, mapData: any): INode {
-  const stops: IStop[] = node.RegularStops ? node.RegularStops.map(extractStop) : undefined;
+  const stops: IStop[] = node.RegularStops ? node.RegularStops.map(extractStop) : [];
 
-  let departure: IStopLocation;
-  let arrival: IStopLocation;
+  let departure: IStopLocation | undefined;
+  let arrival: IStopLocation | undefined;
 
-  if (stops) {
+  if (stops && stops.length > 1) {
     const firstStop = stops[0];
     const lastStop = stops[stops.length - 1];
 
@@ -92,8 +92,8 @@ export async function route(originID: string, destinationID: string,
       if (response.data.Routes) {
         const trips = response.data.Routes.map(extractTrip);
 
-        let origin: ILocation;
-        let destination: ILocation;
+        let origin: ILocation | undefined;
+        let destination: ILocation | undefined;
 
         if (trips && trips.length > 0) {
           const firstTrip = trips[0];

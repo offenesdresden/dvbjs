@@ -32,16 +32,19 @@ async function pointFinder(name: string, stopsOnly: boolean, assignedStops: bool
 
           const city = poi[2] === "" ? "Dresden" : poi[2];
           const idAndType = utils.parsePoiID(poi[0]);
+          const coords = utils.gk4toWgs84(poi[4], poi[5]);
 
-          const point: IPoint = {
-            city,
-            name: poi[3].replace(/'/g, ""),
-            id: idAndType.id,
-            coords: utils.gk4toWgs84(poi[4], poi[5]),
-            type: idAndType.type,
-          };
-          return point;
-        }).filter((p: IPoint) => p.name);
+          if (coords) {
+            const point: IPoint = {
+              city,
+              coords,
+              name: poi[3].replace(/'/g, ""),
+              id: idAndType.id,
+              type: idAndType.type,
+            };
+            return point;
+          }
+        }).filter((p: IPoint) => p && p.name);
       }
 
       return [];
@@ -64,11 +67,13 @@ export async function findAddress(lat: number, lng: number) {
   return pointFinder(`coord:${gk4[0]}:${gk4[1]}`, false, true)
     .then((points) => {
       if (points.length === 0) {
-        return null;
+        return undefined;
       }
 
-      const address: IAddress = points[0];
-      address.stops = points.slice(1);
+      const address: IAddress = {
+        ...points[0],
+        stops: points.slice(1) || [],
+      };
 
       return address;
     });

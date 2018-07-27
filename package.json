@@ -7,12 +7,10 @@
   "scripts": {
     "build": "yarn lint && tsc -p .",
     "clean": "rimraf coverage lib",
-    "test": "cross-env NODE_ENV=test mocha",
-    "test-live": "cross-env NODE_ENV=test_live mocha",
-    "update-mocks": "cross-env NODE_ENV=test_update mocha js/test ts/test",
-    "coverage": "cross-env TS_NODE_FILES=true nyc mocha",
+    "test": "mocha",
+    "coverage": "nyc mocha --opts mocha.opts",
     "coveralls": "nyc report --reporter=text-lcov | coveralls",
-    "lint": "tslint {src,test}/**/*.ts"
+    "lint": "tslint src/**/*.ts --fix"
   },
   "repository": {
     "type": "git",
@@ -72,12 +70,12 @@
     "chai": "^4.1.2",
     "chai-as-promised": "^7.1.1",
     "coveralls": "^3.0.2",
-    "cross-env": "^5.2.0",
     "fs-extra-promise": "^1.0.1",
     "mocha": "^5.2.0",
     "mockery": "^2.1.0",
     "nyc": "^12.0.2",
     "rimraf": "^2.6.2",
+    "source-map-support": "^0.5.6",
     "ts-node": "^7.0.0",
     "tslint": "^5.11.0",
     "typescript": "^2.9.2"
@@ -86,14 +84,16 @@
     "extension": [
       ".ts"
     ],
-    "include": [
-      "src"
+    "exclude": [
+      "**/*.spec.ts",
+      "**/*.d.ts",
+      "coverage",
+      "dist"
     ],
     "reporter": [
       "text",
       "html"
     ],
-    "all": true,
-    "cache": false
+    "all": true
   }
 }

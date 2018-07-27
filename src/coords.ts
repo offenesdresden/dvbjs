@@ -1,9 +1,8 @@
 import axios, { AxiosRequestConfig } from "axios";
-import { coord } from "./interfaces";
 import * as utils from "./utils";
 
 /** Patch section titled API of README.md file in given directory. */
-export async function coords(id: string) {
+export function coords(id: string): Promise<number[] | undefined> {
 
   const options: AxiosRequestConfig = {
     url: "https://www.dvb.de/apps/map/coordinates",
@@ -15,8 +14,8 @@ export async function coords(id: string) {
 
   return axios(options)
     .then((response) => {
-      if (response.data.length < 3) {
-        return null;
+      if (!response.data) {
+        return undefined;
       }
 
       const coordinates = response.data.split("|");

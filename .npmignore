@@ -1,0 +1,10 @@
+mocha.opts
+tsconfig.json
+tslint.json
+
+*.spec.ts
+*.spec.d.ts
+*.spec.js
+*.spec.js.map
+
+src/

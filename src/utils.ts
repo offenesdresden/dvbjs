@@ -19,16 +19,16 @@ export function wgs84toGk4(lat: number, lng: number): coord {
   return proj4("GK4").forward([Number(lng), Number(lat)]).map(Math.round);
 }
 
-export function gk4toWgs84(lat: string, lng: string): coord {
+export function gk4toWgs84(lat: string, lng: string): coord | undefined {
   const latInt = parseInt(lat, 10);
   const lngInt = parseInt(lng, 10);
 
   if (latInt === 0 && lngInt === 0) {
-    return [undefined, undefined];
+    return undefined;
   }
 
   if (isNaN(latInt) || isNaN(lngInt)) {
-    return [undefined, undefined];
+    return undefined;
   }
 
   return proj4("GK4").inverse([lngInt, latInt]).reverse();
@@ -43,7 +43,10 @@ export function convertCoordinates(s: string): coord[] {
     let i = 1;
     const len = gk4Chords.length - 1;
     while (i < len) {
-      coords.push(gk4toWgs84(gk4Chords[i], gk4Chords[i + 1]));
+      const coordinate = gk4toWgs84(gk4Chords[i], gk4Chords[i + 1]);
+      if (coordinate) {
+        coords.push(coordinate);
+      }
       i += 2;
     }
   }
@@ -62,7 +65,7 @@ export function checkStatus(data: any): void {
   }
 }
 
-export function constructError(name: string, message = ""): Error {
+export function constructError(name?: string, message = ""): Error {
   const error = new Error(message);
   if (name) {
     error.name = name;
@@ -78,14 +81,15 @@ export function convertError(err: any): never {
 }
 
 export function parseDate(d: string): Date {
-  return new Date(parseInt(d.match(/\d+/)[0], 10));
+  const matches = d.match(/\d+/);
+  return new Date(parseInt(matches![0], 10));
 }
 
 export function parseDiva(d: any): IDiva | undefined {
   return d && d.Number ? { number: parseInt(d.Number, 10), network: d.Network } : undefined;
 }
 
-export function parsePlatform(p: any): IPlatform | undefined {
+export function parsePlatform(p?: any): IPlatform | undefined {
   return p ? { name: p.Name, type: p.Type } : undefined;
 }
 
@@ -96,7 +100,7 @@ export function parsePin(dataAsString: string, pinType: PIN_TYPE): IPin {
   if (pinType === PIN_TYPE.platform) {
     return {
       coords,
-      id: undefined,
+      id: "//TODO",
       name: data[3],
       platform_nr: data[6],
       type: pinType,

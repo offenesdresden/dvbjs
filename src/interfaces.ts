@@ -1,33 +1,19 @@
-/** Utility function to create a K:V from a list of strings */
-function strEnum<T extends string>(o: T[]): {[K in T]: K} {
-  return o.reduce(
-    (res, key) => {
-      res[key] = key;
-      return res;
-    },
-    Object.create(null));
+export enum POI_TYPE {
+  Address = "Address",
+  Coords = "Coords",
+  POI = "POI",
+  Stop = "Stop",
 }
 
-export const POI_TYPE = strEnum([
-  "Address",
-  "Coords",
-  "POI",
-  "Stop",
-]);
-
-export type POI_TYPE = keyof typeof POI_TYPE;
-
-export const PIN_TYPE = strEnum([
-  "stop",
-  "platform",
-  "poi",
-  "rentabike",
-  "ticketmachine",
-  "carsharing",
-  "parkandride",
-]);
-
-export type PIN_TYPE = keyof typeof PIN_TYPE;
+export enum PIN_TYPE {
+  stop = "stop",
+  platform = "platform",
+  poi = "poi",
+  rentabike = "rentabike",
+  ticketmachine = "ticketmachine",
+  carsharing = "carsharing",
+  parkandride = "parkandride",
+}
 
 export type coord = number[];
 
@@ -45,7 +31,7 @@ export interface IPin {
   id: string;
   type: PIN_TYPE;
   name: string;
-  coords: coord;
+  coords?: coord;
   platform_nr?: string;
   connections?: IConnection[];
 }
@@ -70,13 +56,13 @@ export interface IPoint {
 }
 
 export interface IAddress extends IPoint {
-  stops?: IPoint[];
+  stops: IPoint[];
 }
 
 export interface ILine {
   name: string;
   mode: IMode;
-  diva: IDiva;
+  diva?: IDiva;
   directions: string[];
 }
 
@@ -86,7 +72,7 @@ export interface IMonitor {
   id: string;
   line: string;
   direction: string;
-  platform: IPlatform;
+  platform?: IPlatform;
   arrivalTimeRelative: number;
   scheduledTimeRelative: number;
   delayTime: number;
@@ -103,39 +89,39 @@ export interface ILocation {
 
 export interface IStop extends ILocation {
   type: string;
-  platform: IPlatform;
+  platform?: IPlatform;
   arrival: Date;
   departure: Date;
 }
 
 export interface IStopLocation extends ILocation {
-  platform: IPlatform;
+  platform?: IPlatform;
   time: Date;
   type: string;
 }
 
 export interface INode {
   stops: IStop[];
-  departure: IStopLocation;
-  arrival: IStopLocation;
+  departure?: IStopLocation;
+  arrival?: IStopLocation;
   mode: IMode;
   line: string;
   direction: string;
-  diva: IDiva;
+  diva?: IDiva;
   duration: number;
   path: coord[];
 }
 
 export interface ITrip {
-  departure: IStopLocation;
-  arrival: IStopLocation;
+  departure?: IStopLocation;
+  arrival?: IStopLocation;
   duration: number;
   interchanges: number;
   nodes: INode[];
 }
 
 export interface IRoute {
-  origin: ILocation | undefined;
-  destination: ILocation | undefined;
+  origin?: ILocation;
+  destination?: ILocation;
   trips: ITrip[];
 }

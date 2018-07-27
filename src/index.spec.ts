@@ -1,8 +1,5 @@
 import chai = require("chai");
 import chaiAsPromised from "chai-as-promised";
-import * as fs from "fs-extra-promise";
-import mockery = require("mockery");
-import path = require("path");
 import * as DVB from "../src/index";
 import * as utils from "../src/utils";
 
@@ -102,7 +99,8 @@ describe("dvb.monitor", () => {
     } else {
       assert.isUndefined(transport.diva);
     }
-    assertPlatform(transport.platform);
+    assert.isDefined(transport.platform);
+    assertPlatform(transport.platform!);
   }
 
   describe("dvb.monitor 33000037 (Postplatz)", () => {
@@ -140,8 +138,10 @@ describe("dvb.route", () => {
     mockRequest("route-33000742-33000037.json");
 
     function assertTrip(trip: DVB.ITrip) {
-      assertLocation(trip.departure);
-      assertLocation(trip.arrival);
+      assert.isDefined(trip.departure);
+      assertLocation(trip.departure!);
+      assert.isDefined(trip.arrival);
+      assertLocation(trip.arrival!);
       assert.isNumber(trip.duration);
       assert.isNumber(trip.interchanges);
 
@@ -157,21 +157,26 @@ describe("dvb.route", () => {
       assertMode(node.mode);
 
       if (node.mode.name !== "Footpath" && node.mode.name !== "StayForConnection") {
-        assertDiva(node.diva);
+        assert.isDefined(node.diva);
+        assertDiva(node.diva!);
       } else {
         assert.isUndefined(node.diva);
       }
 
       if (node.mode.name !== "Footpath" || node.line === "Fussweg") {
-        assertStopLocation(node.departure);
-        assertStopLocation(node.arrival);
+        assert.isDefined(node.departure);
+        assertStopLocation(node.departure!);
+        assert.isDefined(node.arrival);
+        assertStopLocation(node.arrival!);
 
         assert.isArray(node.stops);
+        assert.isNotEmpty(node.stops);
         node.stops.forEach(assertStop);
       } else {
         assert.isUndefined(node.departure);
         assert.isUndefined(node.arrival);
-        assert.isUndefined(node.stops);
+        assert.isArray(node.stops);
+        assert.isEmpty(node.stops);
       }
 
       assert.isArray(node.path);
@@ -187,12 +192,12 @@ describe("dvb.route", () => {
       () => dvb.route("33000742", "33000037", new Date(), false)
         .then((data) => {
           assert.isObject(data, "origin");
-          assert.strictEqual(data.origin.name, "Helmholtzstraße");
-          assert.strictEqual(data.origin.city, "Dresden");
+          assert.strictEqual(data.origin!.name, "Helmholtzstraße");
+          assert.strictEqual(data.origin!.city, "Dresden");
 
           assert.property(data, "destination");
-          assert.strictEqual(data.destination.name, "Postplatz");
-          assert.strictEqual(data.destination.city, "Dresden");
+          assert.strictEqual(data.destination!.name, "Postplatz");
+          assert.strictEqual(data.destination!.city, "Dresden");
         }));
 
     it("should return an array of trips",
@@ -333,10 +338,12 @@ describe("dvb.pins", () => {
           data.forEach((elem) => {
             assert.isString(elem.id);
             assert.isString(elem.name);
-            assertCoords(elem.coords);
+            assert.isDefined(elem.coords);
+            assertCoords(elem.coords!);
 
             assert.isNotEmpty(elem.connections);
-            elem.connections.forEach((con) => {
+            assert.isArray(elem.connections);
+            elem.connections!.forEach((con) => {
               assert.isString(con.line);
               assert.isString(con.type);
             });
@@ -353,7 +360,8 @@ describe("dvb.pins", () => {
           assert.notEqual(0, data.length);
           data.forEach((elem) => {
             assert.isString(elem.name);
-            assertCoords(elem.coords);
+            assert.isDefined(elem.coords);
+            assertCoords(elem.coords!);
             assert.isString(elem.platform_nr);
           });
         }));
@@ -369,7 +377,8 @@ describe("dvb.pins", () => {
           data.forEach((elem) => {
             assert.isString(elem.id);
             assert.isString(elem.name);
-            assertCoords(elem.coords);
+            assert.isDefined(elem.coords);
+            assertCoords(elem.coords!);
           });
         }));
   });
@@ -396,16 +405,18 @@ describe("dvb.findAddress", () => {
     it("should resolve into an object with city, address and coords properties",
       () => dvb.findAddress(lat, lng)
         .then((address) => {
-          assert.strictEqual(address.name, "Nöthnitzer Straße 46");
-          assert.strictEqual(address.city, "Dresden");
-          assert.strictEqual(address.type, dvb.POI_TYPE.Coords);
-          assert.approximately(address.coords[0], lat, 0.001);
-          assert.approximately(address.coords[1], lng, 0.001);
+          assert.isDefined(address);
+          assert.strictEqual(address!.name, "Nöthnitzer Straße 46");
+          assert.strictEqual(address!.city, "Dresden");
+          assert.strictEqual(address!.type, dvb.POI_TYPE.Coords);
+          assert.approximately(address!.coords[0], lat, 0.001);
+          assert.approximately(address!.coords[1], lng, 0.001);
         }));
 
     it("should contain nearby stops", () => dvb.findAddress(lat, lng)
       .then((address) => {
-        assertAddress(address);
+        assert.isDefined(address);
+        assertAddress(address!);
       }));
   });
 
@@ -424,16 +435,17 @@ describe("dvb.coords", () => {
 
     it("should resolve into a coordinate array [lat, lng]", () => dvb.coords("33000755")
       .then((data) => {
-        assertCoords(data);
+        assert.isDefined(data);
+        assertCoords(data!);
       }));
   });
 
   describe('dvb.coords "123"', () => {
     mockRequest("coords-123.json");
 
-    it("should return null", () => dvb.coords("123")
+    it("should return undefined", () => dvb.coords("123")
       .then((data) => {
-        assert.isNull(data);
+        assert.isUndefined(data);
       }));
   });
 });
@@ -447,7 +459,8 @@ describe("dvb.coords for id from dvb.pins", () => {
         assert.isNotEmpty(pins);
         pins.forEach((elem) => {
           assert.isString(elem.id);
-          assertCoords(elem.coords);
+          assert.isDefined(elem.coords);
+          assertCoords(elem.coords!);
         });
 
         return dvb.coords(pins[0].id)
@@ -471,7 +484,8 @@ describe("dvb.lines", () => {
         data.forEach((line) => {
           assert.isString(line.name);
           assertMode(line.mode);
-          assertDiva(line.diva);
+          assert.isDefined(line.diva);
+          assertDiva(line.diva!);
           assert.isNotEmpty(line.directions);
           line.directions.forEach((direction) => {
             assert.isString(direction);

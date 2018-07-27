@@ -1,5 +1,4 @@
 import axios, { AxiosRequestConfig } from "axios";
-import bluebird from "bluebird";
 import { IMonitor } from "./interfaces";
 import * as utils from "./utils";
 
