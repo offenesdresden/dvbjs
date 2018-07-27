@@ -1,9 +1,5 @@
 language: node_js
 
-branches:
-  only:
-    - master
-
 node_js:
   - "lts/*"
   - "node"
