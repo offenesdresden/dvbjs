@@ -78,7 +78,7 @@ export interface IMonitor {
   delayTime: number;
   state: string;
   mode: IMode;
-  diva: IDiva;
+  diva?: IDiva;
 }
 
 export interface ILocation {

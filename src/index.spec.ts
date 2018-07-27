@@ -94,10 +94,15 @@ describe("dvb.monitor", () => {
 
     assertMode(transport.mode);
 
-    if (transport.line[0] !== "E") {
-      assertDiva(transport.diva);
+    if (transport.line.startsWith("E")) {
+      assert.isDefined(transport.diva);
+      assertDiva(transport.diva!);
     } else {
-      assert.isUndefined(transport.diva);
+      if (transport.line) {
+        assertDiva(transport.diva!);
+      } else {
+        assert.isUndefined(transport.diva);
+      }
     }
     assert.isDefined(transport.platform);
     assertPlatform(transport.platform!);
