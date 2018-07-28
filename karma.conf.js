@@ -16,6 +16,9 @@ module.exports = function (config) {
                 sourceMap: true,
             },
             tsconfig: "tsconfig.json",
+            coverageOptions: {
+                exclude: /(\.(d|spec|test)\.ts|test\/helper.ts)$/i
+            },
             reports: {
                 text: "",
                 lcovonly: {
