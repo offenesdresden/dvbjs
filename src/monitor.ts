@@ -53,5 +53,5 @@ export async function monitor(stopID: string, offset = 0, amount = 0): Promise<I
 }
 
 function dateDifference(start: Date, end: Date): number {
-  return Math.round((end.getDate() - start.getDate()) / 1000 / 60);
+  return Math.round((end.getTime() - start.getTime()) / 1000 / 60);
 }
