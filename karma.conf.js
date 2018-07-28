@@ -12,15 +12,16 @@ module.exports = function (config) {
         karmaTypescriptConfig: {
             compilerOptions: {
                 target: "ES5",
-                lib: ["es2015", "dom"]
+                lib: ["es2015", "dom"],
+                sourceMap: true,
             },
             tsconfig: "tsconfig.json",
             reports: {
-                "text": "",
-                "lcovonly": {
-                    "directory": "coverage",
-                    "filename": "lcov.info",
-                    "subdirectory": "/"
+                text: "",
+                lcovonly: {
+                    directory: "coverage",
+                    filename: "lcov.info",
+                    subdirectory: "/"
                 },
             }
         },

@@ -4,6 +4,12 @@
   "description": "query Dresden's public transport system for current bus- and tram stop data",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
+  "files": [
+    "./dist/*.js",
+    "./dist/*.d.ts",
+    "./LICENSE",
+    "./README.md"
+  ],
   "scripts": {
     "build": "yarn lint && tsc -p .",
     "clean": "rimraf coverage lib",
@@ -92,10 +98,11 @@
     ],
     "exclude": [
       "**/*.js",
-      "**/*.spec.ts",
       "**/*.d.ts",
       "coverage",
-      "dist"
+      "dist",
+      "src/test/**",
+      "examples/**"
     ],
     "reporter": [
       "text",
