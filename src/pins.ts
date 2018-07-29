@@ -2,21 +2,29 @@ import axios, { AxiosRequestConfig } from "axios";
 import { IPin, PIN_TYPE } from "./interfaces";
 import * as utils from "./utils";
 
-export async function pins(swlat: number, swlng: number, nelat: number, nelng: number,
-  pinType: PIN_TYPE): Promise<IPin[]> {
+/**
+ * Search for different kinds of POIs inside a given bounding box.
+ * @param swlng the longitude of the south west coordinate
+ * @param swlat the latitude of the south west coordinate
+ * @param nelng the longitude of the north east coordinate
+ * @param nelat the latitude of the north east coordinate
+ * @param pinTypes array of pin types
+ */
+export function pins(swlng: number, swlat: number, nelng: number, nelat: number,
+  pinTypes: PIN_TYPE[] = [PIN_TYPE.stop]): Promise<IPin[]> {
 
-  const sw = utils.wgs84toGk4(swlat, swlng);
-  const ne = utils.wgs84toGk4(nelat, nelng);
+  const sw = utils.WGS84toGK4(swlng, swlat);
+  const ne = utils.WGS84toGK4(nelng, nelat);
 
+  let url = "https://www.dvb.de/apps/map/pins?showLines=true";
+  pinTypes.forEach((type) => url += `&pintypes=${type}`);
   const options: AxiosRequestConfig = {
-    url: "https://www.dvb.de/apps/map/pins",
+    url,
     params: {
-      showLines: "true",
-      swlat: sw[1],
       swlng: sw[0],
-      nelat: ne[1],
+      swlat: sw[1],
       nelng: ne[0],
-      pintypes: pinType,
+      nelat: ne[1],
     },
     responseType: "text",
   };
@@ -25,5 +33,5 @@ export async function pins(swlat: number, swlng: number, nelat: number, nelng: n
     .then((response) => {
       return response.data || [];
     })
-    .then((elements) => elements.map((elem: string) => utils.parsePin(elem, pinType)));
+    .then((elements) => elements.map((elem: string) => utils.parsePin(elem)));
 }

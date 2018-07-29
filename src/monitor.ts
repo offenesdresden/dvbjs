@@ -2,7 +2,13 @@ import axios, { AxiosRequestConfig } from "axios";
 import { IMonitor } from "./interfaces";
 import * as utils from "./utils";
 
-export async function monitor(stopID: string, offset = 0, amount = 0): Promise<IMonitor[]> {
+/**
+ * Monitor a single stop to see every bus or tram leaving this stop after the specified time offset.
+ * @param stopID ID of the stop
+ * @param offset how many minutes in the future, 0 for now
+ * @param amount number of results
+ */
+export function monitor(stopID: string, offset = 0, amount = 0): Promise<IMonitor[]> {
 
   const now = new Date();
   const time = new Date(now.getTime() + (offset * 60 * 1000));

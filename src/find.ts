@@ -2,7 +2,7 @@ import axios, { AxiosRequestConfig } from "axios";
 import { IAddress, IPoint } from "./interfaces";
 import * as utils from "./utils";
 
-async function pointFinder(name: string, stopsOnly: boolean, assignedStops: boolean): Promise<IPoint[]> {
+function pointFinder(name: string, stopsOnly: boolean, assignedStops: boolean): Promise<IPoint[]> {
   if (typeof name !== "string") {
     throw utils.constructError("ValidationError", "query has to be a string");
   }
@@ -32,7 +32,7 @@ async function pointFinder(name: string, stopsOnly: boolean, assignedStops: bool
 
           const city = poi[2] === "" ? "Dresden" : poi[2];
           const idAndType = utils.parsePoiID(poi[0]);
-          const coords = utils.gk4toWgs84(poi[4], poi[5]);
+          const coords = utils.GK4toWGS84(poi[5], poi[4]);
 
           if (coords) {
             const point: IPoint = {
@@ -52,17 +52,33 @@ async function pointFinder(name: string, stopsOnly: boolean, assignedStops: bool
     .catch(utils.convertError);
 }
 
-export async function findStop(searchString: string) {
+/**
+ * Search for a single stop in the network of the DVB.
+ * @param searchString the name of the stop
+ * @returns an array of all possible hits including their GPS coordinates.
+ */
+export function findStop(searchString: string): Promise<IPoint[]> {
   return pointFinder(searchString, true, false);
 }
 
-export async function findPOI(searchString: string) {
+/**
+ * Search for POI in the network of the DVB.
+ * @param searchString the name of the stop
+ * @returns an array of all possible hits including their GPS coordinates.
+ */
+export function findPOI(searchString: string): Promise<IPoint[]> {
   return pointFinder(searchString, false, false);
 }
 
-export async function findAddress(lat: number, lng: number) {
+/**
+ * Lookup address and nearby stops by coordinate.
+ * @param lng longitude of the coordinate
+ * @param lat latitude of the coordinate
+ * @returns the adress and neaby stops
+ */
+export function findAddress(lng: number, lat: number): Promise<IAddress | undefined> {
 
-  const gk4 = utils.wgs84toGk4(lat, lng);
+  const gk4 = utils.WGS84toGK4(lng, lat);
 
   return pointFinder(`coord:${gk4[0]}:${gk4[1]}`, false, true)
     .then((points) => {

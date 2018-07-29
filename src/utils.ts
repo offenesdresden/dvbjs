@@ -1,25 +1,19 @@
 import proj4 from "proj4";
 import {
-  coord,
-  IConnection,
-  IDiva,
-  IMode,
-  IPin,
-  IPlatform,
-  PIN_TYPE,
-  POI_TYPE,
+  coord, IConnection, IDiva, IMode, INode, IPin, IPlatform,
+  IStop, IStopLocation, ITrip, PIN_TYPE, POI_TYPE,
 } from "./interfaces";
 
 proj4.defs(
-  "GK4",
+  "EPSG:31468",
   "+proj=tmerc +lat_0=0 +lon_0=12 +k=1 +x_0=4500000 +y_0=0 +ellps=bessel +datum=potsdam +units=m +no_defs",
 );
 
-export function wgs84toGk4(lat: number, lng: number): coord {
-  return proj4("GK4").forward([Number(lng), Number(lat)]).map(Math.round);
+export function WGS84toGK4(lng: number, lat: number): coord {
+  return proj4("EPSG:31468").forward([lng, lat]).map(Math.round);
 }
 
-export function gk4toWgs84(lat: string, lng: string): coord | undefined {
+export function GK4toWGS84(lng: string, lat: string): coord | undefined {
   const latInt = parseInt(lat, 10);
   const lngInt = parseInt(lng, 10);
 
@@ -31,7 +25,7 @@ export function gk4toWgs84(lat: string, lng: string): coord | undefined {
     return undefined;
   }
 
-  return proj4("GK4").inverse([lngInt, latInt]).reverse();
+  return proj4("EPSG:31468").inverse([lngInt, latInt]);
 }
 
 export function convertCoordinates(s: string): coord[] {
@@ -43,7 +37,7 @@ export function convertCoordinates(s: string): coord[] {
     let i = 1;
     const len = gk4Chords.length - 1;
     while (i < len) {
-      const coordinate = gk4toWgs84(gk4Chords[i], gk4Chords[i + 1]);
+      const coordinate = GK4toWGS84(gk4Chords[i + 1], gk4Chords[i]);
       if (coordinate) {
         coords.push(coordinate);
       }
@@ -93,27 +87,51 @@ export function parsePlatform(p?: any): IPlatform | undefined {
   return p ? { name: p.Name, type: p.Type } : undefined;
 }
 
-export function parsePin(dataAsString: string, pinType: PIN_TYPE): IPin {
-  const data = dataAsString.split("|");
-  const coords = gk4toWgs84(data[4], data[5]);
-
-  if (pinType === PIN_TYPE.platform) {
-    return {
-      coords,
-      id: "//TODO",
-      name: data[3],
-      platform_nr: data[6],
-      type: pinType,
-    };
+function pinType(str: string): PIN_TYPE {
+  switch (str) {
+    case "": return PIN_TYPE.stop;
+    case "p": return PIN_TYPE.poi;
+    case "pf": return PIN_TYPE.platform;
+    case "pr": return PIN_TYPE.parkandride;
+    case "r": return PIN_TYPE.rentabike;
+    case "c": return PIN_TYPE.carsharing;
+    case "t": return PIN_TYPE.ticketmachine;
   }
-  if (pinType === PIN_TYPE.poi || pinType === PIN_TYPE.rentabike
-    || pinType === PIN_TYPE.ticketmachine || pinType === PIN_TYPE.carsharing
-    || pinType === PIN_TYPE.parkandride) {
+  return PIN_TYPE.unknown;
+}
+
+export function parsePin(dataAsString: string): IPin {
+  const data = dataAsString.split("|");
+  const coords = GK4toWGS84(data[5], data[4]) || [];
+
+  const type = pinType(data[1]);
+
+  if (type === PIN_TYPE.platform) {
     return {
       coords,
       id: data[0],
       name: data[3],
-      type: pinType,
+      platform_nr: data[6],
+      type,
+    };
+  }
+  if (type === PIN_TYPE.poi || type === PIN_TYPE.rentabike || type === PIN_TYPE.ticketmachine
+    || type === PIN_TYPE.carsharing || type === PIN_TYPE.unknown) {
+    return {
+      coords,
+      id: data[0],
+      name: data[3],
+      type,
+    };
+  }
+
+  if (type === PIN_TYPE.parkandride) {
+    return {
+      coords,
+      id: data[0],
+      name: data[3],
+      info: data[6],
+      type,
     };
   }
 
@@ -123,7 +141,7 @@ export function parsePin(dataAsString: string, pinType: PIN_TYPE): IPin {
     id: data[0],
     name: data[3],
     connections: parseConnections(data[7]),
-    type: pinType,
+    type,
   };
 }
 
@@ -133,8 +151,9 @@ export function parseMode(name: string): IMode {
       return MODES.Tram;
     case "bus":
     case "citybus":
+      return MODES.CityBus;
     case "intercitybus":
-      return MODES.Bus;
+      return MODES.IntercityBus;
     case "suburbanrailway":
       return MODES.SuburbanRailway;
     case "train":
@@ -201,18 +220,101 @@ export function parsePoiID(id: string) {
   };
 }
 
+function connectionType(str: string): IMode | undefined {
+  switch (str) {
+    case "1": return MODES.Tram;
+    case "2": return MODES.CityBus;
+    case "3": return MODES.IntercityBus;
+    case "4": return MODES.Train;
+    case "5": return MODES.SuburbanRailway;
+    case "6": return MODES.HailedSharedTaxi;
+    case "7": return MODES.Ferry;
+    case "8": return MODES.Cableway;
+  }
+}
+
 function parseConnections(data: string): IConnection[] {
   let connections: IConnection[] = [];
 
   data.split("#").forEach((types) => {
+    if (!types) {
+      return [];
+    }
     const typesArray = types.split(":");
+    const mode = connectionType(typesArray[0]) as IMode;
     connections = connections.concat(typesArray[1].split("~").map((line) => ({
       line,
-      type: typesArray[0],
+      mode,
     })));
   });
 
   return connections;
+}
+
+function extractStop(stop: any): IStop {
+  return {
+    name: stop.Name.trim(),
+    city: stop.Place,
+    type: stop.Type,
+    platform: parsePlatform(stop.Platform),
+    coords: GK4toWGS84(stop.Longitude, stop.Latitude) || [0, 0],
+    arrival: parseDate(stop.ArrivalTime),
+    departure: parseDate(stop.DepartureTime),
+  };
+}
+
+function extractNode(node: any, mapData: any): INode {
+  const stops: IStop[] = node.RegularStops ? node.RegularStops.map(extractStop) : [];
+
+  let departure: IStopLocation | undefined;
+  let arrival: IStopLocation | undefined;
+
+  if (stops && stops.length > 1) {
+    const firstStop = stops[0];
+    const lastStop = stops[stops.length - 1];
+
+    departure = {
+      name: firstStop.name,
+      city: firstStop.city,
+      platform: firstStop.platform,
+      time: firstStop.departure,
+      coords: firstStop.coords,
+      type: firstStop.type,
+    };
+
+    arrival = {
+      name: lastStop.name,
+      city: lastStop.city,
+      platform: lastStop.platform,
+      time: lastStop.arrival,
+      coords: lastStop.coords,
+      type: lastStop.type,
+    };
+  }
+
+  return {
+    stops,
+    departure,
+    arrival,
+    mode: parseMode(node.Mot.Type),
+    line: node.Mot.Name ? node.Mot.Name : "",
+    direction: node.Mot.Direction ? node.Mot.Direction.trim() : "",
+    diva: parseDiva(node.Mot.Diva),
+    duration: 1,
+    path: convertCoordinates(mapData[node.MapDataIndex]),
+  };
+}
+
+export function extractTrip(trip: any): ITrip {
+  const nodes: INode[] = trip.PartialRoutes.map((node: any) => extractNode(node, trip.MapData));
+
+  return {
+    nodes,
+    departure: nodes[0].departure,
+    arrival: nodes[nodes.length - 1].arrival,
+    duration: 1,
+    interchanges: trip.Interchanges,
+  };
 }
 
 export const MODES = {
@@ -221,9 +323,14 @@ export const MODES = {
     name: "Tram",
     icon_url: "https://www.dvb.de/assets/img/trans-icon/transport-tram.svg",
   },
-  Bus: {
+  CityBus: {
     title: "Bus",
-    name: "Bus",
+    name: "CityBus",
+    icon_url: "https://www.dvb.de/assets/img/trans-icon/transport-bus.svg",
+  },
+  IntercityBus: {
+    title: "Regio-Bus",
+    name: "IntercityBus",
     icon_url: "https://www.dvb.de/assets/img/trans-icon/transport-bus.svg",
   },
   SuburbanRailway: {

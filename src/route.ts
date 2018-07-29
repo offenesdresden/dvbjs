@@ -1,74 +1,19 @@
 import axios, { AxiosRequestConfig } from "axios";
-import { ILocation, INode, IRoute, IStop, IStopLocation, ITrip } from "./interfaces";
+import { ILocation, IRoute } from "./interfaces";
 import * as utils from "./utils";
 
-function extractStop(stop: any): IStop {
-  return {
-    name: stop.Name.trim(),
-    city: stop.Place,
-    type: stop.Type,
-    platform: utils.parsePlatform(stop.Platform),
-    coords: utils.gk4toWgs84(stop.Latitude, stop.Longitude) || [0, 0],
-    arrival: utils.parseDate(stop.ArrivalTime),
-    departure: utils.parseDate(stop.DepartureTime),
-  };
-}
-
-function extractNode(node: any, mapData: any): INode {
-  const stops: IStop[] = node.RegularStops ? node.RegularStops.map(extractStop) : [];
-
-  let departure: IStopLocation | undefined;
-  let arrival: IStopLocation | undefined;
-
-  if (stops && stops.length > 1) {
-    const firstStop = stops[0];
-    const lastStop = stops[stops.length - 1];
-
-    departure = {
-      name: firstStop.name,
-      city: firstStop.city,
-      platform: firstStop.platform,
-      time: firstStop.departure,
-      coords: firstStop.coords,
-      type: firstStop.type,
-    };
-
-    arrival = {
-      name: lastStop.name,
-      city: lastStop.city,
-      platform: lastStop.platform,
-      time: lastStop.arrival,
-      coords: lastStop.coords,
-      type: lastStop.type,
-    };
-  }
-
-  return {
-    stops,
-    departure,
-    arrival,
-    mode: utils.parseMode(node.Mot.Type),
-    line: node.Mot.Name ? node.Mot.Name : "",
-    direction: node.Mot.Direction ? node.Mot.Direction.trim() : "",
-    diva: utils.parseDiva(node.Mot.Diva),
-    duration: 1,
-    path: utils.convertCoordinates(mapData[node.MapDataIndex]),
-  };
-}
-
-function extractTrip(trip: any): ITrip {
-  const nodes: INode[] = trip.PartialRoutes.map((node: any) => extractNode(node, trip.MapData));
-
-  return {
-    nodes,
-    departure: nodes[0].departure,
-    arrival: nodes[nodes.length - 1].arrival,
-    duration: 1,
-    interchanges: trip.Interchanges,
-  };
-}
-
-export async function route(originID: string, destinationID: string,
+/**
+ * Query the server for possible routes from one stop to another.
+ * @param originID the id of the origin stop
+ * @param destinationID the id of the destination stop
+ * @param time starting at what time
+ * @param isArrivalTime is time the arrival time
+ * @returns Returns multiple possible trips, the bus-/tramlines to be taken,
+ * the single stops, their arrival and departure times and their GPS coordinates.
+ * The path property of a trip contains an array consisting of all the coordinates
+ * describing the path of this node. This can be useful to draw the route on a map.
+ */
+export function route(originID: string, destinationID: string,
   time = new Date(), isArrivalTime = true): Promise<IRoute> {
 
   const options: AxiosRequestConfig = {
@@ -90,7 +35,7 @@ export async function route(originID: string, destinationID: string,
       utils.checkStatus(response.data);
 
       if (response.data.Routes) {
-        const trips = response.data.Routes.map(extractTrip);
+        const trips = response.data.Routes.map(utils.extractTrip);
 
         let origin: ILocation | undefined;
         let destination: ILocation | undefined;

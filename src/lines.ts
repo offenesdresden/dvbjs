@@ -14,8 +14,11 @@ function parseLine(line: any): ILine {
     directions: line.Directions.map(parseDirection),
   };
 }
-
-export async function lines(stopID: string): Promise<ILine[]> {
+/**
+ * get a list of availible tram/bus lines for a stop.
+ * @param stopID the stop ID
+ */
+export function lines(stopID: string): Promise<ILine[]> {
 
   const options: AxiosRequestConfig = {
     url: "https://webapi.vvo-online.de/stt/lines",

@@ -1,15 +1,15 @@
 import { assert } from "chai";
 import {
-    coord, IAddress, IDiva, ILocation, IMode,
-    IPlatform, IPoint, IStop, IStopLocation, POI_TYPE,
+    coord, IAddress, IConnection, IDiva, ILocation, IMode,
+    IPin, IPlatform, IPoint, IStop, IStopLocation, PIN_TYPE, POI_TYPE,
 } from "../interfaces";
 
 export function assertCoords(coords: coord) {
     assert.isArray(coords);
     assert.lengthOf(coords, 2);
 
-    assert.approximately(coords[0], 51, 1);
-    assert.approximately(coords[1], 13, 2);
+    assert.approximately(coords[0], 13, 2);
+    assert.approximately(coords[1], 51, 1);
 }
 
 export function assertPlatform(platform: IPlatform) {
@@ -97,4 +97,48 @@ export function assertStopLocation(stop: IStopLocation) {
     }
 
     assert.strictEqual(stop.type, POI_TYPE.Stop);
+}
+
+export function assertConnection(con: IConnection) {
+    assert.isObject(con);
+    assert.isString(con.line);
+    assert.isNotEmpty(con.line);
+    assertMode(con.mode);
+}
+
+export function assertPin(pin: IPin, type?: PIN_TYPE) {
+    assert.isObject(pin);
+    assert.isString(pin.type);
+
+    if (type) {
+        assert.strictEqual(pin.type, type);
+    }
+
+    assert.isString(pin.id);
+    assert.isString(pin.name);
+    assertCoords(pin.coords);
+
+    if (pin.type === PIN_TYPE.platform) {
+        assert.isString(pin.platform_nr);
+        assert.isNotEmpty(pin.platform_nr);
+    } else {
+        assert.isUndefined(pin.platform_nr);
+    }
+
+    if (pin.type === PIN_TYPE.stop) {
+        assert.isArray(pin.connections);
+        if (pin.name !== "Ebertplatz") {
+            assert.isNotEmpty(pin.connections);
+        }
+        pin.connections!.forEach(assertConnection);
+    } else {
+        assert.isUndefined(pin.connections);
+    }
+
+    if (pin.type === PIN_TYPE.parkandride) {
+        assert.isString(pin.info);
+        assert.isNotEmpty(pin.info);
+    } else {
+        assert.isUndefined(pin.info);
+    }
 }

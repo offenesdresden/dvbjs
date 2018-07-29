@@ -2,8 +2,8 @@ import chai, { assert } from "chai";
 import chaiAsPromised from "chai-as-promised";
 import * as dvb from "../index";
 import {
-  assertAddress, assertCoords, assertDiva, assertLocation,
-  assertMode, assertPlatform, assertPoint, assertStop, assertStopLocation,
+  assertAddress, assertCoords, assertDiva, assertLocation, assertMode,
+  assertPin, assertPlatform, assertPoint, assertStop, assertStopLocation,
 } from "./helper";
 
 before(() => {
@@ -114,7 +114,7 @@ describe("dvb.route", () => {
         assert.isNotEmpty(node.path);
         node.path.forEach(assertCoords);
       } else {
-        assert.strictEqual(node.path.length, 0);
+        assert.isEmpty(node.path);
       }
     }
 
@@ -235,87 +235,89 @@ describe("dvb.findPOI", () => {
 });
 
 describe("dvb.pins", () => {
-  describe('dvb.pins "51.026578, 13.713899, 51.035565, 13.737974, stop"', () => {
-    it("should resolve into an array",
-      () => dvb.pins(51.026578, 13.713899, 51.035565, 13.737974, dvb.PIN_TYPE.stop)
+  describe('dvb.pins "13.713899, 51.026578, 13.939144, 51.093821, stop"', () => {
+    it("should contain objects with id, name, coords and connections",
+      () => dvb.pins(13.713899, 51.026578, 13.939144, 51.093821, [dvb.PIN_TYPE.stop])
         .then((data) => {
           assert.isNotEmpty(data);
-        }));
-
-    it("should contain objects with id, name, coords and connections",
-      () => dvb.pins(51.026578, 13.713899, 51.035565, 13.737974, dvb.PIN_TYPE.stop)
-        .then((data) => {
-          data.forEach((elem) => {
-            assert.isString(elem.id);
-            assert.isString(elem.name);
-            assert.isDefined(elem.coords);
-            assertCoords(elem.coords!);
-
-            assert.isNotEmpty(elem.connections);
-            assert.isArray(elem.connections);
-            elem.connections!.forEach((con) => {
-              assert.isString(con.line);
-              assert.isString(con.type);
-            });
-          });
+          data.forEach((pin) => assertPin(pin, dvb.PIN_TYPE.stop));
         }));
   });
 
-  describe('dvb.pins "51.026578, 13.713899, 51.035565, 13.737974, platform"', () => {
+  describe('dvb.pins "13.713899, 51.026578, 13.737974, 51.035565, platform"', () => {
     it("should contain objects with name, coords and platform_nr",
-      () => dvb.pins(51.026578, 13.713899, 51.035565, 13.737974, dvb.PIN_TYPE.platform)
+      () => dvb.pins(13.713899, 51.026578, 13.737974, 51.035565, [dvb.PIN_TYPE.platform])
         .then((data) => {
-          assert.notEqual(0, data.length);
-          data.forEach((elem) => {
-            assert.isString(elem.name);
-            assert.isDefined(elem.coords);
-            assertCoords(elem.coords!);
-            assert.isString(elem.platform_nr);
-          });
+          assert.isNotEmpty(data);
+          data.forEach((pin) => assertPin(pin, dvb.PIN_TYPE.platform));
         }));
   });
 
-  describe('dvb.pins "51.026578, 13.713899, 51.035565, 13.737974, POI"', () => {
+  describe('dvb.pins "13.713899, 51.026578, 13.737974, 51.035565, POI"', () => {
     it("should contain objects with name, coords and id",
-      () => dvb.pins(51.026578, 13.713899, 51.035565, 13.737974, dvb.PIN_TYPE.poi)
+      () => dvb.pins(13.713899, 51.026578, 13.737974, 51.035565, [dvb.PIN_TYPE.poi])
         .then((data) => {
-          assert.notEqual(0, data.length);
-          data.forEach((elem) => {
-            assert.isString(elem.id);
-            assert.isString(elem.name);
-            assert.isDefined(elem.coords);
-            assertCoords(elem.coords!);
-          });
+          assert.isNotEmpty(data);
+          data.forEach((pin) => assertPin(pin, dvb.PIN_TYPE.poi));
+        }));
+  });
+
+  describe("multiple pin types", () => {
+    it("should contain ticketmachine and platform",
+      () => dvb.pins(13.713899, 51.026578, 13.737974, 51.035565, [dvb.PIN_TYPE.platform, dvb.PIN_TYPE.ticketmachine])
+        .then((data) => {
+          assert.isNotEmpty(data);
+          data.forEach((pin) => assertPin(pin));
+          const platform = data.filter((pin) => pin.type === dvb.PIN_TYPE.platform);
+          const ticketmachine = data.filter((pin) => pin.type === dvb.PIN_TYPE.ticketmachine);
+          assert.isNotEmpty(platform);
+          assert.isNotEmpty(ticketmachine);
+          assert.strictEqual(platform.length + ticketmachine.length, data.length);
+        }));
+
+    it("should contain poi, ticketmachine and stop",
+      () => dvb.pins(13.713899, 51.026578, 13.737974, 51.035565,
+        [dvb.PIN_TYPE.poi, dvb.PIN_TYPE.ticketmachine, dvb.PIN_TYPE.stop])
+        .then((data) => {
+          assert.isNotEmpty(data);
+          data.forEach((pin) => assertPin(pin));
+          const poi = data.filter((pin) => pin.type === dvb.PIN_TYPE.poi);
+          const ticketmachine = data.filter((pin) => pin.type === dvb.PIN_TYPE.ticketmachine);
+          const stop = data.filter((pin) => pin.type === dvb.PIN_TYPE.stop);
+          assert.isNotEmpty(poi);
+          assert.isNotEmpty(ticketmachine);
+          assert.isNotEmpty(stop);
+          assert.strictEqual(poi.length + ticketmachine.length + stop.length, data.length);
         }));
   });
 
   describe('dvb.pins "0, 0, 0, 0, stop"', () => {
     it("should resolve into an empty array",
-      () => dvb.pins(0, 0, 0, 0, dvb.PIN_TYPE.stop)
+      () => dvb.pins(0, 0, 0, 0)
         .then((data) => {
           assert.isArray(data);
-          assert.lengthOf(data, 0);
+          assert.isEmpty(data);
         }));
   });
 });
 
 describe("dvb.findAddress", () => {
-  describe('dvb.findAddress "51.025451, 13.722943"', () => {
+  describe('dvb.findAddress "13.722943, 51.025451"', () => {
     const lat = 51.025451;
     const lng = 13.722943;
 
     it("should resolve into an object with city, address and coords properties",
-      () => dvb.findAddress(lat, lng)
+      () => dvb.findAddress(lng, lat)
         .then((address) => {
           assert.isDefined(address);
           assert.strictEqual(address!.name, "Nöthnitzer Straße 46");
           assert.strictEqual(address!.city, "Dresden");
           assert.strictEqual(address!.type, dvb.POI_TYPE.Coords);
-          assert.approximately(address!.coords[0], lat, 0.001);
-          assert.approximately(address!.coords[1], lng, 0.001);
+          assert.approximately(address!.coords[0], lng, 0.001);
+          assert.approximately(address!.coords[1], lat, 0.001);
         }));
 
-    it("should contain nearby stops", () => dvb.findAddress(lat, lng)
+    it("should contain nearby stops", () => dvb.findAddress(lng, lat)
       .then((address) => {
         assert.isDefined(address);
         assertAddress(address!);
@@ -331,9 +333,8 @@ describe("dvb.findAddress", () => {
 
 describe("dvb.coords", () => {
   describe('dvb.coords "33000755"', () => {
-    it("should resolve into a coordinate array [lat, lng]", () => dvb.coords("33000755")
+    it("should resolve into a coordinate array [lng, lat]", () => dvb.coords("33000755")
       .then((data) => {
-        assert.isDefined(data);
         assertCoords(data!);
       }));
   });
@@ -348,14 +349,10 @@ describe("dvb.coords", () => {
 
 describe("dvb.coords for id from dvb.pins", () => {
   it("coordinates should be equal for first pin",
-    () => dvb.pins(51.026578, 13.713899, 51.035565, 13.737974, dvb.PIN_TYPE.poi)
+    () => dvb.pins(13.713899, 51.026578, 13.737974, 51.035565, [dvb.PIN_TYPE.poi])
       .then((pins) => {
         assert.isNotEmpty(pins);
-        pins.forEach((elem) => {
-          assert.isString(elem.id);
-          assert.isDefined(elem.coords);
-          assertCoords(elem.coords!);
-        });
+        pins.forEach((pin) => assertPin(pin, dvb.PIN_TYPE.poi));
 
         return dvb.coords(pins[0].id)
           .then((coords) => {

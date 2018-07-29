@@ -13,32 +13,42 @@ export enum PIN_TYPE {
   ticketmachine = "ticketmachine",
   carsharing = "carsharing",
   parkandride = "parkandride",
+  unknown = "unknown",
 }
 
+/**
+ * WGS84 coordinates [lng, lat]
+ */
 export type coord = number[];
 
 export interface IDiva {
   number: number;
-  network: string;
+  network?: string;
 }
 
 export interface IPlatform {
   name: string;
   type: string;
 }
-
+/**
+ * - The id for PIN_TYPE.platform is always an empty string.
+ * - PIN_TYPE.platform conatins platform_nr.
+ * - PIN_TYPE.stop contains connections.
+ * - PIN_TYPE.parkandride contains info.
+ */
 export interface IPin {
   id: string;
   type: PIN_TYPE;
   name: string;
-  coords?: coord;
+  coords: coord;
   platform_nr?: string;
   connections?: IConnection[];
+  info?: string;
 }
 
 export interface IConnection {
   line: string;
-  type: string;
+  mode: IMode;
 }
 
 export interface IMode {
