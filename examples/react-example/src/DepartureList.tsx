@@ -18,6 +18,7 @@ function replaceUmlauts(str: string): string {
     str = str.replace(/Ö/g, 'Oe');
     str = str.replace(/Ü/g, 'Ue');
     str = str.replace(/ß/g, 'ss');
+    str = str.replace(/,/g, '');
     return str;
 }
 
