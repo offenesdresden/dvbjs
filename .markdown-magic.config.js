@@ -1,6 +1,6 @@
-const fs = require('fs')
-const path = require('path')
-const markdownMagic = require('markdown-magic')
+const fs = require("fs")
+const path = require("path")
+const markdownMagic = require("markdown-magic")
 
 const config = {
     transforms: {
@@ -11,10 +11,10 @@ const config = {
                     if (line.startsWith("#"))
                         return `##${line}`;
                     return line;
-                }).join("\n");
+                }).join("\n").replace(/index.md/g, "README.md");
         },
     }
 };
 
-const markdownPath = path.join(__dirname, 'README.md');
+const markdownPath = path.join(__dirname, "README.md");
 markdownMagic(markdownPath, config);
