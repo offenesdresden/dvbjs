@@ -16,303 +16,698 @@ Want something like this for another language, look [no further](https://github.
 Install the module using npm
 
 ```sh
-$ npm install dvbjs
+$ yarn install dvbjs
 ```
 
 and require it in your project
 
 ```js
-var dvb = require('dvbjs');
+import * as dvb from "dvbjs";
 ```
+
+HTTP request are handled by [axios](https://github.com/axios/axios) that supports all modern browsers.
+See [react-example](examples/react-example/README.md) for a browser departure monitor example.
 
 ## API Documentation
+<!-- AUTO-GENERATED-CONTENT:START (RENDERDOCS:path=./docs/api/index.md) -->
+### Table of contents
 
-All dvbjs functions use callbacks and return a Promise:
+* [index.ts][SourceFile-0]
+    * Functions
+        * [coords][FunctionDeclaration-0]
+        * [findAddress][FunctionDeclaration-1]
+        * [findPOI][FunctionDeclaration-2]
+        * [findStop][FunctionDeclaration-3]
+        * [lines][FunctionDeclaration-4]
+        * [monitor][FunctionDeclaration-5]
+        * [pins][FunctionDeclaration-6]
+        * [route][FunctionDeclaration-7]
+    * Interfaces
+        * [IDiva][InterfaceDeclaration-12]
+        * [IPlatform][InterfaceDeclaration-13]
+        * [IPin][InterfaceDeclaration-5]
+        * [IConnection][InterfaceDeclaration-6]
+        * [IMode][InterfaceDeclaration-3]
+        * [IPoint][InterfaceDeclaration-1]
+        * [IAddress][InterfaceDeclaration-0]
+        * [ILine][InterfaceDeclaration-2]
+        * [IMonitor][InterfaceDeclaration-4]
+        * [ILocation][InterfaceDeclaration-11]
+        * [IStop][InterfaceDeclaration-10]
+        * [IStopLocation][InterfaceDeclaration-14]
+        * [INode][InterfaceDeclaration-9]
+        * [ITrip][InterfaceDeclaration-8]
+        * [IRoute][InterfaceDeclaration-7]
+    * Types
+        * [coord][TypeAliasDeclaration-0]
+    * Enums
+        * [POI_TYPE][EnumDeclaration-0]
+        * [PIN_TYPE][EnumDeclaration-1]
 
-```js
-dvb.find('zellesch', function(err, data){
-    if (err) throw err;
-    console.log(JSON.stringify(data, null, 4));
-});
+### index.ts
 
-// or:
+#### Functions
 
-dvb.find('zellesch')
-    .then(function (data) {
-        console.log(JSON.stringify(data, null, 4));
-    })
-    .catch(function (err) {
-        throw err;
-    });
-```
-
-### Monitor a single stop
-
-Monitor a single stop to see every bus or tram leaving this stop after the specified time offset.
-
-Example:
-
-```js
-var stop = 33000037;        // ID of the stop
-// var stop = 'Postplatz';  // or name of the stop (must be unambiguous)
-var timeOffset = 0; // how many minutes in the future, 0 for now
-var numResults = 2; // number of results
-
-dvb.monitor(stop, timeOffset, numResults, function(err, data) {
-    if (err) throw err;
-    console.log(JSON.stringify(data, null, 4));
-});
-```
-Output:
-
-```js
-[
-    {
-        "line": "8",
-        "direction": "Südvorstadt",
-        "platform": {
-            "name": "3",
-            "type": "Platform"
-        },
-        "arrivalTime": "2017-02-17T22:22:00.000Z",
-        "arrivalTimeRelative": 0,
-        "scheduledTime": "2017-02-17T22:22:00.000Z",
-        "scheduledTimeRelative": 0,
-        "delayTime": 0,
-        "state": "InTime",
-        "mode": {
-            "title": "Straßenbahn",
-            "name": "tram",
-            "icon_url": "https://www.dvb.de/assets/img/trans-icon/transport-tram.svg"
-        },
-        "diva": {
-            "number": 11008,
-            "network": "voe"
-        }
-    },
-    {
-        "line": "1",
-        "direction": "Bf. Mitte",
-        "platform": {
-            "name": "2",
-            "type": "Platform"
-        },
-        "arrivalTime": "2017-02-17T22:24:50.000Z",
-        "arrivalTimeRelative": 3,
-        "scheduledTime": "2017-02-17T22:23:00.000Z",
-        "scheduledTimeRelative": 1,
-        "delayTime": 2,
-        "state": "Delayed",
-        "mode": {
-            "title": "Straßenbahn",
-            "name": "tram",
-            "icon_url": "https://www.dvb.de/assets/img/trans-icon/transport-tram.svg"
-        },
-        "diva": {
-            "number": 11001,
-            "network": "voe"
-        }
-    }
-]
-```
-
-### Find routes
-
-Query the server for possible routes from one stop to another. Returns multiple possible trips, the bus-/tramlines to be taken, the single stops, their arrival and departure times and their GPS coordinates.
-
-Example:
-
-```js
-var origin = 'Helmholtzstraße';
-var destination = 'Zellescher Weg';
-var time = new Date(); // starting at what time
-var deparr = dvb.route.DEPARTURE; // set to dvb.route.DEPARTURE for the time to be the departure time, dvb.route.ARRIVAL for arrival time
-
-dvb.route(origin, destination, time, deparr, function(err, data) {
-    if (err) throw err;
-    console.log(JSON.stringify(data, null, 4));
-});
-```
-
-Output:
-
-```js
-{
-    "origin": "Dresden, Helmholtzstraße",
-    "destination": "Dresden, Zellescher Weg",
-    "trips": [{
-        "departure": "13:34",
-        "arrival": "13:56",
-        "duration": "00:22",
-        "interchange": 2,
-        "nodes": [{
-            "mode": "Stadtbus",
-            "line": "85",
-            "direction": "DD Löbtau Süd Mohorner Str.",
-            "departure": {
-                "stop": "Helmholtzstraße",
-                "time": "13:34",
-                "coords": [ 51.025549, 13.725457 ]
-            },
-            "arrival": {
-                "stop": "Plauen Nöthnitzer Straße",
-                "time": "13:36",
-                "coords": [ 51.027625, 13.715769 ]
-            },
-            "path": [[ 51.02554, 13.725471 ],[ 51.02557, 13.725286 ], ...]
-        },
-        {...}
-        ]
-    }, {
-        "departure": "14:02",
-        "arrival": "14:11",
-        "duration": "00:09",
-        "interchange": 1,
-        "nodes": [...]
-    },
-    {...}
-    ]
-}
-```
-
-The path property contains an array consisting of all the coordinates describing the path of this node. This can be useful to draw the route on a map.
-
-### Find stops by name
-
-Search for a single stop in the network of the DVB. Returns an array of all possible hits including their GPS coordinates.
-
-Example:
-
-```js
-dvb.find('zellesch', function(err, data){
-    if (err) throw err;
-    console.log(JSON.stringify(data, null, 4));
-});
-```
-
-Output:
-
-```js
-[{
-    "stop":"Zellescher Weg",
-    "id":"33000312",
-    "coords":[51.028365791,13.74584705]
-}]
-```
-
-### Find POIs with coordinates
-
-Search for different kinds of POIs inside a given square.
-
-```js
-// southwest point
-var swlat = 51.04120;
-var swlng = 13.70106;
-
-// northeast point
-var nelat = 51.04615;
-var nelng = 13.71368;
-
-var pinType = dvb.pins.type.STOP; // type of the Pins
-
-dvb.pins(swlat, swlng, nelat, nelng, pinType, function (err, data) {
-    if (err) throw err;
-    console.log(JSON.stringify(data, null, 4));
-});
-```
-
-Output:
-
-```js
-[
-    {
-        "id": "33000143",
-        "name": "Saxoniastraße",
-        "coords": [
-            51.043733606562675,
-            13.706279792263878
-        ],
-        "connections": [
-            {
-                "line": "7",
-                "type": "1"
-            },
-            {
-                "line": "8",
-                "type": "1"
-            },
-            {...}
-        ]
-    },
-    {...}
-]
-
-```
-
-The default pin type is `STOP`, other posible types are:
-
-```js
-pins.type = {
-    STOP: 'stop',
-    PLATFORM: 'platform',
-    POI: 'poi',
-    RENT_A_BIKE: 'rentabike',
-    TICKET_MACHINE: 'ticketmachine',
-    CAR_SHARING: 'carsharing',
-    PARK_AND_RIDE: 'parkandride'
-};
-```
-### Look up coordinates for POI
+##### coords
 
 Find the coordinates for a given POI id.
 
-Example:
-
-```js
-var id = 33000143;
-
-dvb.coords(id, function (err, data) {
-    if (err) throw err;
-    console.log(JSON.stringify(data, null, 4));
-});
+```typescript
+function coords(id: string): Promise<number[] | undefined>;
 ```
 
-Output:
+**Parameters**
 
-```js
-[
-    51.043733606562675,
-    13.706279792263878
-]
+| Name | Type   | Description |
+| ---- | ------ | ----------- |
+| id   | string | the POI ID  |
+
+**Return type**
+
+Promise<number[] | undefined>
+
+----------
+
+##### findAddress
+
+Lookup address and nearby stops by coordinate.
+
+```typescript
+function findAddress(lng: number, lat: number): Promise<IAddress | undefined>;
 ```
 
-### Address for coordinates
+**Parameters**
 
-Look up the address for a given coordinate.
+| Name | Type   | Description                 |
+| ---- | ------ | --------------------------- |
+| lng  | number | longitude of the coordinate |
+| lat  | number | latitude of the coordinate  |
 
-Example:
+**Return type**
 
-```js
-var lat = 51.04373;
-var lng = 13.70320;
+Promise<[IAddress][InterfaceDeclaration-0] | undefined>
 
-dvb.address(lat, lng, function (err, data) {
-    if (err) throw err;
-    console.log(JSON.stringify(data, null, 4));
-});
+----------
+
+##### findPOI
+
+Search for POI in the network of the DVB.
+
+```typescript
+function findPOI(searchString: string): Promise<IPoint[]>;
 ```
 
-Output:
+**Parameters**
 
-```js
-{
-    "city": "Dresden",
-    "address": "Kesselsdorfer Straße 1"
+| Name         | Type   | Description          |
+| ------------ | ------ | -------------------- |
+| searchString | string | the name of the stop |
+
+**Return type**
+
+Promise<[IPoint][InterfaceDeclaration-1][]>
+
+----------
+
+##### findStop
+
+Search for a single stop in the network of the DVB.
+
+```typescript
+function findStop(searchString: string): Promise<IPoint[]>;
+```
+
+**Parameters**
+
+| Name         | Type   | Description          |
+| ------------ | ------ | -------------------- |
+| searchString | string | the name of the stop |
+
+**Return type**
+
+Promise<[IPoint][InterfaceDeclaration-1][]>
+
+----------
+
+##### lines
+
+get a list of availible tram/bus lines for a stop.
+
+```typescript
+function lines(stopID: string): Promise<ILine[]>;
+```
+
+**Parameters**
+
+| Name   | Type   | Description |
+| ------ | ------ | ----------- |
+| stopID | string | the stop ID |
+
+**Return type**
+
+Promise<[ILine][InterfaceDeclaration-2][]>
+
+----------
+
+##### monitor
+
+Monitor a single stop to see every bus or tram leaving this stop after the specified time offset.
+
+```typescript
+function monitor(stopID: string, offset: number = 0, amount: number = 0): Promise<IMonitor[]>;
+```
+
+**Parameters**
+
+| Name   | Type   | Default value | Description                               |
+| ------ | ------ | ------------- | ----------------------------------------- |
+| stopID | string |               | ID of the stop                            |
+| offset | number | 0             | how many minutes in the future, 0 for now |
+| amount | number | 0             | number of results                         |
+
+**Return type**
+
+Promise<[IMonitor][InterfaceDeclaration-4][]>
+
+----------
+
+##### pins
+
+Search for different kinds of POIs inside a given bounding box.
+
+```typescript
+function pins(swlng: number, swlat: number, nelng: number, nelat: number, pinTypes: PIN_TYPE[] = [PIN_TYPE.stop]): Promise<IPin[]>;
+```
+
+**Parameters**
+
+| Name     | Type                            | Default value   | Description                                |
+| -------- | ------------------------------- | --------------- | ------------------------------------------ |
+| swlng    | number                          |                 | the longitude of the south west coordinate |
+| swlat    | number                          |                 | the latitude of the south west coordinate  |
+| nelng    | number                          |                 | the longitude of the north east coordinate |
+| nelat    | number                          |                 | the latitude of the north east coordinate  |
+| pinTypes | [PIN_TYPE][EnumDeclaration-1][] | [PIN_TYPE.stop] | array of pin types                         |
+
+**Return type**
+
+Promise<[IPin][InterfaceDeclaration-5][]>
+
+----------
+
+##### route
+
+Query the server for possible routes from one stop to another.
+
+```typescript
+function route(originID: string, destinationID: string, time: Date = new Date(), isArrivalTime: boolean = true): Promise<IRoute>;
+```
+
+**Parameters**
+
+| Name          | Type    | Default value | Description                    |
+| ------------- | ------- | ------------- | ------------------------------ |
+| originID      | string  |               | the id of the origin stop      |
+| destinationID | string  |               | the id of the destination stop |
+| time          | Date    | new Date()    | starting at what time          |
+| isArrivalTime | boolean | true          | is time the arrival time       |
+
+**Return type**
+
+Promise<[IRoute][InterfaceDeclaration-7]>
+
+#### Interfaces
+
+##### IDiva
+
+```typescript
+interface IDiva {
+    number: number;
+    network?: string | undefined;
 }
 ```
 
-## Misc
+**Properties**
 
-By the way, stop names in queries are very forgiving. Better use the ID of the stop. As long as the server sees it as an unique hit, it'll work. 'Helmholtzstraße' finds the same data as 'helmholtzstrasse', 'Nürnberger Platz' as 'nuernbergerplatz' etc.
+| Name    | Type                    | Optional |
+| ------- | ----------------------- | -------- |
+| number  | number                  | false    |
+| network | string &#124; undefined | true     |
 
-One last note, be sure to use `EDUROAM=TRUE` as environment variable from inside the network of the TU Dresden.
+----------
+
+##### IPlatform
+
+```typescript
+interface IPlatform {
+    name: string;
+    type: string;
+}
+```
+
+**Properties**
+
+| Name | Type   | Optional |
+| ---- | ------ | -------- |
+| name | string | false    |
+| type | string | false    |
+
+----------
+
+##### IPin
+
+- The id for PIN_TYPE.platform is always an empty string.
+- PIN_TYPE.platform conatins platform_nr.
+- PIN_TYPE.stop contains connections.
+- PIN_TYPE.parkandride contains info.
+
+```typescript
+interface IPin {
+    id: string;
+    type: PIN_TYPE;
+    name: string;
+    coords: Array<number>;
+    platform_nr?: string | undefined;
+    connections?: IConnection[];
+    info?: string | undefined;
+}
+```
+
+**Properties**
+
+| Name        | Type                                    | Optional |
+| ----------- | --------------------------------------- | -------- |
+| id          | string                                  | false    |
+| type        | [PIN_TYPE][EnumDeclaration-1]           | false    |
+| name        | string                                  | false    |
+| coords      | Array<number>                           | false    |
+| platform_nr | string &#124; undefined                 | true     |
+| connections | [IConnection][InterfaceDeclaration-6][] | true     |
+| info        | string &#124; undefined                 | true     |
+
+----------
+
+##### IConnection
+
+```typescript
+interface IConnection {
+    line: string;
+    mode: IMode;
+}
+```
+
+**Properties**
+
+| Name | Type                            | Optional |
+| ---- | ------------------------------- | -------- |
+| line | string                          | false    |
+| mode | [IMode][InterfaceDeclaration-3] | false    |
+
+----------
+
+##### IMode
+
+```typescript
+interface IMode {
+    title: string;
+    name: string;
+    icon_url?: string | undefined;
+}
+```
+
+**Properties**
+
+| Name     | Type                    | Optional |
+| -------- | ----------------------- | -------- |
+| title    | string                  | false    |
+| name     | string                  | false    |
+| icon_url | string &#124; undefined | true     |
+
+----------
+
+##### IPoint
+
+```typescript
+interface IPoint {
+    city: string;
+    name: string;
+    id: string;
+    coords: Array<number>;
+    type: POI_TYPE;
+}
+```
+
+**Properties**
+
+| Name   | Type                          | Optional |
+| ------ | ----------------------------- | -------- |
+| city   | string                        | false    |
+| name   | string                        | false    |
+| id     | string                        | false    |
+| coords | Array<number>                 | false    |
+| type   | [POI_TYPE][EnumDeclaration-0] | false    |
+
+----------
+
+##### IAddress
+
+```typescript
+interface IAddress extends IPoint {
+    stops: IPoint[];
+}
+```
+
+**Extends**
+
+[IPoint][InterfaceDeclaration-1]
+
+**Properties**
+
+| Name  | Type                               | Optional |
+| ----- | ---------------------------------- | -------- |
+| stops | [IPoint][InterfaceDeclaration-1][] | false    |
+
+----------
+
+##### ILine
+
+```typescript
+interface ILine {
+    name: string;
+    mode: IMode;
+    diva?: IDiva | undefined;
+    directions: string[];
+}
+```
+
+**Properties**
+
+| Name       | Type                            | Optional |
+| ---------- | ------------------------------- | -------- |
+| name       | string                          | false    |
+| mode       | [IMode][InterfaceDeclaration-3] | false    |
+| diva       | IDiva &#124; undefined          | true     |
+| directions | string[]                        | false    |
+
+----------
+
+##### IMonitor
+
+```typescript
+interface IMonitor {
+    arrivalTime: Date;
+    scheduledTime: Date;
+    id: string;
+    line: string;
+    direction: string;
+    platform?: IPlatform | undefined;
+    arrivalTimeRelative: number;
+    scheduledTimeRelative: number;
+    delayTime: number;
+    state: string;
+    mode: IMode;
+    diva?: IDiva | undefined;
+}
+```
+
+**Properties**
+
+| Name                  | Type                            | Optional |
+| --------------------- | ------------------------------- | -------- |
+| arrivalTime           | Date                            | false    |
+| scheduledTime         | Date                            | false    |
+| id                    | string                          | false    |
+| line                  | string                          | false    |
+| direction             | string                          | false    |
+| platform              | IPlatform &#124; undefined      | true     |
+| arrivalTimeRelative   | number                          | false    |
+| scheduledTimeRelative | number                          | false    |
+| delayTime             | number                          | false    |
+| state                 | string                          | false    |
+| mode                  | [IMode][InterfaceDeclaration-3] | false    |
+| diva                  | IDiva &#124; undefined          | true     |
+
+----------
+
+##### ILocation
+
+```typescript
+interface ILocation {
+    name: string;
+    city: string;
+    coords: Array<number>;
+}
+```
+
+**Properties**
+
+| Name   | Type          | Optional |
+| ------ | ------------- | -------- |
+| name   | string        | false    |
+| city   | string        | false    |
+| coords | Array<number> | false    |
+
+----------
+
+##### IStop
+
+```typescript
+interface IStop extends ILocation {
+    type: string;
+    platform?: IPlatform | undefined;
+    arrival: Date;
+    departure: Date;
+}
+```
+
+**Extends**
+
+[ILocation][InterfaceDeclaration-11]
+
+**Properties**
+
+| Name      | Type                       | Optional |
+| --------- | -------------------------- | -------- |
+| type      | string                     | false    |
+| platform  | IPlatform &#124; undefined | true     |
+| arrival   | Date                       | false    |
+| departure | Date                       | false    |
+
+----------
+
+##### IStopLocation
+
+```typescript
+interface IStopLocation extends ILocation {
+    platform?: IPlatform | undefined;
+    time: Date;
+    type: string;
+}
+```
+
+**Extends**
+
+[ILocation][InterfaceDeclaration-11]
+
+**Properties**
+
+| Name     | Type                       | Optional |
+| -------- | -------------------------- | -------- |
+| platform | IPlatform &#124; undefined | true     |
+| time     | Date                       | false    |
+| type     | string                     | false    |
+
+----------
+
+##### INode
+
+```typescript
+interface INode {
+    stops: IStop[];
+    departure?: IStopLocation | undefined;
+    arrival?: IStopLocation | undefined;
+    mode: IMode;
+    line: string;
+    direction: string;
+    diva?: IDiva | undefined;
+    duration: number;
+    path: Array<number>[];
+}
+```
+
+**Properties**
+
+| Name      | Type                               | Optional |
+| --------- | ---------------------------------- | -------- |
+| stops     | [IStop][InterfaceDeclaration-10][] | false    |
+| departure | IStopLocation &#124; undefined     | true     |
+| arrival   | IStopLocation &#124; undefined     | true     |
+| mode      | [IMode][InterfaceDeclaration-3]    | false    |
+| line      | string                             | false    |
+| direction | string                             | false    |
+| diva      | IDiva &#124; undefined             | true     |
+| duration  | number                             | false    |
+| path      | Array<number>[]                    | false    |
+
+----------
+
+##### ITrip
+
+```typescript
+interface ITrip {
+    departure?: IStopLocation | undefined;
+    arrival?: IStopLocation | undefined;
+    duration: number;
+    interchanges: number;
+    nodes: INode[];
+}
+```
+
+**Properties**
+
+| Name         | Type                              | Optional |
+| ------------ | --------------------------------- | -------- |
+| departure    | IStopLocation &#124; undefined    | true     |
+| arrival      | IStopLocation &#124; undefined    | true     |
+| duration     | number                            | false    |
+| interchanges | number                            | false    |
+| nodes        | [INode][InterfaceDeclaration-9][] | false    |
+
+----------
+
+##### IRoute
+
+```typescript
+interface IRoute {
+    origin?: ILocation | undefined;
+    destination?: ILocation | undefined;
+    trips: ITrip[];
+}
+```
+
+**Properties**
+
+| Name        | Type                              | Optional |
+| ----------- | --------------------------------- | -------- |
+| origin      | ILocation &#124; undefined        | true     |
+| destination | ILocation &#124; undefined        | true     |
+| trips       | [ITrip][InterfaceDeclaration-8][] | false    |
+
+#### Types
+
+##### coord
+
+WGS84 coordinates [lng, lat]
+
+```typescript
+type coord = number[];
+```
+
+**Type**
+
+number[]
+
+#### Enums
+
+##### POI_TYPE
+
+
+```typescript
+enum POI_TYPE {
+     Address = "Address",
+     Coords = "Coords",
+     POI = "POI",
+     Stop = "Stop"
+}
+```
+
+**Members**
+
+| Name    | Value     |
+| ------- | --------- |
+| Address | "Address" |
+| Coords  | "Coords"  |
+| POI     | "POI"     |
+| Stop    | "Stop"    |
+
+----------
+
+##### PIN_TYPE
+
+
+```typescript
+enum PIN_TYPE {
+     stop = "stop",
+     platform = "platform",
+     poi = "poi",
+     rentabike = "rentabike",
+     ticketmachine = "ticketmachine",
+     carsharing = "carsharing",
+     parkandride = "parkandride",
+     unknown = "unknown"
+}
+```
+
+**Members**
+
+| Name          | Value           |
+| ------------- | --------------- |
+| stop          | "stop"          |
+| platform      | "platform"      |
+| poi           | "poi"           |
+| rentabike     | "rentabike"     |
+| ticketmachine | "ticketmachine" |
+| carsharing    | "carsharing"    |
+| parkandride   | "parkandride"   |
+| unknown       | "unknown"       |
+
+[SourceFile-0]: index.md#indexts
+[FunctionDeclaration-0]: index.md#coords
+[FunctionDeclaration-1]: index.md#findaddress
+[InterfaceDeclaration-0]: index.md#iaddress
+[FunctionDeclaration-2]: index.md#findpoi
+[InterfaceDeclaration-1]: index.md#ipoint
+[FunctionDeclaration-3]: index.md#findstop
+[InterfaceDeclaration-1]: index.md#ipoint
+[FunctionDeclaration-4]: index.md#lines
+[InterfaceDeclaration-2]: index.md#iline
+[FunctionDeclaration-5]: index.md#monitor
+[InterfaceDeclaration-4]: index.md#imonitor
+[FunctionDeclaration-6]: index.md#pins
+[EnumDeclaration-1]: index.md#pin_type
+[InterfaceDeclaration-5]: index.md#ipin
+[FunctionDeclaration-7]: index.md#route
+[InterfaceDeclaration-7]: index.md#iroute
+[InterfaceDeclaration-12]: index.md#idiva
+[InterfaceDeclaration-13]: index.md#iplatform
+[InterfaceDeclaration-5]: index.md#ipin
+[EnumDeclaration-1]: index.md#pin_type
+[InterfaceDeclaration-6]: index.md#iconnection
+[InterfaceDeclaration-6]: index.md#iconnection
+[InterfaceDeclaration-3]: index.md#imode
+[InterfaceDeclaration-3]: index.md#imode
+[InterfaceDeclaration-1]: index.md#ipoint
+[EnumDeclaration-0]: index.md#poi_type
+[InterfaceDeclaration-0]: index.md#iaddress
+[InterfaceDeclaration-1]: index.md#ipoint
+[InterfaceDeclaration-1]: index.md#ipoint
+[InterfaceDeclaration-2]: index.md#iline
+[InterfaceDeclaration-3]: index.md#imode
+[InterfaceDeclaration-4]: index.md#imonitor
+[InterfaceDeclaration-3]: index.md#imode
+[InterfaceDeclaration-11]: index.md#ilocation
+[InterfaceDeclaration-10]: index.md#istop
+[InterfaceDeclaration-11]: index.md#ilocation
+[InterfaceDeclaration-14]: index.md#istoplocation
+[InterfaceDeclaration-11]: index.md#ilocation
+[InterfaceDeclaration-9]: index.md#inode
+[InterfaceDeclaration-10]: index.md#istop
+[InterfaceDeclaration-3]: index.md#imode
+[InterfaceDeclaration-8]: index.md#itrip
+[InterfaceDeclaration-9]: index.md#inode
+[InterfaceDeclaration-7]: index.md#iroute
+[InterfaceDeclaration-8]: index.md#itrip
+[TypeAliasDeclaration-0]: index.md#coord
+[EnumDeclaration-0]: index.md#poi_type
+[EnumDeclaration-1]: index.md#pin_type
+<!-- AUTO-GENERATED-CONTENT:END -->
