@@ -1,0 +1,62 @@
+html {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    margin: 10px;
+    padding: 0;
+    background: #43423e;
+    color: white;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    font-size: 18px;
+}
+
+h3 {
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.item {
+    color: black;
+}
+
+.item-highlighted {
+    background-color: #fdc32d;
+    cursor: pointer;
+}
+
+.stop-svg {
+    fill: white;
+    height: 16px;
+    margin-right: 5px;
+    vertical-align: baseline;
+}
+
+.DepartureList {
+    width: 100%;
+}
+
+.DepartureList img {
+    height: 26px;
+}
+
+
+.DepartureList thead {
+    color: white;
+    font-size: 14px;
+}
+
+.DepartureList tbody {
+    font-family: "DotSpot";
+    font-size: 35px;
+    color: #fdc32d;
+}
+
+.align-left {
+    text-align: left;
+}
+
+.align-right {
+    text-align: right;
+}

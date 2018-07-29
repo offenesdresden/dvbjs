@@ -1,17 +1,26 @@
 language: node_js
 
-branches:
-  only:
-    - master
+cache:
+  directories:
+    - node_modules
 
-node_js:
-  - "lts/argon"
-  - "lts/boron"
-  - "node"
+matrix:
+  include:
+    - node_js: "lts/*"
+      env: YARN_TASK=coverage:node
+    - node_js: "node"
+      env: YARN_TASK=coverage:node
+    - node_js: "node"
+      env: YARN_TASK=coverage:browser
+      addons:
+        chrome: stable
+      before_install:
+      - export DISPLAY=:99.0
+      - sh -e /etc/init.d/xvfb start
+
+script: yarn run $YARN_TASK
+
+after_success: yarn run coveralls
 
 notifications:
   email: false
-
-script: npm run coverage
-
-after_success: 'npm run coveralls'
