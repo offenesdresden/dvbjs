@@ -28,6 +28,339 @@ import * as dvb from "dvbjs";
 HTTP request are handled by [axios](https://github.com/axios/axios) that supports all modern browsers.
 See [react-example](examples/react-example/README.md) for a browser departure monitor example.
 
+## Example Usage
+
+### Find stops by name
+<!-- AUTO-GENERATED-CONTENT:START (CODE:src=./examples/findStop.js) -->
+<!-- The below code snippet is automatically added from ./examples/findStop.js -->
+```js
+const dvb = require("dvbjs");
+
+dvb.findStop("zellesch").then(function (data) {
+    console.log(JSON.stringify(data, null, 4));
+})
+```
+<!-- AUTO-GENERATED-CONTENT:END -->
+<!-- AUTO-GENERATED-CONTENT:START (CODE:src=./examples/findStop.output.json) -->
+<!-- The below code snippet is automatically added from ./examples/findStop.output.json -->
+```json
+[
+    {
+        "city": "Dresden",
+        "coords": [
+            13.745858712566005,
+            51.02836082515807
+        ],
+        "name": "Zellescher Weg",
+        "id": "33000312",
+        "type": "Stop"
+    }
+]
+```
+<!-- AUTO-GENERATED-CONTENT:END -->
+
+### Monitor a single stop
+<!-- AUTO-GENERATED-CONTENT:START (CODE:src=./examples/monitor.js) -->
+<!-- The below code snippet is automatically added from ./examples/monitor.js -->
+```js
+const dvb = require("dvbjs");
+
+const stopID = "33000037"; // Postplatz
+var timeOffset = 5;
+var numResults = 2;
+
+dvb.monitor(stopID, timeOffset, numResults).then(function (data) {
+    console.log(JSON.stringify(data, null, 4));
+})
+```
+<!-- AUTO-GENERATED-CONTENT:END -->
+<!-- AUTO-GENERATED-CONTENT:START (CODE:src=./examples/monitor.output.json) -->
+<!-- The below code snippet is automatically added from ./examples/monitor.output.json -->
+```json
+[
+    {
+        "arrivalTime": "2018-07-29T22:00:00.000Z",
+        "scheduledTime": "2018-07-29T22:00:00.000Z",
+        "id": "76185070",
+        "line": "EV4",
+        "direction": "Postplatz",
+        "platform": {
+            "name": "2",
+            "type": "Platform"
+        },
+        "arrivalTimeRelative": 8,
+        "scheduledTimeRelative": 8,
+        "delayTime": 0,
+        "state": "InTime",
+        "mode": {
+            "title": "Bus",
+            "name": "CityBus",
+            "icon_url": "https://www.dvb.de/assets/img/trans-icon/transport-bus.svg"
+        },
+        "diva": {
+            "number": 27004,
+            "network": "voe"
+        }
+    },
+    {
+        "arrivalTime": "2018-07-29T22:00:00.000Z",
+        "scheduledTime": "2018-07-29T22:00:00.000Z",
+        "id": "76185196",
+        "line": "EV4",
+        "direction": "Tolkewitz",
+        "platform": {
+            "name": "1",
+            "type": "Platform"
+        },
+        "arrivalTimeRelative": 8,
+        "scheduledTimeRelative": 8,
+        "delayTime": 0,
+        "state": "InTime",
+        "mode": {
+            "title": "Bus",
+            "name": "CityBus",
+            "icon_url": "https://www.dvb.de/assets/img/trans-icon/transport-bus.svg"
+        },
+        "diva": {
+            "number": 27004,
+            "network": "voe"
+        }
+    }
+]
+```
+<!-- AUTO-GENERATED-CONTENT:END -->
+
+### Find routes
+<!-- AUTO-GENERATED-CONTENT:START (CODE:src=./examples/route.js) -->
+<!-- The below code snippet is automatically added from ./examples/route.js -->
+```js
+const dvb = require("dvbjs");
+
+const origin = "33000742"; // Helmholtzstraße
+const destination = "33000037"; // Postplatz
+var startTime = new Date();
+
+dvb.route(origin, destination, startTime).then(function (data) {
+    console.log(JSON.stringify(data, null, 4));
+})
+```
+<!-- AUTO-GENERATED-CONTENT:END -->
+<!-- AUTO-GENERATED-CONTENT:START (CODE:src=./examples/route.output.json) -->
+<!-- The below code snippet is automatically added from ./examples/route.output.json -->
+```json
+{
+    "origin": {
+        "name": "Helmholtzstraße",
+        "city": "Dresden",
+        "coords": [
+            13.725468471273134,
+            51.0255443264448
+        ]
+    },
+    "destination": {
+        "name": "Postplatz",
+        "city": "Dresden",
+        "coords": [
+            13.732548433606716,
+            51.049882551705295
+        ]
+    },
+    "trips": [
+        {
+            "nodes": [
+                {
+                    "stops": [
+                        {
+                            "name": "Helmholtzstraße",
+                            "city": "Dresden",
+                            "type": "Stop",
+                            "coords": [
+                                13.725468471273134,
+                                51.0255443264448
+                            ],
+                            "arrival": "2018-07-29T20:53:00.000Z",
+                            "departure": "2018-07-29T20:53:00.000Z"
+                        },
+                        {
+                            "name": "Mommsenstraße",
+                            "city": "Dresden",
+                            "type": "Stop",
+                            "platform": {
+                                "name": "1",
+                                "type": "Platform"
+                            },
+                            "coords": [
+                                13.731503998392713,
+                                51.02761256018972
+                            ],
+                            "arrival": "2018-07-29T21:02:00.000Z",
+                            "departure": "2018-07-29T21:02:00.000Z"
+                        }
+                    ],
+                    "departure": {
+                        "name": "Helmholtzstraße",
+                        "city": "Dresden",
+                        "time": "2018-07-29T20:53:00.000Z",
+                        "coords": [
+                            13.725468471273134,
+                            51.0255443264448
+                        ],
+                        "type": "Stop"
+                    },
+                    "arrival": {
+                        "name": "Mommsenstraße",
+                        "city": "Dresden",
+                        "platform": {
+                            "name": "1",
+                            "type": "Platform"
+                        },
+                        "time": "2018-07-29T21:02:00.000Z",
+                        "coords": [
+                            13.731503998392713,
+                            51.02761256018972
+                        ],
+                        "type": "Stop"
+                    },
+                    "mode": {
+                        "title": "Fussweg",
+                        "name": "Footpath",
+                        "icon_url": "https://m.dvb.de/img/walk.svg"
+                    },
+                    "line": "Fussweg",
+                    "direction": "",
+                    "duration": 1,
+                    "path": [
+                        [
+                            13.725468471273134,
+                            51.0255443264448
+                        ],
+                        {...}
+                        [
+                            13.731503998392713,
+                            51.02761256018972
+                        ]
+                    ]
+                },
+                {
+                    "stops": [
+                        {
+                            "name": "Mommsenstraße",
+                            "city": "Dresden",
+                            "type": "Stop",
+                            "platform": {
+                                "name": "1",
+                                "type": "Platform"
+                            },
+                            "coords": [
+                                13.731503998392713,
+                                51.02761256018972
+                            ],
+                            "arrival": "2018-07-29T21:02:00.000Z",
+                            "departure": "2018-07-29T21:02:00.000Z"
+                        },
+                        {...}
+                        {
+                            "name": "Postplatz",
+                            "city": "Dresden",
+                            "type": "Stop",
+                            "platform": {
+                                "name": "8",
+                                "type": "Platform"
+                            },
+                            "coords": [
+                                13.732548433606716,
+                                51.049882551705295
+                            ],
+                            "arrival": "2018-07-29T21:11:00.000Z",
+                            "departure": "2018-07-29T21:11:00.000Z"
+                        }
+                    ],
+                    "departure": {
+                        "name": "Mommsenstraße",
+                        "city": "Dresden",
+                        "platform": {
+                            "name": "1",
+                            "type": "Platform"
+                        },
+                        "time": "2018-07-29T21:02:00.000Z",
+                        "coords": [
+                            13.731503998392713,
+                            51.02761256018972
+                        ],
+                        "type": "Stop"
+                    },
+                    "arrival": {
+                        "name": "Postplatz",
+                        "city": "Dresden",
+                        "platform": {
+                            "name": "8",
+                            "type": "Platform"
+                        },
+                        "time": "2018-07-29T21:11:00.000Z",
+                        "coords": [
+                            13.732548433606716,
+                            51.049882551705295
+                        ],
+                        "type": "Stop"
+                    },
+                    "mode": {
+                        "title": "Bus",
+                        "name": "CityBus",
+                        "icon_url": "https://www.dvb.de/assets/img/trans-icon/transport-bus.svg"
+                    },
+                    "line": "360",
+                    "direction": "Dresden Postplatz",
+                    "diva": {
+                        "number": 23360,
+                        "network": "voe"
+                    },
+                    "duration": 1,
+                    "path": [
+                        [
+                            13.73146092123584,
+                            51.02760420891756
+                        ],
+                        {...}
+                        [
+                            13.732534179344674,
+                            51.0498827630612
+                        ]
+                    ]
+                }
+            ],
+            "departure": {
+                "name": "Helmholtzstraße",
+                "city": "Dresden",
+                "time": "2018-07-29T20:53:00.000Z",
+                "coords": [
+                    13.725468471273134,
+                    51.0255443264448
+                ],
+                "type": "Stop"
+            },
+            "arrival": {
+                "name": "Postplatz",
+                "city": "Dresden",
+                "platform": {
+                    "name": "8",
+                    "type": "Platform"
+                },
+                "time": "2018-07-29T21:11:00.000Z",
+                "coords": [
+                    13.732548433606716,
+                    51.049882551705295
+                ],
+                "type": "Stop"
+            },
+            "duration": 1,
+            "interchanges": 0
+        },
+        {...}
+    ]
+}
+```
+<!-- AUTO-GENERATED-CONTENT:END -->
+
 ## API Documentation
 <!-- AUTO-GENERATED-CONTENT:START (RENDERDOCS:path=./docs/api/index.md) -->
 ### Table of contents
