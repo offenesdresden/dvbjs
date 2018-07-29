@@ -27,16 +27,12 @@ describe("dvb.monitor", () => {
 
     assertMode(transport.mode);
 
-    if (transport.line.startsWith("E")) {
-      assert.isDefined(transport.diva);
+    if (transport.line) {
       assertDiva(transport.diva!);
     } else {
-      if (transport.line) {
-        assertDiva(transport.diva!);
-      } else {
-        assert.isUndefined(transport.diva);
-      }
+      assert.isUndefined(transport.diva);
     }
+
     assert.isDefined(transport.platform);
     assertPlatform(transport.platform!);
   }
@@ -86,14 +82,15 @@ describe("dvb.route", () => {
 
       assertMode(node.mode);
 
-      if (node.mode.name !== "Footpath" && node.mode.name !== "StayForConnection") {
+      if (node.mode.name !== "Footpath" && node.mode.name !== "StayForConnection"
+        && node.mode.name.indexOf("Stairs") === -1) {
         assert.isDefined(node.diva);
         assertDiva(node.diva!);
       } else {
         assert.isUndefined(node.diva);
       }
 
-      if (node.mode.name === "Footpath" && !node.departure) {
+      if (node.mode.name === "Footpath" && !node.departure || node.mode.name.indexOf("Stairs") > -1) {
         assert.isUndefined(node.departure);
         assert.isUndefined(node.arrival);
         assert.isArray(node.stops);
