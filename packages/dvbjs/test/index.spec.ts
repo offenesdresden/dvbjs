@@ -46,37 +46,43 @@ describe("dvb.monitor", () => {
 
 describe("dvb.route", () => {
   describe('dvb.route "33000742 (Helmholtzstraße) -> 33000037 (Postplatz)"', () => {
-    it("should return the correct origin and destination", () =>
-      dvb.route("33000742", "33000037", new Date(), false).then((data) => {
-        assert.isObject(data, "origin");
-        assert.strictEqual(data.origin!.name, "Helmholtzstraße");
-        assert.strictEqual(data.origin!.city, "Dresden");
+    let data: dvb.IRoute;
 
-        assert.property(data, "destination");
-        assert.strictEqual(data.destination!.name, "Postplatz");
-        assert.strictEqual(data.destination!.city, "Dresden");
-      }));
+    before(async () => {
+      data = await dvb.route("33000742", "33000037", new Date(), false);
+      assert.isObject(data);
+    });
 
-    it("should return an array of trips", () =>
-      dvb.route("33000742", "33000037", new Date(), false).then((data) => {
-        assert.isNotEmpty(data.trips);
-        data.trips.forEach(assertTrip);
-      }));
+    it("should return the correct origin and destination", () => {
+      assert.isObject(data, "origin");
+      assert.strictEqual(data.origin!.name, "Helmholtzstraße");
+      assert.strictEqual(data.origin!.city, "Dresden");
+
+      assert.property(data, "destination");
+      assert.strictEqual(data.destination!.name, "Postplatz");
+      assert.strictEqual(data.destination!.city, "Dresden");
+    });
+
+    it("should return an array of trips", () => {
+      assert.isNotEmpty(data.trips);
+      data.trips.forEach(assertTrip);
+    });
+
+    it("node duration should not always be 0", () => {
+      assert.isNotEmpty(data.trips);
+      data.trips.forEach((trip) => {
+        let durationSum = 0;
+        trip.nodes.forEach((node) => {
+          durationSum += node.duration;
+        });
+        assert.notEqual(0, durationSum);
+      });
+    });
   });
 
   describe('dvb.route "0 -> 0"', () => {
     it("should return empty trips", () =>
       dvb.route("0", "0").then((data) => {
-        assert.isObject(data);
-        assert.isUndefined(data.origin);
-        assert.isUndefined(data.destination);
-        assert.isEmpty(data.trips);
-      }));
-  });
-
-  describe('dvb.route "Helmholtzstraße -> Postplatz"', () => {
-    it("should return empty trips", () =>
-      dvb.route("Helmholtzstraße", "Postplatz").then((data) => {
         assert.isObject(data);
         assert.isUndefined(data.origin);
         assert.isUndefined(data.destination);

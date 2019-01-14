@@ -341,7 +341,7 @@ function extractNode(node: any, mapData: any): INode {
     line: node.Mot.Name ? node.Mot.Name : "",
     direction: node.Mot.Direction ? node.Mot.Direction.trim() : "",
     diva: parseDiva(node.Mot.Diva),
-    duration: node.Duration,
+    duration: node.Duration || 1,
     path: convertCoordinates(mapData[node.MapDataIndex]),
   };
 }
@@ -355,7 +355,7 @@ export function extractTrip(trip: any): ITrip {
     nodes,
     departure: nodes[0].departure,
     arrival: nodes[nodes.length - 1].arrival,
-    duration: trip.Duration,
+    duration: trip.Duration || 1,
     interchanges: trip.Interchanges,
   };
 }
