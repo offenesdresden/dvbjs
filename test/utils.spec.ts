@@ -1,6 +1,6 @@
 import { assert } from "chai";
-import { PIN_TYPE } from "../interfaces";
-import * as utils from "../utils";
+import { PIN_TYPE } from "../src/interfaces";
+import * as utils from "../src/utils";
 import { assertCoords, assertMode, assertPin } from "./helper";
 
 describe("internal utils", () => {
@@ -23,11 +23,11 @@ describe("internal utils", () => {
       ["Mobilityescalatorup", "EscalatorUp"],
       ["Mobilityescalatordown", "EscalatorDown"],
       ["Mobilityelevatorup", "ElevatorUp"],
-      ["Mobilityelevatordown", "ElevatorDown"]
+      ["Mobilityelevatordown", "ElevatorDown"],
     ];
 
-    mots.forEach(mot => {
-      it("should parse `" + mot[0] + "` to `" + mot[1] + "`", done => {
+    mots.forEach((mot) => {
+      it("should parse `" + mot[0] + "` to `" + mot[1] + "`", (done) => {
         const mode = utils.parseMode(mot[0]);
         assertMode(mode);
         assert.strictEqual(mode.name, mot[1]);

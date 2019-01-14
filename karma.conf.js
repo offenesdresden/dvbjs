@@ -1,9 +1,9 @@
 module.exports = function(config) {
   config.set({
     frameworks: ["mocha", "karma-typescript"],
-    files: [{ pattern: "src/**/*.ts" }],
+    files: [{ pattern: "{src,test}/**/*.ts" }],
     preprocessors: {
-      "**/*.ts": ["karma-typescript"]
+      "**/*.ts": ["karma-typescript"],
     },
     reporters: ["mocha", "karma-typescript"],
     browsers: ["Chrome"],
@@ -11,21 +11,21 @@ module.exports = function(config) {
       compilerOptions: {
         target: "ES5",
         lib: ["es2015", "dom"],
-        sourceMap: true
+        sourceMap: true,
       },
       tsconfig: "tsconfig.json",
       coverageOptions: {
-        exclude: /(\.(d|spec|test)\.ts|test\/helper.ts)$/i
+        exclude: /(\.(d|spec|test)\.ts|test\/helper.ts)$/i,
       },
       reports: {
         text: "",
         lcovonly: {
           directory: "coverage",
           filename: "lcov.info",
-          subdirectory: "/"
-        }
-      }
+          subdirectory: "/",
+        },
+      },
     },
-    singleRun: true
+    singleRun: true,
   });
 };

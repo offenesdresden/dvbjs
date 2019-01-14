@@ -15,8 +15,8 @@ import {
   IStopLocation,
   ITrip,
   PIN_TYPE,
-  POI_TYPE
-} from "../interfaces";
+  POI_TYPE,
+} from "../src/interfaces";
 
 export function assertCoords(coords: coord) {
   assert.isArray(coords);

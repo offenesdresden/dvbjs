@@ -1,6 +1,6 @@
 import chai, { assert } from "chai";
 import chaiAsPromised from "chai-as-promised";
-import * as dvb from "../index";
+import * as dvb from "../src/index";
 import {
   assertAddress,
   assertCoords,
@@ -9,7 +9,7 @@ import {
   assertPin,
   assertPoint,
   assertTransport,
-  assertTrip
+  assertTrip,
 } from "./helper";
 
 before(() => {
@@ -19,13 +19,13 @@ before(() => {
 describe("dvb.monitor", () => {
   describe("dvb.monitor 33000037 (Postplatz)", () => {
     it("should return an array with elements", () =>
-      dvb.monitor("33000037", 0, 5).then(data => {
+      dvb.monitor("33000037", 0, 5).then((data) => {
         assert.isArray(data);
         assert.lengthOf(data, 5);
       }));
 
     it("should contain all fields", () =>
-      dvb.monitor("33000037", 0, 5).then(data => {
+      dvb.monitor("33000037", 0, 5).then((data) => {
         data.forEach(assertTransport);
       }));
   });
@@ -47,7 +47,7 @@ describe("dvb.monitor", () => {
 describe("dvb.route", () => {
   describe('dvb.route "33000742 (Helmholtzstraße) -> 33000037 (Postplatz)"', () => {
     it("should return the correct origin and destination", () =>
-      dvb.route("33000742", "33000037", new Date(), false).then(data => {
+      dvb.route("33000742", "33000037", new Date(), false).then((data) => {
         assert.isObject(data, "origin");
         assert.strictEqual(data.origin!.name, "Helmholtzstraße");
         assert.strictEqual(data.origin!.city, "Dresden");
@@ -58,7 +58,7 @@ describe("dvb.route", () => {
       }));
 
     it("should return an array of trips", () =>
-      dvb.route("33000742", "33000037", new Date(), false).then(data => {
+      dvb.route("33000742", "33000037", new Date(), false).then((data) => {
         assert.isNotEmpty(data.trips);
         data.trips.forEach(assertTrip);
       }));
@@ -66,7 +66,7 @@ describe("dvb.route", () => {
 
   describe('dvb.route "0 -> 0"', () => {
     it("should return empty trips", () =>
-      dvb.route("0", "0").then(data => {
+      dvb.route("0", "0").then((data) => {
         assert.isObject(data);
         assert.isUndefined(data.origin);
         assert.isUndefined(data.destination);
@@ -76,7 +76,7 @@ describe("dvb.route", () => {
 
   describe('dvb.route "Helmholtzstraße -> Postplatz"', () => {
     it("should return empty trips", () =>
-      dvb.route("Helmholtzstraße", "Postplatz").then(data => {
+      dvb.route("Helmholtzstraße", "Postplatz").then((data) => {
         assert.isObject(data);
         assert.isUndefined(data.origin);
         assert.isUndefined(data.destination);
@@ -88,21 +88,21 @@ describe("dvb.route", () => {
 describe("dvb.findStop", () => {
   describe('dvb.findStop "Postplatz"', () => {
     it("should return an array", () =>
-      dvb.findStop("Postpl").then(data => {
+      dvb.findStop("Postpl").then((data) => {
         assert.isNotEmpty(data);
       }));
 
     it("should contain objects with name, city, coords and type", () =>
-      dvb.findStop("Postpl").then(data => {
+      dvb.findStop("Postpl").then((data) => {
         assert.isNotEmpty(data);
-        data.forEach(point => {
+        data.forEach((point) => {
           assertPoint(point);
           assert.strictEqual(point.type, dvb.POI_TYPE.Stop);
         });
       }));
 
     it("should find the correct stop", () =>
-      dvb.findStop("Postpl").then(data => {
+      dvb.findStop("Postpl").then((data) => {
         assert.strictEqual("Postplatz", data[0].name);
       }));
   });
@@ -114,7 +114,7 @@ describe("dvb.findStop", () => {
 
   describe('dvb.findStop "xyz"', () => {
     it("should return an empty array", () =>
-      dvb.findStop("xyz").then(data => {
+      dvb.findStop("xyz").then((data) => {
         assert.isEmpty(data);
       }));
   });
@@ -128,13 +128,13 @@ describe("dvb.findStop", () => {
 describe("dvb.findPOI", () => {
   describe('dvb.findPOI "Frauenkirche Dresden"', () => {
     it("should return an array", () =>
-      dvb.findPOI("Frauenkirche Dresden").then(data => {
+      dvb.findPOI("Frauenkirche Dresden").then((data) => {
         assert.isNotEmpty(data);
       }));
 
     it("should find the correct POIS", () =>
-      dvb.findPOI("Frauenkirche Dresden").then(response => {
-        response.forEach(data => {
+      dvb.findPOI("Frauenkirche Dresden").then((response) => {
+        response.forEach((data) => {
           assertPoint(data);
           assert.include(data.name, "Frauenkirche");
           assert.strictEqual(data.city, "Dresden");
@@ -147,7 +147,7 @@ describe("dvb.findPOI", () => {
 
   describe('dvb.findPOI "zzz"', () => {
     it("should return an empty array", () =>
-      dvb.findPOI("zzz").then(data => {
+      dvb.findPOI("zzz").then((data) => {
         assert.isEmpty(data);
       }));
   });
@@ -168,9 +168,9 @@ describe("dvb.pins", () => {
     it("should contain objects with id, name, coords and connections", () =>
       dvb
         .pins(13.713899, 51.026578, 13.939144, 51.093821, [dvb.PIN_TYPE.stop])
-        .then(data => {
+        .then((data) => {
           assert.isNotEmpty(data);
-          data.forEach(pin => assertPin(pin, dvb.PIN_TYPE.stop));
+          data.forEach((pin) => assertPin(pin, dvb.PIN_TYPE.stop));
         }));
   });
 
@@ -178,11 +178,11 @@ describe("dvb.pins", () => {
     it("should contain objects with name, coords and platform_nr", () =>
       dvb
         .pins(13.713899, 51.026578, 13.737974, 51.035565, [
-          dvb.PIN_TYPE.platform
+          dvb.PIN_TYPE.platform,
         ])
-        .then(data => {
+        .then((data) => {
           assert.isNotEmpty(data);
-          data.forEach(pin => assertPin(pin, dvb.PIN_TYPE.platform));
+          data.forEach((pin) => assertPin(pin, dvb.PIN_TYPE.platform));
         }));
   });
 
@@ -190,9 +190,9 @@ describe("dvb.pins", () => {
     it("should contain objects with name, coords and id", () =>
       dvb
         .pins(13.713899, 51.026578, 13.737974, 51.035565, [dvb.PIN_TYPE.poi])
-        .then(data => {
+        .then((data) => {
           assert.isNotEmpty(data);
-          data.forEach(pin => assertPin(pin, dvb.PIN_TYPE.poi));
+          data.forEach((pin) => assertPin(pin, dvb.PIN_TYPE.poi));
         }));
   });
 
@@ -201,16 +201,16 @@ describe("dvb.pins", () => {
       dvb
         .pins(13.713899, 51.026578, 13.737974, 51.035565, [
           dvb.PIN_TYPE.platform,
-          dvb.PIN_TYPE.ticketmachine
+          dvb.PIN_TYPE.ticketmachine,
         ])
-        .then(data => {
+        .then((data) => {
           assert.isNotEmpty(data);
-          data.forEach(pin => assertPin(pin));
+          data.forEach((pin) => assertPin(pin));
           const platform = data.filter(
-            pin => pin.type === dvb.PIN_TYPE.platform
+            (pin) => pin.type === dvb.PIN_TYPE.platform
           );
           const ticketmachine = data.filter(
-            pin => pin.type === dvb.PIN_TYPE.ticketmachine
+            (pin) => pin.type === dvb.PIN_TYPE.ticketmachine
           );
           assert.isNotEmpty(platform);
           assert.isNotEmpty(ticketmachine);
@@ -225,16 +225,16 @@ describe("dvb.pins", () => {
         .pins(13.713899, 51.026578, 13.737974, 51.035565, [
           dvb.PIN_TYPE.poi,
           dvb.PIN_TYPE.ticketmachine,
-          dvb.PIN_TYPE.stop
+          dvb.PIN_TYPE.stop,
         ])
-        .then(data => {
+        .then((data) => {
           assert.isNotEmpty(data);
-          data.forEach(pin => assertPin(pin));
-          const poi = data.filter(pin => pin.type === dvb.PIN_TYPE.poi);
+          data.forEach((pin) => assertPin(pin));
+          const poi = data.filter((pin) => pin.type === dvb.PIN_TYPE.poi);
           const ticketmachine = data.filter(
-            pin => pin.type === dvb.PIN_TYPE.ticketmachine
+            (pin) => pin.type === dvb.PIN_TYPE.ticketmachine
           );
-          const stop = data.filter(pin => pin.type === dvb.PIN_TYPE.stop);
+          const stop = data.filter((pin) => pin.type === dvb.PIN_TYPE.stop);
           assert.isNotEmpty(poi);
           assert.isNotEmpty(ticketmachine);
           assert.isNotEmpty(stop);
@@ -247,7 +247,7 @@ describe("dvb.pins", () => {
 
   describe('dvb.pins "0, 0, 0, 0, stop"', () => {
     it("should resolve into an empty array", () =>
-      dvb.pins(0, 0, 0, 0).then(data => {
+      dvb.pins(0, 0, 0, 0).then((data) => {
         assert.isArray(data);
         assert.isEmpty(data);
       }));
@@ -260,7 +260,7 @@ describe("dvb.findAddress", () => {
     const lng = 13.722943;
 
     it("should resolve into an object with city, address and coords properties", () =>
-      dvb.findAddress(lng, lat).then(address => {
+      dvb.findAddress(lng, lat).then((address) => {
         assert.isDefined(address);
         assert.strictEqual(address!.name, "Nöthnitzer Straße 46");
         assert.strictEqual(address!.city, "Dresden");
@@ -270,7 +270,7 @@ describe("dvb.findAddress", () => {
       }));
 
     it("should contain nearby stops", () =>
-      dvb.findAddress(lng, lat).then(address => {
+      dvb.findAddress(lng, lat).then((address) => {
         assert.isDefined(address);
         assertAddress(address!);
       }));
@@ -285,14 +285,14 @@ describe("dvb.findAddress", () => {
 describe("dvb.coords", () => {
   describe('dvb.coords "33000755"', () => {
     it("should resolve into a coordinate array [lng, lat]", () =>
-      dvb.coords("33000755").then(data => {
+      dvb.coords("33000755").then((data) => {
         assertCoords(data!);
       }));
   });
 
   describe('dvb.coords "123"', () => {
     it("should return undefined", () =>
-      dvb.coords("123").then(data => {
+      dvb.coords("123").then((data) => {
         assert.isUndefined(data);
       }));
   });
@@ -302,11 +302,11 @@ describe("dvb.coords for id from dvb.pins", () => {
   it("coordinates should be equal for first pin", () =>
     dvb
       .pins(13.713899, 51.026578, 13.737974, 51.035565, [dvb.PIN_TYPE.poi])
-      .then(pins => {
+      .then((pins) => {
         assert.isNotEmpty(pins);
-        pins.forEach(pin => assertPin(pin, dvb.PIN_TYPE.poi));
+        pins.forEach((pin) => assertPin(pin, dvb.PIN_TYPE.poi));
 
-        return dvb.coords(pins[0].id).then(coords => {
+        return dvb.coords(pins[0].id).then((coords) => {
           assert.deepEqual(coords, pins[0].coords);
         });
       }));
@@ -315,19 +315,19 @@ describe("dvb.coords for id from dvb.pins", () => {
 describe("dvb.lines", () => {
   describe('dvb.lines "33000037" (Postplatz)', () => {
     it("should return an array", () =>
-      dvb.lines("33000037").then(data => {
+      dvb.lines("33000037").then((data) => {
         assert.isNotEmpty(data);
       }));
 
     it("should contain objects with name, mode, diva and directions", () =>
-      dvb.lines("33000037").then(data => {
-        data.forEach(line => {
+      dvb.lines("33000037").then((data) => {
+        data.forEach((line) => {
           assert.isString(line.name);
           assertMode(line.mode);
           assert.isDefined(line.diva);
           assertDiva(line.diva!);
           assert.isNotEmpty(line.directions);
-          line.directions.forEach(direction => {
+          line.directions.forEach((direction) => {
             assert.isString(direction);
           });
         });

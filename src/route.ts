@@ -17,7 +17,7 @@ export function route(
   originID: string,
   destinationID: string,
   time = new Date(),
-  isArrivalTime = true,
+  isArrivalTime = true
 ): Promise<IRoute> {
   const options: AxiosRequestConfig = {
     url: "https://webapi.vvo-online.de/tr/trips",

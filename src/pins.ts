@@ -15,7 +15,7 @@ export function pins(
   swlat: number,
   nelng: number,
   nelat: number,
-  pinTypes: PIN_TYPE[] = [PIN_TYPE.stop],
+  pinTypes: PIN_TYPE[] = [PIN_TYPE.stop]
 ): Promise<IPin[]> {
   const sw = utils.WGS84toGK4(swlng, swlat);
   const ne = utils.WGS84toGK4(nelng, nelat);

@@ -11,7 +11,7 @@ import * as utils from "./utils";
 export function monitor(
   stopID: string,
   offset = 0,
-  amount = 0,
+  amount = 0
 ): Promise<IMonitor[]> {
   const now = new Date();
   const time = new Date(now.getTime() + offset * 60 * 1000);
@@ -38,7 +38,7 @@ export function monitor(
       if (response.data.Departures) {
         return response.data.Departures.map((d: any) => {
           const arrivalTime = utils.parseDate(
-            d.RealTime ? d.RealTime : d.ScheduledTime,
+            d.RealTime ? d.RealTime : d.ScheduledTime
           );
           const scheduledTime = utils.parseDate(d.ScheduledTime);
 

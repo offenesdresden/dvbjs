@@ -21,13 +21,13 @@ async function pointFinder(
       assignedStops,
       limit: 0,
       query: stopName,
-      dvb: true
+      dvb: true,
     },
-    timeout: 5000
+    timeout: 5000,
   };
 
   return axios(options)
-    .then(response => {
+    .then((response) => {
       // check status of response
       utils.checkStatus(response.data);
 
@@ -45,7 +45,7 @@ async function pointFinder(
               coords,
               name: poi[3].replace(/'/g, ""),
               id: idAndType.id,
-              type: idAndType.type
+              type: idAndType.type,
             };
             return point;
           }
@@ -87,16 +87,18 @@ export function findAddress(
 ): Promise<IAddress | undefined> {
   const gk4 = utils.WGS84toGK4(lng, lat);
 
-  return pointFinder(`coord:${gk4[0]}:${gk4[1]}`, false, true).then(points => {
-    if (points.length === 0) {
-      return undefined;
+  return pointFinder(`coord:${gk4[0]}:${gk4[1]}`, false, true).then(
+    (points) => {
+      if (points.length === 0) {
+        return undefined;
+      }
+
+      const address: IAddress = {
+        ...points[0],
+        stops: points.slice(1) || [],
+      };
+
+      return address;
     }
-
-    const address: IAddress = {
-      ...points[0],
-      stops: points.slice(1) || []
-    };
-
-    return address;
-  });
+  );
 }
