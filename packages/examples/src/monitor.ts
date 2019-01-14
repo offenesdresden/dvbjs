@@ -1,4 +1,4 @@
-import * as dvb from "../src/index";
+import * as dvb from "dvbjs"; // OR const dvb = require("dvbjs");
 
 const stopID = "33000037"; // Postplatz
 const timeOffset = 5;

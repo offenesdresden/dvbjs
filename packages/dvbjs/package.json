@@ -1,0 +1,107 @@
+{
+  "name": "dvbjs",
+  "version": "5.0.1",
+  "description": "query Dresden's public transport system for current bus- and tram stop data",
+  "main": "dist/src/index.js",
+  "typings": "dist/src/index.d.ts",
+  "files": [
+    "dist/src/*"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/kiliankoe/dvbjs.git"
+  },
+  "keywords": [
+    "dvb",
+    "bus",
+    "tram",
+    "dresden",
+    "public transport"
+  ],
+  "author": {
+    "name": "Kilian Koeltzsch",
+    "email": "me@kilian.io",
+    "url": "http://kilian.io"
+  },
+  "contributors": [
+    {
+      "name": "Florian Schmidt",
+      "email": "florian.schmidt.1994@icloud.com",
+      "url": "https://github.com/florianschmidt1994"
+    },
+    {
+      "name": "Hannes Rosenbauer",
+      "email": "hannes.rosenbauer@gmail.com",
+      "url": "https://github.com/rebugger"
+    },
+    {
+      "name": "Andreas Hippler",
+      "email": "andreas@tabaro.de",
+      "url": "https://github.com/ronhippler"
+    },
+    {
+      "name": "Jens Maus",
+      "email": "mail@jens-maus.de",
+      "url": "https://github.com/jens-maus"
+    },
+    {
+      "name": "mimimi1968",
+      "url": "https://github.com/mimimi1968"
+    },
+    {
+      "name": "Benjamin Reim",
+      "email": "benj.reim@gmail.com",
+      "url": "https://github.com/BenReim"
+    }
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/kiliankoe/dvbjs/issues"
+  },
+  "homepage": "https://github.com/kiliankoe/dvbjs",
+  "dependencies": {
+    "axios": "^0.18.0",
+    "proj4": "^2.5.0"
+  },
+  "nyc": {
+    "extension": [
+      ".ts"
+    ],
+    "exclude": [
+      "**/*.js",
+      "**/*.d.ts",
+      "coverage",
+      "dist",
+      "src/test/**",
+      "examples/**"
+    ],
+    "reporter": [
+      "text",
+      "lcov"
+    ],
+    "require": [
+      "ts-node/register"
+    ],
+    "all": true
+  },
+  "devDependencies": {
+    "@types/chai": "^4.1.7",
+    "@types/chai-as-promised": "^7.1.0",
+    "@types/geojson": "^7946.0.4",
+    "@types/mocha": "^5.2.5",
+    "@types/mockery": "^1.4.29",
+    "@types/node": "^10.12.18",
+    "@types/proj4": "^2.5.0",
+    "chai": "^4.2.0",
+    "chai-as-promised": "^7.1.1",
+    "karma": "^3.1.4",
+    "karma-chrome-launcher": "^2.2.0",
+    "karma-mocha": "^1.3.0",
+    "karma-mocha-reporter": "^2.2.5",
+    "karma-typescript": "^3.0.13",
+    "mocha": "^5.2.0",
+    "mockery": "^2.1.0",
+    "ts-docs-gen": "^0.2.0",
+    "nyc": "^13.1.0"
+  }
+}

@@ -1,4 +1,4 @@
-import * as dvb from "../src/index";
+import * as dvb from "dvbjs"; // OR const dvb = require("dvbjs");
 
 const origin = "33000742"; // Helmholtzstraße
 const destination = "33000037"; // Postplatz

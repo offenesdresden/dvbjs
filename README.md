@@ -2,6 +2,7 @@
 
 [![travis-ci](http://img.shields.io/travis/kiliankoe/dvbjs.svg?style=flat)](https://travis-ci.org/kiliankoe/dvbjs)
 [![Coverage Status](https://coveralls.io/repos/kiliankoe/dvbjs/badge.svg?branch=master&service=github)](https://coveralls.io/github/kiliankoe/dvbjs?branch=master)
+[![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square)](https://github.com/prettier/prettier)
 [![npmversion](http://img.shields.io/npm/v/dvbjs.svg?style=flat)](https://www.npmjs.org/package/dvbjs)
 [![Downloads](https://img.shields.io/npm/dm/dvbjs.svg)](https://www.npmjs.com/package/dvbjs)
 
@@ -26,22 +27,22 @@ import * as dvb from "dvbjs";
 ```
 
 HTTP request are handled by [axios](https://github.com/axios/axios) that supports all modern browsers.
-See [react-example](examples/react-example/README.md) for a browser departure monitor example.
+See [packages/react-example](packages/react-example/README.md) for a browser departure monitor example.
 
 ## Example Usage
 
 ### Find stops by name
-<!-- AUTO-GENERATED-CONTENT:START (EXAMPLE_CODE:src=./examples/findStop.ts) -->
+<!-- AUTO-GENERATED-CONTENT:START (EXAMPLE_CODE:src=./packages/examples/src/findStop.ts) -->
 ```ts
-import * as dvb from "dvbjs"; //or const dvb = require("dvbjs")
+import * as dvb from "dvbjs"; // OR const dvb = require("dvbjs");
 
 dvb.findStop("zellesch").then((data) => {
   console.dir({ data }, { depth: 7, maxArrayLength: 2 });
 });
 ```
 <!-- AUTO-GENERATED-CONTENT:END -->
-<!-- AUTO-GENERATED-CONTENT:START (CODE:src=./dist/examples/findStop.js.yml) -->
-<!-- The below code snippet is automatically added from ./dist/examples/findStop.js.yml -->
+<!-- AUTO-GENERATED-CONTENT:START (CODE:src=./packages/examples/dist/findStop.js.yml) -->
+<!-- The below code snippet is automatically added from ./packages/examples/dist/findStop.js.yml -->
 ```yml
 { data:
    [ { city: 'Dresden',
@@ -53,9 +54,9 @@ dvb.findStop("zellesch").then((data) => {
 <!-- AUTO-GENERATED-CONTENT:END -->
 
 ### Monitor a single stop
-<!-- AUTO-GENERATED-CONTENT:START (EXAMPLE_CODE:src=./examples/monitor.ts) -->
+<!-- AUTO-GENERATED-CONTENT:START (EXAMPLE_CODE:src=./packages/examples/src/monitor.ts) -->
 ```ts
-import * as dvb from "dvbjs"; //or const dvb = require("dvbjs")
+import * as dvb from "dvbjs"; // OR const dvb = require("dvbjs");
 
 const stopID = "33000037"; // Postplatz
 const timeOffset = 5;
@@ -66,17 +67,17 @@ dvb.monitor(stopID, timeOffset, numResults).then((data) => {
 });
 ```
 <!-- AUTO-GENERATED-CONTENT:END -->
-<!-- AUTO-GENERATED-CONTENT:START (CODE:src=./dist/examples/monitor.js.yml) -->
-<!-- The below code snippet is automatically added from ./dist/examples/monitor.js.yml -->
+<!-- AUTO-GENERATED-CONTENT:START (CODE:src=./packages/examples/dist/monitor.js.yml) -->
+<!-- The below code snippet is automatically added from ./packages/examples/dist/monitor.js.yml -->
 ```yml
-[ { arrivalTime: 2019-01-14T17:22:00.000Z,
-    scheduledTime: 2019-01-14T17:22:00.000Z,
-    id: '79697960',
-    line: '1',
-    direction: 'Prohlis',
-    platform: { name: '1', type: 'Platform' },
-    arrivalTimeRelative: 5,
-    scheduledTimeRelative: 5,
+[ { arrivalTime: 2019-01-14T20:30:00.000Z,
+    scheduledTime: 2019-01-14T20:30:00.000Z,
+    id: '79698787',
+    line: '6',
+    direction: 'Postplatz',
+    platform: { name: '3', type: 'Platform' },
+    arrivalTimeRelative: 7,
+    scheduledTimeRelative: 7,
     delayTime: 0,
     state: 'InTime',
     mode:
@@ -84,16 +85,16 @@ dvb.monitor(stopID, timeOffset, numResults).then((data) => {
        name: 'Tram',
        icon_url:
         'https://www.dvb.de/assets/img/trans-icon/transport-tram.svg' },
-    diva: { number: 11001, network: 'voe' } },
-  { arrivalTime: 2019-01-14T17:23:34.000Z,
-    scheduledTime: 2019-01-14T17:23:00.000Z,
-    id: '79700574',
+    diva: { number: 11006, network: 'voe' } },
+  { arrivalTime: 2019-01-14T20:31:00.000Z,
+    scheduledTime: 2019-01-14T20:31:00.000Z,
+    id: '79700484',
     line: '12',
-    direction: 'Striesen',
-    platform: { name: '3', type: 'Platform' },
-    arrivalTimeRelative: 7,
-    scheduledTimeRelative: 6,
-    delayTime: 1,
+    direction: 'Leutewitz',
+    platform: { name: '4', type: 'Platform' },
+    arrivalTimeRelative: 8,
+    scheduledTimeRelative: 8,
+    delayTime: 0,
     state: 'InTime',
     mode:
      { title: 'Straßenbahn',
@@ -105,9 +106,9 @@ dvb.monitor(stopID, timeOffset, numResults).then((data) => {
 <!-- AUTO-GENERATED-CONTENT:END -->
 
 ### Find routes
-<!-- AUTO-GENERATED-CONTENT:START (EXAMPLE_CODE:src=./examples/route.ts) -->
+<!-- AUTO-GENERATED-CONTENT:START (EXAMPLE_CODE:src=./packages/examples/src/route.ts) -->
 ```ts
-import * as dvb from "dvbjs"; //or const dvb = require("dvbjs")
+import * as dvb from "dvbjs"; // OR const dvb = require("dvbjs");
 
 const origin = "33000742"; // Helmholtzstraße
 const destination = "33000037"; // Postplatz
@@ -118,8 +119,8 @@ dvb.route(origin, destination, startTime).then((data) => {
 });
 ```
 <!-- AUTO-GENERATED-CONTENT:END -->
-<!-- AUTO-GENERATED-CONTENT:START (CODE:src=./dist/examples/route.js.yml) -->
-<!-- The below code snippet is automatically added from ./dist/examples/route.js.yml -->
+<!-- AUTO-GENERATED-CONTENT:START (CODE:src=./packages/examples/dist/route.js.yml) -->
+<!-- The below code snippet is automatically added from ./packages/examples/dist/route.js.yml -->
 ```yml
 { origin:
    { name: 'Helmholtzstraße',
@@ -128,38 +129,140 @@ dvb.route(origin, destination, startTime).then((data) => {
   destination:
    { name: 'Postplatz',
      city: 'Dresden',
-     coords: [ 13.733966669186017, 51.05081442107084 ] },
+     coords: [ 13.73357173082639, 51.05055059050917 ] },
   trips:
    [ { nodes:
         [ { stops:
              [ { name: 'Helmholtzstraße',
                  city: 'Dresden',
                  type: 'Stop',
+                 platform: { name: '1', type: 'Platform' },
+                 coords: [ 13.725468471273134, 51.0255443264448 ],
+                 arrival: 2019-01-14T19:06:00.000Z,
+                 departure: 2019-01-14T19:06:00.000Z },
+               { name: 'Stadtgutstraße',
+                 city: 'Dresden',
+                 type: 'Stop',
+                 platform: { name: '1', type: 'Platform' },
+                 coords: [ 13.736249024095288, 51.02412604112871 ],
+                 arrival: 2019-01-14T19:08:00.000Z,
+                 departure: 2019-01-14T19:08:00.000Z },
+               ... 1 more item ],
+            departure:
+             { name: 'Helmholtzstraße',
+               city: 'Dresden',
+               platform: { name: '1', type: 'Platform' },
+               time: 2019-01-14T19:06:00.000Z,
+               coords: [ 13.725468471273134, 51.0255443264448 ],
+               type: 'Stop' },
+            arrival:
+             { name: 'Räcknitzhöhe',
+               city: 'Dresden',
+               platform: { name: '1', type: 'Platform' },
+               time: 2019-01-14T19:09:00.000Z,
+               coords: [ 13.742469696952984, 51.02352100754019 ],
+               type: 'Stop' },
+            mode:
+             { title: 'Bus',
+               name: 'CityBus',
+               icon_url: 'https://www.dvb.de/assets/img/trans-icon/transport-bus.svg' },
+            line: '85',
+            direction: 'Striesen',
+            diva: { number: 21085, network: 'voe' },
+            duration: 3,
+            path:
+             [ [ 13.725468471273134, 51.0255443264448 ],
+               [ 13.725737159122861, 51.02548641939806 ],
+               ... 18 more items ] },
+          { stops:
+             [ { name: 'Räcknitzhöhe',
+                 city: 'Dresden',
+                 type: 'Stop',
+                 platform: { name: '1', type: 'Platform' },
+                 coords: [ 13.742469696952984, 51.02352100754019 ],
+                 arrival: 2019-01-14T19:13:00.000Z,
+                 departure: 2019-01-14T19:13:00.000Z },
+               { name: 'Zellescher Weg',
+                 city: 'Dresden',
+                 type: 'Stop',
+                 platform: { name: '1', type: 'Platform' },
+                 coords: [ 13.7457515521668, 51.02816465242123 ],
+                 arrival: 2019-01-14T19:15:00.000Z,
+                 departure: 2019-01-14T19:15:00.000Z },
+               ... 8 more items ],
+            departure:
+             { name: 'Räcknitzhöhe',
+               city: 'Dresden',
+               platform: { name: '1', type: 'Platform' },
+               time: 2019-01-14T19:13:00.000Z,
+               coords: [ 13.742469696952984, 51.02352100754019 ],
+               type: 'Stop' },
+            arrival:
+             { name: 'Postplatz',
+               city: 'Dresden',
+               platform: { name: '4', type: 'Platform' },
+               time: 2019-01-14T19:28:00.000Z,
+               coords: [ 13.73357173082639, 51.05055059050917 ],
+               type: 'Stop' },
+            mode:
+             { title: 'Straßenbahn',
+               name: 'Tram',
+               icon_url:
+                'https://www.dvb.de/assets/img/trans-icon/transport-tram.svg' },
+            line: '11',
+            direction: 'Bühlau',
+            diva: { number: 11011, network: 'voe' },
+            duration: 15,
+            path:
+             [ [ 13.742469696952984, 51.02352100754019 ],
+               [ 13.74249987378793, 51.02356550610719 ],
+               ... 122 more items ] } ],
+       departure:
+        { name: 'Helmholtzstraße',
+          city: 'Dresden',
+          platform: { name: '1', type: 'Platform' },
+          time: 2019-01-14T19:06:00.000Z,
+          coords: [ 13.725468471273134, 51.0255443264448 ],
+          type: 'Stop' },
+       arrival:
+        { name: 'Postplatz',
+          city: 'Dresden',
+          platform: { name: '4', type: 'Platform' },
+          time: 2019-01-14T19:28:00.000Z,
+          coords: [ 13.73357173082639, 51.05055059050917 ],
+          type: 'Stop' },
+       duration: 22,
+       interchanges: 1 },
+     { nodes:
+        [ { stops:
+             [ { name: 'Helmholtzstraße',
+                 city: 'Dresden',
+                 type: 'Stop',
                  platform: { name: '2', type: 'Platform' },
                  coords: [ 13.725468471273134, 51.0255443264448 ],
-                 arrival: 2019-01-14T15:35:00.000Z,
-                 departure: 2019-01-14T15:35:00.000Z },
+                 arrival: 2019-01-14T19:13:00.000Z,
+                 departure: 2019-01-14T19:13:00.000Z },
                { name: 'Regensburger Straße',
                  city: 'Dresden',
                  type: 'Stop',
                  platform: { name: '2', type: 'Platform' },
                  coords: [ 13.720554082747958, 51.02640790159258 ],
-                 arrival: 2019-01-14T15:36:00.000Z,
-                 departure: 2019-01-14T15:36:00.000Z },
-               ... 3 more items ],
+                 arrival: 2019-01-14T19:14:00.000Z,
+                 departure: 2019-01-14T19:14:00.000Z },
+               ... 1 more item ],
             departure:
              { name: 'Helmholtzstraße',
                city: 'Dresden',
                platform: { name: '2', type: 'Platform' },
-               time: 2019-01-14T15:35:00.000Z,
+               time: 2019-01-14T19:13:00.000Z,
                coords: [ 13.725468471273134, 51.0255443264448 ],
                type: 'Stop' },
             arrival:
-             { name: 'Plauen Rathaus',
+             { name: 'Plauen Nöthnitzer Straße',
                city: 'Dresden',
-               platform: { name: '4', type: 'Platform' },
-               time: 2019-01-14T15:39:00.000Z,
-               coords: [ 13.706682500177832, 51.029470094062866 ],
+               platform: { name: '6', type: 'Platform' },
+               time: 2019-01-14T19:14:00.000Z,
+               coords: [ 13.716530789023206, 51.02708737506858 ],
                type: 'Stop' },
             mode:
              { title: 'Bus',
@@ -172,7 +275,7 @@ dvb.route(origin, destination, startTime).then((data) => {
             path:
              [ [ 13.725468471273134, 51.0255443264448 ],
                [ 13.72529850994302, 51.025573805747264 ],
-               ... 25 more items ] },
+               ... 9 more items ] },
           { stops: [],
             departure: undefined,
             arrival: undefined,
@@ -183,136 +286,34 @@ dvb.route(origin, destination, startTime).then((data) => {
             line: '',
             direction: '',
             diva: undefined,
-            duration: 1,
+            duration: 2,
             path:
-             [ [ 13.706682500177832, 51.029470094062866 ],
-               [ 13.706682500177832, 51.029470094062866 ],
-               ... 10 more items ] },
+             [ [ 13.716530789023206, 51.02708737506858 ],
+               [ 13.716530457074477, 51.02707839024142 ],
+               ... 15 more items ] },
           ... 3 more items ],
        departure:
         { name: 'Helmholtzstraße',
           city: 'Dresden',
           platform: { name: '2', type: 'Platform' },
-          time: 2019-01-14T15:35:00.000Z,
+          time: 2019-01-14T19:13:00.000Z,
           coords: [ 13.725468471273134, 51.0255443264448 ],
           type: 'Stop' },
        arrival:
         { name: 'Postplatz',
           city: 'Dresden',
           platform: { name: '2', type: 'Platform' },
-          time: 2019-01-14T16:01:00.000Z,
+          time: 2019-01-14T19:38:00.000Z,
           coords: [ 13.733966669186017, 51.05081442107084 ],
           type: 'Stop' },
-       duration: 1,
+       duration: 25,
        interchanges: 2 },
-     { nodes:
-        [ { stops:
-             [ { name: 'Helmholtzstraße',
-                 city: 'Dresden',
-                 type: 'Stop',
-                 platform: { name: '1', type: 'Platform' },
-                 coords: [ 13.725468471273134, 51.0255443264448 ],
-                 arrival: 2019-01-14T15:35:00.000Z,
-                 departure: 2019-01-14T15:35:00.000Z },
-               { name: 'Stadtgutstraße',
-                 city: 'Dresden',
-                 type: 'Stop',
-                 platform: { name: '1', type: 'Platform' },
-                 coords: [ 13.736249024095288, 51.02412604112871 ],
-                 arrival: 2019-01-14T15:37:00.000Z,
-                 departure: 2019-01-14T15:37:00.000Z },
-               ... 1 more item ],
-            departure:
-             { name: 'Helmholtzstraße',
-               city: 'Dresden',
-               platform: { name: '1', type: 'Platform' },
-               time: 2019-01-14T15:35:00.000Z,
-               coords: [ 13.725468471273134, 51.0255443264448 ],
-               type: 'Stop' },
-            arrival:
-             { name: 'Räcknitzhöhe',
-               city: 'Dresden',
-               platform: { name: '1', type: 'Platform' },
-               time: 2019-01-14T15:39:00.000Z,
-               coords: [ 13.742469696952984, 51.02352100754019 ],
-               type: 'Stop' },
-            mode:
-             { title: 'Bus',
-               name: 'CityBus',
-               icon_url: 'https://www.dvb.de/assets/img/trans-icon/transport-bus.svg' },
-            line: '85',
-            direction: 'Striesen',
-            diva: { number: 21085, network: 'voe' },
-            duration: 1,
-            path:
-             [ [ 13.725468471273134, 51.0255443264448 ],
-               [ 13.725737159122861, 51.02548641939806 ],
-               ... 18 more items ] },
-          { stops:
-             [ { name: 'Räcknitzhöhe',
-                 city: 'Dresden',
-                 type: 'Stop',
-                 platform: { name: '1', type: 'Platform' },
-                 coords: [ 13.742469696952984, 51.02352100754019 ],
-                 arrival: 2019-01-14T15:48:00.000Z,
-                 departure: 2019-01-14T15:48:00.000Z },
-               { name: 'Zellescher Weg',
-                 city: 'Dresden',
-                 type: 'Stop',
-                 platform: { name: '1', type: 'Platform' },
-                 coords: [ 13.7457515521668, 51.02816465242123 ],
-                 arrival: 2019-01-14T15:50:00.000Z,
-                 departure: 2019-01-14T15:50:00.000Z },
-               ... 8 more items ],
-            departure:
-             { name: 'Räcknitzhöhe',
-               city: 'Dresden',
-               platform: { name: '1', type: 'Platform' },
-               time: 2019-01-14T15:48:00.000Z,
-               coords: [ 13.742469696952984, 51.02352100754019 ],
-               type: 'Stop' },
-            arrival:
-             { name: 'Postplatz',
-               city: 'Dresden',
-               platform: { name: '4', type: 'Platform' },
-               time: 2019-01-14T16:03:00.000Z,
-               coords: [ 13.73357173082639, 51.05055059050917 ],
-               type: 'Stop' },
-            mode:
-             { title: 'Straßenbahn',
-               name: 'Tram',
-               icon_url:
-                'https://www.dvb.de/assets/img/trans-icon/transport-tram.svg' },
-            line: '11',
-            direction: 'Bühlau',
-            diva: { number: 11011, network: 'voe' },
-            duration: 1,
-            path:
-             [ [ 13.742469696952984, 51.02352100754019 ],
-               [ 13.74249987378793, 51.02356550610719 ],
-               ... 122 more items ] } ],
-       departure:
-        { name: 'Helmholtzstraße',
-          city: 'Dresden',
-          platform: { name: '1', type: 'Platform' },
-          time: 2019-01-14T15:35:00.000Z,
-          coords: [ 13.725468471273134, 51.0255443264448 ],
-          type: 'Stop' },
-       arrival:
-        { name: 'Postplatz',
-          city: 'Dresden',
-          platform: { name: '4', type: 'Platform' },
-          time: 2019-01-14T16:03:00.000Z,
-          coords: [ 13.73357173082639, 51.05055059050917 ],
-          type: 'Stop' },
-       duration: 1,
-       interchanges: 1 },
-     ... 6 more items ] }
+     ... 2 more items ] }
 ```
 <!-- AUTO-GENERATED-CONTENT:END -->
 
 ## API Documentation
-<!-- AUTO-GENERATED-CONTENT:START (RENDERDOCS:path=./docs/api/index.md) -->
+<!-- AUTO-GENERATED-CONTENT:START (RENDERDOCS:path=./packages/dvbjs/docs/api/index.md) -->
 ### Table of contents
 
 * [index.ts][SourceFile-0]
@@ -948,119 +949,47 @@ enum PIN_TYPE {
 [FunctionDeclaration-0]: README.md#coords
 [FunctionDeclaration-1]: README.md#findaddress
 [InterfaceDeclaration-0]: README.md#iaddress
-[InterfaceDeclaration-0]: README.md#iaddress
-[InterfaceDeclaration-0]: README.md#iaddress
-[InterfaceDeclaration-0]: README.md#iaddress
-[InterfaceDeclaration-0]: README.md#iaddress
-[InterfaceDeclaration-0]: README.md#iaddress
-[InterfaceDeclaration-0]: README.md#iaddress
-[InterfaceDeclaration-0]: README.md#iaddress
 [FunctionDeclaration-2]: README.md#findpoi
-[InterfaceDeclaration-1]: README.md#ipoint
-[InterfaceDeclaration-1]: README.md#ipoint
-[InterfaceDeclaration-1]: README.md#ipoint
-[InterfaceDeclaration-1]: README.md#ipoint
-[InterfaceDeclaration-1]: README.md#ipoint
-[InterfaceDeclaration-1]: README.md#ipoint
-[InterfaceDeclaration-1]: README.md#ipoint
 [InterfaceDeclaration-1]: README.md#ipoint
 [FunctionDeclaration-3]: README.md#findstop
 [InterfaceDeclaration-1]: README.md#ipoint
-[InterfaceDeclaration-1]: README.md#ipoint
-[InterfaceDeclaration-1]: README.md#ipoint
-[InterfaceDeclaration-1]: README.md#ipoint
-[InterfaceDeclaration-1]: README.md#ipoint
-[InterfaceDeclaration-1]: README.md#ipoint
-[InterfaceDeclaration-1]: README.md#ipoint
-[InterfaceDeclaration-1]: README.md#ipoint
 [FunctionDeclaration-4]: README.md#lines
-[InterfaceDeclaration-2]: README.md#iline
-[InterfaceDeclaration-2]: README.md#iline
-[InterfaceDeclaration-2]: README.md#iline
-[InterfaceDeclaration-2]: README.md#iline
-[InterfaceDeclaration-2]: README.md#iline
-[InterfaceDeclaration-2]: README.md#iline
-[InterfaceDeclaration-2]: README.md#iline
 [InterfaceDeclaration-2]: README.md#iline
 [FunctionDeclaration-5]: README.md#monitor
 [InterfaceDeclaration-4]: README.md#imonitor
-[InterfaceDeclaration-4]: README.md#imonitor
-[InterfaceDeclaration-4]: README.md#imonitor
-[InterfaceDeclaration-4]: README.md#imonitor
-[InterfaceDeclaration-4]: README.md#imonitor
-[InterfaceDeclaration-4]: README.md#imonitor
-[InterfaceDeclaration-4]: README.md#imonitor
-[InterfaceDeclaration-4]: README.md#imonitor
 [FunctionDeclaration-6]: README.md#pins
 [EnumDeclaration-1]: README.md#pin_type
-[EnumDeclaration-1]: README.md#pin_type
-[EnumDeclaration-1]: README.md#pin_type
-[EnumDeclaration-1]: README.md#pin_type
-[InterfaceDeclaration-5]: README.md#ipin
-[InterfaceDeclaration-5]: README.md#ipin
-[InterfaceDeclaration-5]: README.md#ipin
-[InterfaceDeclaration-5]: README.md#ipin
-[InterfaceDeclaration-5]: README.md#ipin
-[InterfaceDeclaration-5]: README.md#ipin
-[InterfaceDeclaration-5]: README.md#ipin
 [InterfaceDeclaration-5]: README.md#ipin
 [FunctionDeclaration-7]: README.md#route
-[InterfaceDeclaration-7]: README.md#iroute
-[InterfaceDeclaration-7]: README.md#iroute
-[InterfaceDeclaration-7]: README.md#iroute
 [InterfaceDeclaration-7]: README.md#iroute
 [InterfaceDeclaration-12]: README.md#idiva
 [InterfaceDeclaration-13]: README.md#iplatform
 [InterfaceDeclaration-5]: README.md#ipin
 [EnumDeclaration-1]: README.md#pin_type
-[EnumDeclaration-1]: README.md#pin_type
 [InterfaceDeclaration-6]: README.md#iconnection
 [InterfaceDeclaration-6]: README.md#iconnection
-[InterfaceDeclaration-6]: README.md#iconnection
-[InterfaceDeclaration-6]: README.md#iconnection
-[InterfaceDeclaration-6]: README.md#iconnection
-[InterfaceDeclaration-3]: README.md#imode
 [InterfaceDeclaration-3]: README.md#imode
 [InterfaceDeclaration-3]: README.md#imode
 [InterfaceDeclaration-1]: README.md#ipoint
-[EnumDeclaration-0]: README.md#poi_type
 [EnumDeclaration-0]: README.md#poi_type
 [InterfaceDeclaration-0]: README.md#iaddress
 [InterfaceDeclaration-1]: README.md#ipoint
 [InterfaceDeclaration-1]: README.md#ipoint
-[InterfaceDeclaration-1]: README.md#ipoint
-[InterfaceDeclaration-1]: README.md#ipoint
-[InterfaceDeclaration-1]: README.md#ipoint
-[InterfaceDeclaration-1]: README.md#ipoint
 [InterfaceDeclaration-2]: README.md#iline
-[InterfaceDeclaration-3]: README.md#imode
 [InterfaceDeclaration-3]: README.md#imode
 [InterfaceDeclaration-4]: README.md#imonitor
 [InterfaceDeclaration-3]: README.md#imode
-[InterfaceDeclaration-3]: README.md#imode
 [InterfaceDeclaration-11]: README.md#ilocation
 [InterfaceDeclaration-10]: README.md#istop
-[InterfaceDeclaration-11]: README.md#ilocation
 [InterfaceDeclaration-11]: README.md#ilocation
 [InterfaceDeclaration-14]: README.md#istoplocation
 [InterfaceDeclaration-11]: README.md#ilocation
-[InterfaceDeclaration-11]: README.md#ilocation
 [InterfaceDeclaration-9]: README.md#inode
 [InterfaceDeclaration-10]: README.md#istop
-[InterfaceDeclaration-10]: README.md#istop
-[InterfaceDeclaration-10]: README.md#istop
-[InterfaceDeclaration-10]: README.md#istop
-[InterfaceDeclaration-3]: README.md#imode
 [InterfaceDeclaration-3]: README.md#imode
 [InterfaceDeclaration-8]: README.md#itrip
-[InterfaceDeclaration-9]: README.md#inode
-[InterfaceDeclaration-9]: README.md#inode
-[InterfaceDeclaration-9]: README.md#inode
 [InterfaceDeclaration-9]: README.md#inode
 [InterfaceDeclaration-7]: README.md#iroute
-[InterfaceDeclaration-8]: README.md#itrip
-[InterfaceDeclaration-8]: README.md#itrip
-[InterfaceDeclaration-8]: README.md#itrip
 [InterfaceDeclaration-8]: README.md#itrip
 [TypeAliasDeclaration-0]: README.md#coord
 [EnumDeclaration-0]: README.md#poi_type

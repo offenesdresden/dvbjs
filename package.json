@@ -1,148 +1,49 @@
 {
-  "name": "dvbjs",
-  "version": "5.0.1",
-  "description": "query Dresden's public transport system for current bus- and tram stop data",
-  "main": "dist/src/index.js",
-  "typings": "dist/src/index.d.ts",
-  "files": [
-    "dist/src/*",
-    "README.md"
+  "name": "dvbjs-root",
+  "private": true,
+  "workspaces": [
+    "packages/*"
   ],
   "scripts": {
-    "clean": "rimraf .nyc_output coverage dist docs",
-    "clean:test": "rimraf dist/test",
-    "tsc": "tsc -b .",
-    "build": "run-s clean tsc",
-    "build:react_example": "cd examples/react-example && yarn --frozen-lockfile && yarn build",
+    "clean": "rimraf packages/*/.nyc_output packages/*/coverage packages/*/dist packages/*/docs packages/*/build",
+    "tsc": "tsc -b packages/*",
+    "build": "run-s clean lint tsc",
+    "build:react_example": "yarn workspace react-example build",
     "lint": "run-s prettier tslint",
     "lint:fix": "run-s 'prettier --write' 'tslint --fix'",
-    "tslint": "tslint {src,test}/**/*.ts examples/*.ts",
-    "prettier": "prettier {src,test}/**/*.ts examples/*.ts -l",
+    "tslint": "tslint packages/*/{src,test}/*.{ts,tsx}",
+    "prettier": "prettier packages/*/{src,test}/*.{ts,tsx} -l",
+    "watch": "run-p 'tsc --watch' 'test:node --watch --watch-extensions ts'",
     "test": "run-p lint test:*",
-    "test:node": "mocha --opts mocha.opts",
-    "test:browser": "karma start",
+    "test:node": "yarn workspace dvbjs mocha --opts mocha.opts",
+    "test:browser": "yarn workspace dvbjs karma start",
     "coverage": "run-p lint coverage:*",
-    "coverage:node": "nyc mocha --opts mocha.opts",
+    "coverage:node": "yarn workspace dvbjs nyc mocha --opts mocha.opts",
     "coverage:browser": "yarn test:browser",
-    "watch": "mocha --opts mocha.opts --watch --watch-extensions ts",
-    "coveralls": "cat ./coverage/lcov.info | coveralls",
-    "docs": "run-s docs:generate:api docs:generate:examples docs:readme",
-    "docs:generate:api": "node node_modules/.bin/ts-docs-gen --entryFile ./src/index.ts",
-    "docs:generate:examples": "node dist/examples/runExamples.js",
+    "coveralls": "cat ./packages/dvbjs/coverage/lcov.info | coveralls",
+    "docs": "run-s docs:api docs:examples docs:readme docs:copy",
+    "docs:api": "yarn workspace dvbjs node node_modules/.bin/ts-docs-gen --entryFile src/index.ts",
+    "docs:examples": "yarn workspace dvbjs-examples start",
     "docs:readme": "node .markdown-magic.config.js",
+    "docs:copy": "cpy README.md packages/dvbjs",
     "uncommitted": "uncommitted",
-    "prepublish": "in-publish && npm-run-all lint build -p coverage build:react_example docs -s clean:test uncommitted || not-in-publish",
-    "run_example": "yarn --frozen-lockfile && yarn build && yarn --frozen-lockfile --cwd ./examples/react-example && yarn --cwd ./examples/react-example start"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git://github.com/kiliankoe/dvbjs.git"
-  },
-  "keywords": [
-    "dvb",
-    "bus",
-    "tram",
-    "dresden",
-    "public transport"
-  ],
-  "author": {
-    "name": "Kilian Koeltzsch",
-    "email": "me@kilian.io",
-    "url": "http://kilian.io"
-  },
-  "contributors": [
-    {
-      "name": "Florian Schmidt",
-      "email": "florian.schmidt.1994@icloud.com",
-      "url": "https://github.com/florianschmidt1994"
-    },
-    {
-      "name": "Hannes Rosenbauer",
-      "email": "hannes.rosenbauer@gmail.com",
-      "url": "https://github.com/rebugger"
-    },
-    {
-      "name": "Andreas Hippler",
-      "email": "andreas@tabaro.de",
-      "url": "https://github.com/ronhippler"
-    },
-    {
-      "name": "Jens Maus",
-      "email": "mail@jens-maus.de",
-      "url": "https://github.com/jens-maus"
-    },
-    {
-      "name": "mimimi1968",
-      "url": "https://github.com/mimimi1968"
-    },
-    {
-      "name": "Benjamin Reim",
-      "email": "benj.reim@gmail.com",
-      "url": "https://github.com/BenReim"
-    }
-  ],
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/kiliankoe/dvbjs/issues"
-  },
-  "homepage": "https://github.com/kiliankoe/dvbjs",
-  "dependencies": {
-    "axios": "^0.18.0",
-    "proj4": "^2.5.0"
+    "run_example": "yarn build && yarn workspace react-example start",
+    "publish:dvbjs": "npm-run-all lint build -p coverage build:react_example docs -s uncommitted && yarn workspace dvbjs publish"
   },
   "devDependencies": {
-    "@types/chai": "^4.1.7",
-    "@types/chai-as-promised": "^7.1.0",
-    "@types/fs-extra-promise": "^1.0.7",
-    "@types/geojson": "^7946.0.4",
-    "@types/mocha": "^5.2.5",
-    "@types/mockery": "^1.4.29",
-    "@types/node": "^10.12.18",
-    "@types/proj4": "^2.5.0",
-    "chai": "^4.2.0",
-    "chai-as-promised": "^7.1.1",
     "coveralls": "^3.0.2",
-    "fs-extra-promise": "^1.0.1",
+    "cpy-cli": "^2.0.0",
     "in-publish": "^2.0.0",
-    "karma": "^3.1.4",
-    "karma-chrome-launcher": "^2.2.0",
-    "karma-mocha": "^1.3.0",
-    "karma-mocha-reporter": "^2.2.5",
-    "karma-typescript": "^3.0.13",
     "markdown-magic": "^0.1.25",
-    "mocha": "^5.2.0",
-    "mockery": "^2.1.0",
     "npm-run-all": "^4.1.5",
-    "nyc": "^13.1.0",
     "prettier": "^1.15.3",
     "rimraf": "^2.6.3",
     "source-map-support": "^0.5.10",
-    "ts-docs-gen": "^0.2.0",
     "ts-node": "^7.0.1",
     "tslint": "^5.12.1",
     "tslint-config-prettier": "^1.17.0",
+    "tslint-react": "^3.6.0",
     "typescript": "^3.2.2",
     "uncommitted": "^1.0.0"
-  },
-  "nyc": {
-    "extension": [
-      ".ts"
-    ],
-    "exclude": [
-      "**/*.js",
-      "**/*.d.ts",
-      "coverage",
-      "dist",
-      "src/test/**",
-      "examples/**"
-    ],
-    "reporter": [
-      "text",
-      "lcov"
-    ],
-    "require": [
-      "ts-node/register"
-    ],
-    "all": true
   }
 }

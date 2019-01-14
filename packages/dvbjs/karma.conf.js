@@ -7,6 +7,11 @@ module.exports = function(config) {
     },
     reporters: ["mocha", "karma-typescript"],
     browsers: ["Chrome"],
+    client: {
+      mocha: {
+        opts: "mocha.opts",
+      },
+    },
     karmaTypescriptConfig: {
       compilerOptions: {
         target: "ES5",

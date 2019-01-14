@@ -21,13 +21,7 @@ const config = {
         ...fs
           .readFileSync(options.src, { encoding: "UTF8" })
           .trim()
-          .split("\n")
-          .map((line) => {
-            if (line.startsWith("import * as dvb")) {
-              return 'import * as dvb from "dvbjs"; //or const dvb = require("dvbjs");';
-            }
-            return line;
-          }),
+          .split("\n"),
         "```",
       ].join("\n");
     },
