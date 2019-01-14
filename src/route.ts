@@ -13,9 +13,12 @@ import * as utils from "./utils";
  * The path property of a trip contains an array consisting of all the coordinates
  * describing the path of this node. This can be useful to draw the route on a map.
  */
-export function route(originID: string, destinationID: string,
-  time = new Date(), isArrivalTime = true): Promise<IRoute> {
-
+export function route(
+  originID: string,
+  destinationID: string,
+  time = new Date(),
+  isArrivalTime = true,
+): Promise<IRoute> {
   const options: AxiosRequestConfig = {
     url: "https://webapi.vvo-online.de/tr/trips",
     params: {

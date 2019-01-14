@@ -23,11 +23,11 @@ describe("internal utils", () => {
       ["Mobilityescalatorup", "EscalatorUp"],
       ["Mobilityescalatordown", "EscalatorDown"],
       ["Mobilityelevatorup", "ElevatorUp"],
-      ["Mobilityelevatordown", "ElevatorDown"],
+      ["Mobilityelevatordown", "ElevatorDown"]
     ];
 
-    mots.forEach((mot) => {
-      it("should parse `" + mot[0] + "` to `" + mot[1] + "`", (done) => {
+    mots.forEach(mot => {
+      it("should parse `" + mot[0] + "` to `" + mot[1] + "`", done => {
         const mode = utils.parseMode(mot[0]);
         assertMode(mode);
         assert.strictEqual(mode.name, mot[1]);
@@ -122,7 +122,9 @@ describe("internal utils", () => {
     });
 
     it("convertCoordinates", () => {
-      const points = utils.convertCoordinates(`${gk4[0]}|${gk4[1]}|${gk4[0]}|${gk4[1]}|`);
+      const points = utils.convertCoordinates(
+        `${gk4[0]}|${gk4[1]}|${gk4[0]}|${gk4[1]}|`
+      );
       assert.isNotEmpty(points);
       points.forEach(assertCoords);
     });
@@ -136,8 +138,10 @@ describe("internal utils", () => {
 
   describe("parsePin", () => {
     it("stop", () => {
-      const pin = utils.parsePin("33000028|||Hauptbahnhof|5657516|4621644||1:3~6~7~8~9~10~11#2:66~H/S#3:261~333~352~360"
-        + "~366~400~424~672~Fernbus#4:EC~IC~ICE~RB~RE~TL~TLX#5:S1~S2~S3");
+      const pin = utils.parsePin(
+        "33000028|||Hauptbahnhof|5657516|4621644||1:3~6~7~8~9~10~11#2:66~H/S#3:261~333~352~360" +
+          "~366~400~424~672~Fernbus#4:EC~IC~ICE~RB~RE~TL~TLX#5:S1~S2~S3"
+      );
       assertPin(pin, PIN_TYPE.stop);
       assert.strictEqual(pin.id, "33000028");
       assert.strictEqual(pin.name, "Hauptbahnhof");
@@ -153,12 +157,16 @@ describe("internal utils", () => {
     });
 
     it("poi", () => {
-      const pin = utils.parsePin("poiID:2104107042:14612000:|p||Helmholtz-Apotheke|5656699|4621216||");
+      const pin = utils.parsePin(
+        "poiID:2104107042:14612000:|p||Helmholtz-Apotheke|5656699|4621216||"
+      );
       assertPin(pin, PIN_TYPE.poi);
     });
 
     it("rentabike", () => {
-      const pin = utils.parsePin("poiID:2104108009:14612000:|r||SZ-Bike Station - Nürnberger Platz|5656570|4621200||");
+      const pin = utils.parsePin(
+        "poiID:2104108009:14612000:|r||SZ-Bike Station - Nürnberger Platz|5656570|4621200||"
+      );
       assertPin(pin, PIN_TYPE.rentabike);
       assert.strictEqual(pin.id, "poiID:2104108009:14612000:");
       assert.strictEqual(pin.name, "SZ-Bike Station - Nürnberger Platz");
@@ -166,7 +174,8 @@ describe("internal utils", () => {
 
     it("ticketmachine", () => {
       const pin = utils.parsePin(
-        "poiID:2104108217:14612000:|t||Ticketautomat Dresden, Fetscherplatz -|5658310|4624283||");
+        "poiID:2104108217:14612000:|t||Ticketautomat Dresden, Fetscherplatz -|5658310|4624283||"
+      );
       assertPin(pin, PIN_TYPE.ticketmachine);
       assert.strictEqual(pin.id, "poiID:2104108217:14612000:");
       assert.strictEqual(pin.name, "Ticketautomat Dresden, Fetscherplatz -");
@@ -174,7 +183,8 @@ describe("internal utils", () => {
 
     it("carsharing", () => {
       const pin = utils.parsePin(
-        "poiID:2104108159:14612000:|c||teilAuto Station Stresemannplatz - (STR)|5657940|4624508||");
+        "poiID:2104108159:14612000:|c||teilAuto Station Stresemannplatz - (STR)|5657940|4624508||"
+      );
       assertPin(pin, PIN_TYPE.carsharing);
       assert.strictEqual(pin.id, "poiID:2104108159:14612000:");
       assert.strictEqual(pin.name, "teilAuto Station Stresemannplatz - (STR)");
@@ -182,7 +192,8 @@ describe("internal utils", () => {
 
     it("parkandride", () => {
       const pin = utils.parsePin(
-        "poiID:2104107859:14612000:|pr||P+R Dresden Reick|5655506|4625718|21 Stellplätze, kostenfrei, 24h|");
+        "poiID:2104107859:14612000:|pr||P+R Dresden Reick|5655506|4625718|21 Stellplätze, kostenfrei, 24h|"
+      );
       assertPin(pin, PIN_TYPE.parkandride);
       assert.strictEqual(pin.id, "poiID:2104107859:14612000:");
       assert.strictEqual(pin.name, "P+R Dresden Reick");

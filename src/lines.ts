@@ -19,7 +19,6 @@ function parseLine(line: any): ILine {
  * @param stopID the stop ID
  */
 export function lines(stopID: string): Promise<ILine[]> {
-
   const options: AxiosRequestConfig = {
     url: "https://webapi.vvo-online.de/stt/lines",
     params: {

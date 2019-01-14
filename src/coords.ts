@@ -7,7 +7,6 @@ import * as utils from "./utils";
  * @returns coordinate as [lng, lat] or undefined
  */
 export function coords(id: string): Promise<number[] | undefined> {
-
   const options: AxiosRequestConfig = {
     url: "https://www.dvb.de/apps/map/coordinates",
     params: {
@@ -17,14 +16,13 @@ export function coords(id: string): Promise<number[] | undefined> {
     timeout: 5000,
   };
 
-  return axios(options)
-    .then((response) => {
-      if (!response.data) {
-        return undefined;
-      }
+  return axios(options).then((response) => {
+    if (!response.data) {
+      return undefined;
+    }
 
-      const coordinates = response.data.split("|");
+    const coordinates = response.data.split("|");
 
-      return utils.GK4toWGS84(coordinates[1], coordinates[0]);
-    });
+    return utils.GK4toWGS84(coordinates[1], coordinates[0]);
+  });
 }

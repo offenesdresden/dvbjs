@@ -1,16 +1,28 @@
 import proj4 from "proj4";
 import {
-  coord, IConnection, IDiva, IMode, INode, IPin, IPlatform,
-  IStop, IStopLocation, ITrip, PIN_TYPE, POI_TYPE,
+  coord,
+  IConnection,
+  IDiva,
+  IMode,
+  INode,
+  IPin,
+  IPlatform,
+  IStop,
+  IStopLocation,
+  ITrip,
+  PIN_TYPE,
+  POI_TYPE
 } from "./interfaces";
 
 proj4.defs(
   "EPSG:31468",
-  "+proj=tmerc +lat_0=0 +lon_0=12 +k=1 +x_0=4500000 +y_0=0 +ellps=bessel +datum=potsdam +units=m +no_defs",
+  "+proj=tmerc +lat_0=0 +lon_0=12 +k=1 +x_0=4500000 +y_0=0 +ellps=bessel +datum=potsdam +units=m +no_defs"
 );
 
 export function WGS84toGK4(lng: number, lat: number): coord {
-  return proj4("EPSG:31468").forward([lng, lat]).map(Math.round);
+  return proj4("EPSG:31468")
+    .forward([lng, lat])
+    .map(Math.round);
 }
 
 export function GK4toWGS84(lng: string, lat: string): coord | undefined {
@@ -69,7 +81,10 @@ export function constructError(name?: string, message = ""): Error {
 
 export function convertError(err: any): never {
   if (err.response && err.response.data && err.response.data.Status) {
-    throw constructError(err.response.data.Status.Code, err.response.data.Status.Message);
+    throw constructError(
+      err.response.data.Status.Code,
+      err.response.data.Status.Message
+    );
   }
   throw err;
 }
@@ -80,7 +95,9 @@ export function parseDate(d: string): Date {
 }
 
 export function parseDiva(d: any): IDiva | undefined {
-  return d && d.Number ? { number: parseInt(d.Number, 10), network: d.Network } : undefined;
+  return d && d.Number
+    ? { number: parseInt(d.Number, 10), network: d.Network }
+    : undefined;
 }
 
 export function parsePlatform(p?: any): IPlatform | undefined {
@@ -89,13 +106,20 @@ export function parsePlatform(p?: any): IPlatform | undefined {
 
 function pinType(str: string): PIN_TYPE {
   switch (str) {
-    case "": return PIN_TYPE.stop;
-    case "p": return PIN_TYPE.poi;
-    case "pf": return PIN_TYPE.platform;
-    case "pr": return PIN_TYPE.parkandride;
-    case "r": return PIN_TYPE.rentabike;
-    case "c": return PIN_TYPE.carsharing;
-    case "t": return PIN_TYPE.ticketmachine;
+    case "":
+      return PIN_TYPE.stop;
+    case "p":
+      return PIN_TYPE.poi;
+    case "pf":
+      return PIN_TYPE.platform;
+    case "pr":
+      return PIN_TYPE.parkandride;
+    case "r":
+      return PIN_TYPE.rentabike;
+    case "c":
+      return PIN_TYPE.carsharing;
+    case "t":
+      return PIN_TYPE.ticketmachine;
   }
   return PIN_TYPE.unknown;
 }
@@ -112,16 +136,21 @@ export function parsePin(dataAsString: string): IPin {
       id: data[0],
       name: data[3],
       platform_nr: data[6],
-      type,
+      type
     };
   }
-  if (type === PIN_TYPE.poi || type === PIN_TYPE.rentabike || type === PIN_TYPE.ticketmachine
-    || type === PIN_TYPE.carsharing || type === PIN_TYPE.unknown) {
+  if (
+    type === PIN_TYPE.poi ||
+    type === PIN_TYPE.rentabike ||
+    type === PIN_TYPE.ticketmachine ||
+    type === PIN_TYPE.carsharing ||
+    type === PIN_TYPE.unknown
+  ) {
     return {
       coords,
       id: data[0],
       name: data[3],
-      type,
+      type
     };
   }
 
@@ -131,7 +160,7 @@ export function parsePin(dataAsString: string): IPin {
       id: data[0],
       name: data[3],
       info: data[6],
-      type,
+      type
     };
   }
 
@@ -141,7 +170,7 @@ export function parsePin(dataAsString: string): IPin {
     id: data[0],
     name: data[3],
     connections: parseConnections(data[7]),
-    type,
+    type
   };
 }
 
@@ -185,7 +214,7 @@ export function parseMode(name: string): IMode {
     default:
       return {
         name,
-        title: name.toLowerCase(),
+        title: name.toLowerCase()
       };
   }
 }
@@ -200,52 +229,62 @@ export function parsePoiID(id: string) {
       case "streetID":
         return {
           id: poiId.join(":"),
-          type: POI_TYPE.Address,
+          type: POI_TYPE.Address
         };
       case "coord":
         return {
           id: poiId.join(":"),
-          type: POI_TYPE.Coords,
+          type: POI_TYPE.Coords
         };
       case "poiID":
         return {
           id: poiId.join(":"),
-          type: POI_TYPE.POI,
+          type: POI_TYPE.POI
         };
     }
   }
   return {
     id,
-    type: POI_TYPE.Stop,
+    type: POI_TYPE.Stop
   };
 }
 
 function connectionType(str: string): IMode | undefined {
   switch (str) {
-    case "1": return MODES.Tram;
-    case "2": return MODES.CityBus;
-    case "3": return MODES.IntercityBus;
-    case "4": return MODES.Train;
-    case "5": return MODES.SuburbanRailway;
-    case "6": return MODES.HailedSharedTaxi;
-    case "7": return MODES.Ferry;
-    case "8": return MODES.Cableway;
+    case "1":
+      return MODES.Tram;
+    case "2":
+      return MODES.CityBus;
+    case "3":
+      return MODES.IntercityBus;
+    case "4":
+      return MODES.Train;
+    case "5":
+      return MODES.SuburbanRailway;
+    case "6":
+      return MODES.HailedSharedTaxi;
+    case "7":
+      return MODES.Ferry;
+    case "8":
+      return MODES.Cableway;
   }
 }
 
 function parseConnections(data: string): IConnection[] {
   let connections: IConnection[] = [];
 
-  data.split("#").forEach((types) => {
+  data.split("#").forEach(types => {
     if (!types) {
       return [];
     }
     const typesArray = types.split(":");
     const mode = connectionType(typesArray[0]) as IMode;
-    connections = connections.concat(typesArray[1].split("~").map((line) => ({
-      line,
-      mode,
-    })));
+    connections = connections.concat(
+      typesArray[1].split("~").map(line => ({
+        line,
+        mode
+      }))
+    );
   });
 
   return connections;
@@ -259,12 +298,14 @@ function extractStop(stop: any): IStop {
     platform: parsePlatform(stop.Platform),
     coords: GK4toWGS84(stop.Longitude, stop.Latitude) || [0, 0],
     arrival: parseDate(stop.ArrivalTime),
-    departure: parseDate(stop.DepartureTime),
+    departure: parseDate(stop.DepartureTime)
   };
 }
 
 function extractNode(node: any, mapData: any): INode {
-  const stops: IStop[] = node.RegularStops ? node.RegularStops.map(extractStop) : [];
+  const stops: IStop[] = node.RegularStops
+    ? node.RegularStops.map(extractStop)
+    : [];
 
   let departure: IStopLocation | undefined;
   let arrival: IStopLocation | undefined;
@@ -279,7 +320,7 @@ function extractNode(node: any, mapData: any): INode {
       platform: firstStop.platform,
       time: firstStop.departure,
       coords: firstStop.coords,
-      type: firstStop.type,
+      type: firstStop.type
     };
 
     arrival = {
@@ -288,7 +329,7 @@ function extractNode(node: any, mapData: any): INode {
       platform: lastStop.platform,
       time: lastStop.arrival,
       coords: lastStop.coords,
-      type: lastStop.type,
+      type: lastStop.type
     };
   }
 
@@ -301,19 +342,21 @@ function extractNode(node: any, mapData: any): INode {
     direction: node.Mot.Direction ? node.Mot.Direction.trim() : "",
     diva: parseDiva(node.Mot.Diva),
     duration: 1,
-    path: convertCoordinates(mapData[node.MapDataIndex]),
+    path: convertCoordinates(mapData[node.MapDataIndex])
   };
 }
 
 export function extractTrip(trip: any): ITrip {
-  const nodes: INode[] = trip.PartialRoutes.map((node: any) => extractNode(node, trip.MapData));
+  const nodes: INode[] = trip.PartialRoutes.map((node: any) =>
+    extractNode(node, trip.MapData)
+  );
 
   return {
     nodes,
     departure: nodes[0].departure,
     arrival: nodes[nodes.length - 1].arrival,
     duration: 1,
-    interchanges: trip.Interchanges,
+    interchanges: trip.Interchanges
   };
 }
 
@@ -321,82 +364,82 @@ export const MODES = {
   Tram: {
     title: "Straßenbahn",
     name: "Tram",
-    icon_url: "https://www.dvb.de/assets/img/trans-icon/transport-tram.svg",
+    icon_url: "https://www.dvb.de/assets/img/trans-icon/transport-tram.svg"
   },
   CityBus: {
     title: "Bus",
     name: "CityBus",
-    icon_url: "https://www.dvb.de/assets/img/trans-icon/transport-bus.svg",
+    icon_url: "https://www.dvb.de/assets/img/trans-icon/transport-bus.svg"
   },
   IntercityBus: {
     title: "Regio-Bus",
     name: "IntercityBus",
-    icon_url: "https://www.dvb.de/assets/img/trans-icon/transport-bus.svg",
+    icon_url: "https://www.dvb.de/assets/img/trans-icon/transport-bus.svg"
   },
   SuburbanRailway: {
     title: "S-Bahn",
     name: "SuburbanRailway",
-    icon_url: "https://www.dvb.de/assets/img/trans-icon/transport-metropolitan.svg",
+    icon_url:
+      "https://www.dvb.de/assets/img/trans-icon/transport-metropolitan.svg"
   },
   Train: {
     title: "Zug",
     name: "Train",
-    icon_url: "https://www.dvb.de/assets/img/trans-icon/transport-train.svg",
+    icon_url: "https://www.dvb.de/assets/img/trans-icon/transport-train.svg"
   },
   Cableway: {
     title: "Seil-/Schwebebahn",
     name: "Cableway",
-    icon_url: "https://www.dvb.de/assets/img/trans-icon/transport-lift.svg",
+    icon_url: "https://www.dvb.de/assets/img/trans-icon/transport-lift.svg"
   },
   Ferry: {
     title: "Fähre",
     name: "Ferry",
-    icon_url: "https://www.dvb.de/assets/img/trans-icon/transport-ferry.svg",
+    icon_url: "https://www.dvb.de/assets/img/trans-icon/transport-ferry.svg"
   },
   HailedSharedTaxi: {
     title: "Anrufsammeltaxi (AST)/ Rufbus",
     name: "HailedSharedTaxi",
-    icon_url: "https://www.dvb.de/assets/img/trans-icon/transport-alita.svg",
-
+    icon_url: "https://www.dvb.de/assets/img/trans-icon/transport-alita.svg"
   },
   Footpath: {
     title: "Fussweg",
     name: "Footpath",
-    icon_url: "https://m.dvb.de/img/walk.svg",
+    icon_url: "https://m.dvb.de/img/walk.svg"
   },
   StairsUp: {
     title: "Treppe aufwärts",
     name: "StairsUp",
-    icon_url: "https://m.dvb.de/img/stairs-up.svg",
+    icon_url: "https://m.dvb.de/img/stairs-up.svg"
   },
   StairsDown: {
     title: "Treppe abwärts",
     name: "StairsDown",
-    icon_url: "https://m.dvb.de/img/stairs-down.svg",
+    icon_url: "https://m.dvb.de/img/stairs-down.svg"
   },
   EscalatorUp: {
     title: "Rolltreppe aufwärts",
     name: "EscalatorUp",
-    icon_url: "https://m.dvb.de/img/escalator-up.svg",
+    icon_url: "https://m.dvb.de/img/escalator-up.svg"
   },
   EscalatorDown: {
     title: "Rolltreppe abwärts",
     name: "EscalatorDown",
-    icon_url: "https://m.dvb.de/img/escalator-down.svg",
+    icon_url: "https://m.dvb.de/img/escalator-down.svg"
   },
   ElevatorUp: {
     title: "Fahrstuhl aufwärts",
     name: "ElevatorUp",
-    icon_url: "https://m.dvb.de/img/elevator-up.svg",
+    icon_url: "https://m.dvb.de/img/elevator-up.svg"
   },
   ElevatorDown: {
     title: "Fahrstuhl abwärts",
     name: "ElevatorDown",
-    icon_url: "https://m.dvb.de/img/elevator-down.svg",
+    icon_url: "https://m.dvb.de/img/elevator-down.svg"
   },
   StayForConnection: {
     title: "gesicherter Anschluss",
     name: "StayForConnection",
-    icon_url: "https://m.dvb.de/img/sit.svg",
-  },
+    icon_url: "https://m.dvb.de/img/sit.svg"
+  }
 };

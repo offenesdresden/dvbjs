@@ -10,14 +10,18 @@ import * as utils from "./utils";
  * @param nelat the latitude of the north east coordinate
  * @param pinTypes array of pin types
  */
-export function pins(swlng: number, swlat: number, nelng: number, nelat: number,
-  pinTypes: PIN_TYPE[] = [PIN_TYPE.stop]): Promise<IPin[]> {
-
+export function pins(
+  swlng: number,
+  swlat: number,
+  nelng: number,
+  nelat: number,
+  pinTypes: PIN_TYPE[] = [PIN_TYPE.stop],
+): Promise<IPin[]> {
   const sw = utils.WGS84toGK4(swlng, swlat);
   const ne = utils.WGS84toGK4(nelng, nelat);
 
   let url = "https://www.dvb.de/apps/map/pins?showLines=true";
-  pinTypes.forEach((type) => url += `&pintypes=${type}`);
+  pinTypes.forEach((type) => (url += `&pintypes=${type}`));
   const options: AxiosRequestConfig = {
     url,
     params: {
