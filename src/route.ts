@@ -26,7 +26,7 @@ export function route(originID: string, destinationID: string,
       shorttermchanges: true,
       time: time.toISOString(),
     },
-    timeout: 2000,
+    timeout: 5000,
   };
 
   return axios(options)

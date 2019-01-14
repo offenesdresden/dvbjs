@@ -26,6 +26,7 @@ export function lines(stopID: string): Promise<ILine[]> {
       format: "json",
       stopid: stopID,
     },
+    timeout: 5000,
   };
 
   return axios(options)

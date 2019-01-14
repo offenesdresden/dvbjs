@@ -24,6 +24,7 @@ export function monitor(stopID: string, offset = 0, amount = 0): Promise<IMonito
       shorttermchanges: true,
       mentzonly: false,
     },
+    timeout: 5000,
   };
 
   return axios(options)

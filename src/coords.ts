@@ -14,6 +14,7 @@ export function coords(id: string): Promise<number[] | undefined> {
       id,
     },
     responseType: "text",
+    timeout: 5000,
   };
 
   return axios(options)

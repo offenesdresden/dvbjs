@@ -27,6 +27,7 @@ export function pins(swlng: number, swlat: number, nelng: number, nelat: number,
       nelat: ne[1],
     },
     responseType: "text",
+    timeout: 5000,
   };
 
   return axios(options)

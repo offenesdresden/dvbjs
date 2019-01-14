@@ -19,6 +19,7 @@ function pointFinder(name: string, stopsOnly: boolean, assignedStops: boolean): 
       query: stopName,
       dvb: true,
     },
+    timeout: 5000,
   };
 
   return axios(options)
