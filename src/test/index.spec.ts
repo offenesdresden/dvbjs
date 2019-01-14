@@ -52,10 +52,10 @@ describe("dvb.monitor", () => {
 
   describe('dvb.monitor "xyz"', () => {
     it("should reject with ValidationError", () => assert.isRejected(
-      dvb.monitor("xyz"), "stopid has to be not null and must be a number"));
+      (dvb as any).monitor(undefined), "stopid has to be not null"));
   });
 
-  describe("dvb.monitor 123 (invalid id)", () => {
+  describe("dvb.monitor 1242142343 (invalid id)", () => {
     it("should reject with ServiceError",
       () => assert.isRejected(dvb.monitor("1242142343"), "stop invalid"));
   });
@@ -218,8 +218,8 @@ describe("dvb.findPOI", () => {
       }));
   });
 
-  describe('dvb.findPOI "xyz"', () => {
-    it("should return an empty array", () => dvb.findPOI("xyz")
+  describe('dvb.findPOI "zzz"', () => {
+    it("should return an empty array", () => dvb.findPOI("zzz")
       .then((data) => {
         assert.isEmpty(data);
       }));

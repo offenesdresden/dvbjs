@@ -8,8 +8,8 @@ export function assertCoords(coords: coord) {
     assert.isArray(coords);
     assert.lengthOf(coords, 2);
 
-    assert.approximately(coords[0], 13, 2);
-    assert.approximately(coords[1], 51, 1);
+    assert.approximately(coords[0], 13, 3);
+    assert.approximately(coords[1], 51, 3);
 }
 
 export function assertPlatform(platform: IPlatform) {
