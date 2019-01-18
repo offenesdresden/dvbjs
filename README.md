@@ -70,12 +70,28 @@ dvb.monitor(stopID, timeOffset, numResults).then((data) => {
 <!-- AUTO-GENERATED-CONTENT:START (CODE:src=./packages/examples/dist/monitor.js.yml) -->
 <!-- The below code snippet is automatically added from ./packages/examples/dist/monitor.js.yml -->
 ```yml
-[ { arrivalTime: 2019-01-14T20:30:00.000Z,
-    scheduledTime: 2019-01-14T20:30:00.000Z,
-    id: '79698787',
-    line: '6',
-    direction: 'Postplatz',
+[ { arrivalTime: 2019-01-17T21:02:00.000Z,
+    scheduledTime: 2019-01-17T21:02:00.000Z,
+    id: '79779604',
+    line: '11',
+    direction: 'Zschertnitz',
     platform: { name: '3', type: 'Platform' },
+    arrivalTimeRelative: 6,
+    scheduledTimeRelative: 6,
+    delayTime: 0,
+    state: 'InTime',
+    mode:
+     { title: 'Straßenbahn',
+       name: 'Tram',
+       icon_url:
+        'https://www.dvb.de/assets/img/trans-icon/transport-tram.svg' },
+    diva: { number: 11011, network: 'voe' } },
+  { arrivalTime: 2019-01-17T21:03:00.000Z,
+    scheduledTime: 2019-01-17T21:03:00.000Z,
+    id: '79777307',
+    line: '2',
+    direction: 'Gorbitz',
+    platform: { name: '2', type: 'Platform' },
     arrivalTimeRelative: 7,
     scheduledTimeRelative: 7,
     delayTime: 0,
@@ -85,23 +101,7 @@ dvb.monitor(stopID, timeOffset, numResults).then((data) => {
        name: 'Tram',
        icon_url:
         'https://www.dvb.de/assets/img/trans-icon/transport-tram.svg' },
-    diva: { number: 11006, network: 'voe' } },
-  { arrivalTime: 2019-01-14T20:31:00.000Z,
-    scheduledTime: 2019-01-14T20:31:00.000Z,
-    id: '79700484',
-    line: '12',
-    direction: 'Leutewitz',
-    platform: { name: '4', type: 'Platform' },
-    arrivalTimeRelative: 8,
-    scheduledTimeRelative: 8,
-    delayTime: 0,
-    state: 'InTime',
-    mode:
-     { title: 'Straßenbahn',
-       name: 'Tram',
-       icon_url:
-        'https://www.dvb.de/assets/img/trans-icon/transport-tram.svg' },
-    diva: { number: 11012, network: 'voe' } } ]
+    diva: { number: 11002, network: 'voe' } } ]
 ```
 <!-- AUTO-GENERATED-CONTENT:END -->
 
@@ -113,8 +113,9 @@ import * as dvb from "dvbjs"; // OR const dvb = require("dvbjs");
 const origin = "33000742"; // Helmholtzstraße
 const destination = "33000037"; // Postplatz
 const startTime = new Date();
+const isArrivalTime = false;
 
-dvb.route(origin, destination, startTime).then((data) => {
+dvb.route(origin, destination, startTime, isArrivalTime).then((data) => {
   console.dir(data, { depth: 7, maxArrayLength: 2 });
 });
 ```
@@ -138,28 +139,28 @@ dvb.route(origin, destination, startTime).then((data) => {
                  type: 'Stop',
                  platform: { name: '1', type: 'Platform' },
                  coords: [ 13.725468471273134, 51.0255443264448 ],
-                 arrival: 2019-01-14T19:06:00.000Z,
-                 departure: 2019-01-14T19:06:00.000Z },
+                 arrival: 2019-01-17T19:36:00.000Z,
+                 departure: 2019-01-17T19:36:00.000Z },
                { name: 'Stadtgutstraße',
                  city: 'Dresden',
                  type: 'Stop',
                  platform: { name: '1', type: 'Platform' },
                  coords: [ 13.736249024095288, 51.02412604112871 ],
-                 arrival: 2019-01-14T19:08:00.000Z,
-                 departure: 2019-01-14T19:08:00.000Z },
+                 arrival: 2019-01-17T19:38:00.000Z,
+                 departure: 2019-01-17T19:38:00.000Z },
                ... 1 more item ],
             departure:
              { name: 'Helmholtzstraße',
                city: 'Dresden',
                platform: { name: '1', type: 'Platform' },
-               time: 2019-01-14T19:06:00.000Z,
+               time: 2019-01-17T19:36:00.000Z,
                coords: [ 13.725468471273134, 51.0255443264448 ],
                type: 'Stop' },
             arrival:
              { name: 'Räcknitzhöhe',
                city: 'Dresden',
                platform: { name: '1', type: 'Platform' },
-               time: 2019-01-14T19:09:00.000Z,
+               time: 2019-01-17T19:39:00.000Z,
                coords: [ 13.742469696952984, 51.02352100754019 ],
                type: 'Stop' },
             mode:
@@ -180,28 +181,28 @@ dvb.route(origin, destination, startTime).then((data) => {
                  type: 'Stop',
                  platform: { name: '1', type: 'Platform' },
                  coords: [ 13.742469696952984, 51.02352100754019 ],
-                 arrival: 2019-01-14T19:13:00.000Z,
-                 departure: 2019-01-14T19:13:00.000Z },
+                 arrival: 2019-01-17T19:43:00.000Z,
+                 departure: 2019-01-17T19:43:00.000Z },
                { name: 'Zellescher Weg',
                  city: 'Dresden',
                  type: 'Stop',
                  platform: { name: '1', type: 'Platform' },
                  coords: [ 13.7457515521668, 51.02816465242123 ],
-                 arrival: 2019-01-14T19:15:00.000Z,
-                 departure: 2019-01-14T19:15:00.000Z },
+                 arrival: 2019-01-17T19:45:00.000Z,
+                 departure: 2019-01-17T19:45:00.000Z },
                ... 8 more items ],
             departure:
              { name: 'Räcknitzhöhe',
                city: 'Dresden',
                platform: { name: '1', type: 'Platform' },
-               time: 2019-01-14T19:13:00.000Z,
+               time: 2019-01-17T19:43:00.000Z,
                coords: [ 13.742469696952984, 51.02352100754019 ],
                type: 'Stop' },
             arrival:
              { name: 'Postplatz',
                city: 'Dresden',
                platform: { name: '4', type: 'Platform' },
-               time: 2019-01-14T19:28:00.000Z,
+               time: 2019-01-17T19:58:00.000Z,
                coords: [ 13.73357173082639, 51.05055059050917 ],
                type: 'Stop' },
             mode:
@@ -221,14 +222,14 @@ dvb.route(origin, destination, startTime).then((data) => {
         { name: 'Helmholtzstraße',
           city: 'Dresden',
           platform: { name: '1', type: 'Platform' },
-          time: 2019-01-14T19:06:00.000Z,
+          time: 2019-01-17T19:36:00.000Z,
           coords: [ 13.725468471273134, 51.0255443264448 ],
           type: 'Stop' },
        arrival:
         { name: 'Postplatz',
           city: 'Dresden',
           platform: { name: '4', type: 'Platform' },
-          time: 2019-01-14T19:28:00.000Z,
+          time: 2019-01-17T19:58:00.000Z,
           coords: [ 13.73357173082639, 51.05055059050917 ],
           type: 'Stop' },
        duration: 22,
@@ -240,28 +241,28 @@ dvb.route(origin, destination, startTime).then((data) => {
                  type: 'Stop',
                  platform: { name: '2', type: 'Platform' },
                  coords: [ 13.725468471273134, 51.0255443264448 ],
-                 arrival: 2019-01-14T19:13:00.000Z,
-                 departure: 2019-01-14T19:13:00.000Z },
+                 arrival: 2019-01-17T19:43:00.000Z,
+                 departure: 2019-01-17T19:43:00.000Z },
                { name: 'Regensburger Straße',
                  city: 'Dresden',
                  type: 'Stop',
                  platform: { name: '2', type: 'Platform' },
                  coords: [ 13.720554082747958, 51.02640790159258 ],
-                 arrival: 2019-01-14T19:14:00.000Z,
-                 departure: 2019-01-14T19:14:00.000Z },
+                 arrival: 2019-01-17T19:44:00.000Z,
+                 departure: 2019-01-17T19:44:00.000Z },
                ... 1 more item ],
             departure:
              { name: 'Helmholtzstraße',
                city: 'Dresden',
                platform: { name: '2', type: 'Platform' },
-               time: 2019-01-14T19:13:00.000Z,
+               time: 2019-01-17T19:43:00.000Z,
                coords: [ 13.725468471273134, 51.0255443264448 ],
                type: 'Stop' },
             arrival:
              { name: 'Plauen Nöthnitzer Straße',
                city: 'Dresden',
                platform: { name: '6', type: 'Platform' },
-               time: 2019-01-14T19:14:00.000Z,
+               time: 2019-01-17T19:44:00.000Z,
                coords: [ 13.716530789023206, 51.02708737506858 ],
                type: 'Stop' },
             mode:
@@ -269,7 +270,7 @@ dvb.route(origin, destination, startTime).then((data) => {
                name: 'CityBus',
                icon_url: 'https://www.dvb.de/assets/img/trans-icon/transport-bus.svg' },
             line: '85',
-            direction: 'DD Löbtau Süd Mohorner Str.',
+            direction: 'Löbtau Süd',
             diva: { number: 21085, network: 'voe' },
             duration: 1,
             path:
@@ -296,19 +297,19 @@ dvb.route(origin, destination, startTime).then((data) => {
         { name: 'Helmholtzstraße',
           city: 'Dresden',
           platform: { name: '2', type: 'Platform' },
-          time: 2019-01-14T19:13:00.000Z,
+          time: 2019-01-17T19:43:00.000Z,
           coords: [ 13.725468471273134, 51.0255443264448 ],
           type: 'Stop' },
        arrival:
         { name: 'Postplatz',
           city: 'Dresden',
           platform: { name: '2', type: 'Platform' },
-          time: 2019-01-14T19:38:00.000Z,
+          time: 2019-01-17T20:08:00.000Z,
           coords: [ 13.733966669186017, 51.05081442107084 ],
           type: 'Stop' },
        duration: 25,
        interchanges: 2 },
-     ... 2 more items ] }
+     ... 3 more items ] }
 ```
 <!-- AUTO-GENERATED-CONTENT:END -->
 
