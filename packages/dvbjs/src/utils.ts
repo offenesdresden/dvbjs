@@ -294,6 +294,7 @@ function extractStop(stop: any): IStop {
   return {
     name: stop.Name.trim(),
     city: stop.Place,
+    id: stop.DataId,
     type: stop.Type,
     platform: parsePlatform(stop.Platform),
     coords: GK4toWGS84(stop.Longitude, stop.Latitude) || [0, 0],
@@ -317,6 +318,7 @@ function extractNode(node: any, mapData: any): INode {
     departure = {
       name: firstStop.name,
       city: firstStop.city,
+      id: firstStop.id,
       platform: firstStop.platform,
       time: firstStop.departure,
       coords: firstStop.coords,
@@ -326,6 +328,7 @@ function extractNode(node: any, mapData: any): INode {
     arrival = {
       name: lastStop.name,
       city: lastStop.city,
+      id: lastStop.id,
       platform: lastStop.platform,
       time: lastStop.arrival,
       coords: lastStop.coords,

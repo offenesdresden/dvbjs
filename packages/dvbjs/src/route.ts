@@ -49,11 +49,13 @@ export function route(
           origin = {
             name: firstTrip.departure.name,
             city: firstTrip.departure.city,
+            id: firstTrip.departure.id,
             coords: firstTrip.departure.coords,
           };
           destination = {
             name: firstTrip.arrival.name,
             city: firstTrip.arrival.city,
+            id: firstTrip.arrival.id,
             coords: firstTrip.arrival.coords,
           };
         }

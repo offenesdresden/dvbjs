@@ -95,6 +95,7 @@ export interface ILocation {
   name: string;
   city: string;
   coords: coord;
+  id: string;
 }
 
 export interface IStop extends ILocation {
