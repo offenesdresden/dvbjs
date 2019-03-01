@@ -17,8 +17,8 @@ export function pins(
   nelat: number,
   pinTypes: PIN_TYPE[] = [PIN_TYPE.stop]
 ): Promise<IPin[]> {
-  const sw = utils.WGS84toGK4(swlng, swlat);
-  const ne = utils.WGS84toGK4(nelng, nelat);
+  const sw = utils.WGS84toWm(swlng, swlat);
+  const ne = utils.WGS84toWm(nelng, nelat);
 
   let url = "https://www.dvb.de/apps/map/pins?showLines=true";
   pinTypes.forEach((type) => (url += `&pintypes=${type}`));

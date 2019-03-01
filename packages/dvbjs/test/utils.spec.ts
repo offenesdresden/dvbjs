@@ -27,12 +27,19 @@ describe("internal utils", () => {
     ];
 
     mots.forEach((mot) => {
-      it("should parse `" + mot[0] + "` to `" + mot[1] + "`", (done) => {
+      it("should parse `" + mot[0] + "` to `" + mot[1] + "`", () => {
         const mode = utils.parseMode(mot[0]);
         assertMode(mode);
         assert.strictEqual(mode.name, mot[1]);
-        done();
       });
+    });
+
+    it("should parse unknown type", () => {
+      const name = "Default";
+      const mode = utils.parseMode(name);
+      assert.strictEqual(mode.name, name);
+      assert.strictEqual(mode.title, "default");
+      assert.isUndefined(mode.icon_url);
     });
   });
 
@@ -42,13 +49,9 @@ describe("internal utils", () => {
     });
 
     it('should throw error: "foo: bar"', () => {
-      try {
+      assert.throws(() => {
         utils.checkStatus({ Status: { Code: "foo", Message: "bar" } });
-        assert.fail("checkStatus did not throw an error");
-      } catch (error) {
-        assert.strictEqual(error.name, "foo");
-        assert.strictEqual(error.message, "bar");
-      }
+      }, /bar/);
     });
   });
 
@@ -100,6 +103,7 @@ describe("internal utils", () => {
   describe("transform coords", () => {
     const wgs84 = [13.722766, 51.025835];
     const gk4 = [4620969, 5655929];
+    const wm = [1527611.323, 6625864.908];
 
     it("WGS84toGK4", () => {
       const point = utils.WGS84toGK4(wgs84[0], wgs84[1]);
@@ -107,17 +111,31 @@ describe("internal utils", () => {
       assert.approximately(point[1], gk4[1], 3);
     });
 
-    it("GK4toWGS84", () => {
-      const point = utils.GK4toWGS84(gk4[0] + "", gk4[1] + "");
+    it("WGS84toWm", () => {
+      const point = utils.WGS84toWm(wgs84[0], wgs84[1]);
+      assert.approximately(point[0], wm[0], 3);
+      assert.approximately(point[1], wm[1], 3);
+    });
+
+    it("WmOrGK4toWGS84 Wm", () => {
+      const point = utils.WmOrGK4toWGS84(`${wm[0]}`, `${wm[1]}`);
+      assert.isArray(point);
       assert.approximately(point![0], wgs84[0], 0.0001);
       assert.approximately(point![1], wgs84[1], 0.0001);
     });
 
-    it("GK4toWGS84 should return undefined", () => {
-      let point = utils.GK4toWGS84("", "");
+    it("WmOrGK4toWGS84 GK4", () => {
+      const point = utils.WmOrGK4toWGS84(`${gk4[0]}`, `${gk4[1]}`);
+      assert.isArray(point);
+      assert.approximately(point![0], wgs84[0], 0.0001);
+      assert.approximately(point![1], wgs84[1], 0.0001);
+    });
+
+    it("WmOrGK4toWGS84 should return undefined", () => {
+      let point = utils.WmOrGK4toWGS84("", "");
       assert.isUndefined(point);
 
-      point = utils.GK4toWGS84("0", "0");
+      point = utils.WmOrGK4toWGS84("0", "0");
       assert.isUndefined(point);
     });
 
@@ -198,6 +216,21 @@ describe("internal utils", () => {
       assert.strictEqual(pin.id, "poiID:2104107859:14612000:");
       assert.strictEqual(pin.name, "P+R Dresden Reick");
       assert.strictEqual(pin.info, "21 Stellplätze, kostenfrei, 24h");
+    });
+
+    it("unknown", () => {
+      const pin = utils.parsePin(
+        "poiID:2104107859:14612000:|uk||P+R Dresden Reick|5655506|4625718|21 Stellplätze, kostenfrei, 24h|"
+      );
+      assertPin(pin, PIN_TYPE.unknown);
+      assert.strictEqual(pin.id, "poiID:2104107859:14612000:");
+      assert.strictEqual(pin.name, "P+R Dresden Reick");
+    });
+  });
+
+  describe("parseConnections", () => {
+    it("should parse empty", () => {
+      assert.deepEqual(utils.parseConnections(""), []);
     });
   });
 });

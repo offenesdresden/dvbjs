@@ -14,18 +14,27 @@ import {
   POI_TYPE,
 } from "./interfaces";
 
+// EPSG:31468
 proj4.defs(
-  "EPSG:31468",
+  "GK4",
   "+proj=tmerc +lat_0=0 +lon_0=12 +k=1 +x_0=4500000 +y_0=0 +ellps=bessel +datum=potsdam +units=m +no_defs"
 );
 
+// EPSG:3857
+proj4.defs(
+  "WM",
+  "+proj=merc +lon_0=0 +k=1 +x_0=0 +y_0=0 +a=6378137 +b=6378137 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs"
+);
+
 export function WGS84toGK4(lng: number, lat: number): coord {
-  return proj4("EPSG:31468")
-    .forward([lng, lat])
-    .map(Math.round);
+  return proj4("WGS84", "GK4", [lng, lat]).map(Math.round);
 }
 
-export function GK4toWGS84(lng: string, lat: string): coord | undefined {
+export function WGS84toWm(lng: number, lat: number): coord {
+  return proj4("WGS84", "WM", [lng, lat]).map(Math.round);
+}
+
+export function WmOrGK4toWGS84(lng: string, lat: string): coord | undefined {
   const latInt = parseInt(lat, 10);
   const lngInt = parseInt(lng, 10);
 
@@ -37,7 +46,11 @@ export function GK4toWGS84(lng: string, lat: string): coord | undefined {
     return undefined;
   }
 
-  return proj4("EPSG:31468").inverse([lngInt, latInt]);
+  if (lngInt < 2500000) {
+    return proj4("WM", "WGS84", [lngInt, latInt]);
+  } else {
+    return proj4("GK4", "WGS84", [lngInt, latInt]);
+  }
 }
 
 export function convertCoordinates(s: string): coord[] {
@@ -49,7 +62,7 @@ export function convertCoordinates(s: string): coord[] {
     let i = 1;
     const len = gk4Chords.length - 1;
     while (i < len) {
-      const coordinate = GK4toWGS84(gk4Chords[i + 1], gk4Chords[i]);
+      const coordinate = WmOrGK4toWGS84(gk4Chords[i + 1], gk4Chords[i]);
       if (coordinate) {
         coords.push(coordinate);
       }
@@ -126,7 +139,7 @@ function pinType(str: string): PIN_TYPE {
 
 export function parsePin(dataAsString: string): IPin {
   const data = dataAsString.split("|");
-  const coords = GK4toWGS84(data[5], data[4]) || [];
+  const coords = WmOrGK4toWGS84(data[5], data[4]) || [];
 
   const type = pinType(data[1]);
 
@@ -270,7 +283,7 @@ function connectionType(str: string): IMode | undefined {
   }
 }
 
-function parseConnections(data: string): IConnection[] {
+export function parseConnections(data: string): IConnection[] {
   let connections: IConnection[] = [];
 
   data.split("#").forEach((types) => {
@@ -296,7 +309,7 @@ function extractStop(stop: any): IStop {
     city: stop.Place,
     type: stop.Type,
     platform: parsePlatform(stop.Platform),
-    coords: GK4toWGS84(stop.Longitude, stop.Latitude) || [0, 0],
+    coords: WmOrGK4toWGS84(stop.Longitude, stop.Latitude) || [0, 0],
     arrival: parseDate(stop.ArrivalTime),
     departure: parseDate(stop.DepartureTime),
   };

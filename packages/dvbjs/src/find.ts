@@ -37,7 +37,7 @@ async function pointFinder(
 
           const city = poi[2] === "" ? "Dresden" : poi[2];
           const idAndType = utils.parsePoiID(poi[0]);
-          const coords = utils.GK4toWGS84(poi[5], poi[4]);
+          const coords = utils.WmOrGK4toWGS84(poi[5], poi[4]);
 
           if (coords) {
             const point: IPoint = {
