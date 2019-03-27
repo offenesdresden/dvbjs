@@ -23,6 +23,6 @@ export function coords(id: string): Promise<number[] | undefined> {
 
     const coordinates = response.data.split("|");
 
-    return utils.GK4toWGS84(coordinates[1], coordinates[0]);
+    return utils.WmOrGK4toWGS84(coordinates[1], coordinates[0]);
   });
 }

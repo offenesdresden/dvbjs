@@ -99,7 +99,7 @@ describe("dvb.findStop", () => {
       }));
 
     it("should contain objects with name, city, coords and type", () =>
-      dvb.findStop("Postpl").then((data) => {
+      dvb.findStop("Markt").then((data) => {
         assert.isNotEmpty(data);
         data.forEach((point) => {
           assertPoint(point);
@@ -118,9 +118,9 @@ describe("dvb.findStop", () => {
       assert.isRejected((dvb as any).findStop(0), "query has to be a string"));
   });
 
-  describe('dvb.findStop "xyz"', () => {
+  describe('dvb.findStop "qqq"', () => {
     it("should return an empty array", () =>
-      dvb.findStop("xyz").then((data) => {
+      dvb.findStop("qqq").then((data) => {
         assert.isEmpty(data);
       }));
   });

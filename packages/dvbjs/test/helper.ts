@@ -22,7 +22,7 @@ export function assertCoords(coords: coord) {
   assert.isArray(coords);
   assert.lengthOf(coords, 2);
 
-  assert.approximately(coords[0], 13, 3);
+  assert.approximately(coords[0], 13, 1);
   assert.approximately(coords[1], 51, 3);
 }
 
@@ -173,7 +173,7 @@ export function assertTransport(transport: IMonitor) {
 
   assertMode(transport.mode);
 
-  if (transport.line) {
+  if (transport.line && transport.line.indexOf("E") === -1) {
     assertDiva(transport.diva!);
   } else {
     assert.isUndefined(transport.diva);
