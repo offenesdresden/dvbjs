@@ -38,9 +38,8 @@ h3 {
 }
 
 .DepartureList img {
-    height: 26px;
+    height: 30px;
 }
-
 
 .DepartureList thead {
     color: white;
@@ -48,9 +47,10 @@ h3 {
 }
 
 .DepartureList tbody {
-    font-family: "DotSpot";
-    font-size: 35px;
+    font-family: "Triple Dot Digital-7", "Comic Sans MS", "Trebuchet MS";
+    font-size: 22px;
     color: #fdc32d;
+    line-height: 55px
 }
 
 .align-left {

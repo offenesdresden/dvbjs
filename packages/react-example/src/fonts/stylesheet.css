@@ -1,10 +1,6 @@
 @font-face {
-    font-family: 'DotSpot';
-    src: url('DotSpot.eot');
-    src: url('DotSpot.eot?#iefix') format('embedded-opentype'),
-        url('DotSpot.woff2') format('woff2'),
-        url('DotSpot.woff') format('woff'),
-        url('DotSpot.ttf') format('truetype');
+    font-family: 'Triple Dot Digital-7';
+    src: url('triple_dot_digital-7.ttf') format('truetype');
     font-weight: normal;
     font-style: normal;
 }

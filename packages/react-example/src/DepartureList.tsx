@@ -10,18 +10,6 @@ interface IDepartureListState {
   timer?: number;
 }
 
-function replaceUmlauts(str: string): string {
-  str = str.replace(/ä/g, "ae");
-  str = str.replace(/ö/g, "oe");
-  str = str.replace(/ü/g, "ue");
-  str = str.replace(/Ä/g, "Ae");
-  str = str.replace(/Ö/g, "Oe");
-  str = str.replace(/Ü/g, "Ue");
-  str = str.replace(/ß/g, "ss");
-  str = str.replace(/,/g, "");
-  return str;
-}
-
 export default class DepartureList extends React.Component<
   IDepartureListProps,
   IDepartureListState
@@ -54,14 +42,12 @@ export default class DepartureList extends React.Component<
         </thead>
         <tbody>
           {this.state.departures.map((departure) => (
-            <tr key={departure.id}>
+            <tr key={`${departure.id}${departure.scheduledTime}`}>
               <td>
                 <img src={departure.mode.icon_url} />
               </td>
               <td className="align-left">{departure.line}</td>
-              <td className="align-left">
-                {replaceUmlauts(departure.direction)}
-              </td>
+              <td className="align-left">{departure.direction}</td>
               <td className="align-right">{departure.arrivalTimeRelative}</td>
             </tr>
           ))}
