@@ -15,7 +15,7 @@
     "prettier": "prettier packages/*/{src,test}/*.{ts,tsx} -l",
     "watch": "run-p 'tsc --watch' 'test:node --watch --watch-extensions ts'",
     "test": "npm-run-all lint -p test:*",
-    "test:node": "yarn workspace dvbjs nyc mocha --opts mocha.opts",
+    "test:node": "yarn workspace dvbjs nyc mocha",
     "test:browser": "yarn workspace dvbjs karma start",
     "coveralls": "cat ./packages/dvbjs/coverage/lcov.info | coveralls",
     "docs": "run-s docs:api docs:examples docs:readme docs:copy",

@@ -9,7 +9,7 @@ module.exports = function(config) {
     browsers: ["Chrome"],
     client: {
       mocha: {
-        opts: "mocha.opts",
+        opts: "test/mocha.opts",
       },
     },
     karmaTypescriptConfig: {

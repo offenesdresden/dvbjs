@@ -72,16 +72,9 @@
       "**/*.d.ts",
       "coverage",
       "dist",
-      "src/test/**",
-      "examples/**"
+      "test/**"
     ],
-    "reporter": [
-      "text",
-      "lcov"
-    ],
-    "require": [
-      "ts-node/register"
-    ],
+    "cache": false,
     "all": true
   },
   "devDependencies": {
