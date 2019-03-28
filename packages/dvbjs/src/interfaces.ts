@@ -57,14 +57,6 @@ export interface IMode {
   icon_url?: string;
 }
 
-export interface IPoint {
-  city: string;
-  name: string;
-  id: string;
-  coords: coord;
-  type: POI_TYPE;
-}
-
 export interface IAddress extends IPoint {
   stops: IPoint[];
 }
@@ -90,11 +82,15 @@ export interface IMonitor {
   mode: IMode;
   diva?: IDiva;
 }
-
 export interface ILocation {
+  id: string;
   name: string;
   city: string;
   coords: coord;
+}
+
+export interface IPoint extends ILocation {
+  type: POI_TYPE;
 }
 
 export interface IStop extends ILocation {
