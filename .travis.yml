@@ -27,6 +27,3 @@ install: yarn --frozen-lockfile --ignore-optional
 script: yarn run build && yarn run $YARN_TASK
 
 after_success: yarn run coveralls
-
-notifications:
-  email: false
