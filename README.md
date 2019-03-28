@@ -49,6 +49,11 @@ dvb.findStop("zellesch").then((data) => {
        coords: [ 13.745859050200034, 51.0283698098441 ],
        name: 'Zellescher Weg',
        id: '33000312',
+       type: 'Stop' },
+     { city: 'Clausthal-Zellerfeld',
+       coords: [ 10.345564170852114, 51.80900047897166 ],
+       name: 'Eschenbacher Straße',
+       id: '26005221',
        type: 'Stop' } ] }
 ```
 <!-- AUTO-GENERATED-CONTENT:END -->
@@ -70,14 +75,30 @@ dvb.monitor(stopID, timeOffset, numResults).then((data) => {
 <!-- AUTO-GENERATED-CONTENT:START (CODE:src=./packages/examples/dist/monitor.js.yml) -->
 <!-- The below code snippet is automatically added from ./packages/examples/dist/monitor.js.yml -->
 ```yml
-[ { arrivalTime: 2019-01-17T21:02:00.000Z,
-    scheduledTime: 2019-01-17T21:02:00.000Z,
-    id: '79779604',
-    line: '11',
-    direction: 'Zschertnitz',
+[ { arrivalTime: 2019-03-28T01:37:51.000Z,
+    scheduledTime: 2019-03-28T01:37:00.000Z,
+    id: '81366198',
+    line: '6',
+    direction: 'Postplatz',
     platform: { name: '3', type: 'Platform' },
-    arrivalTimeRelative: 6,
-    scheduledTimeRelative: 6,
+    arrivalTimeRelative: 25,
+    scheduledTimeRelative: 25,
+    delayTime: 1,
+    state: 'InTime',
+    mode:
+     { title: 'Straßenbahn',
+       name: 'Tram',
+       icon_url:
+        'https://www.dvb.de/assets/img/trans-icon/transport-tram.svg' },
+    diva: { number: 11006, network: 'voe' } },
+  { arrivalTime: 2019-03-28T01:45:00.000Z,
+    scheduledTime: 2019-03-28T01:45:00.000Z,
+    id: '81366566',
+    line: '7',
+    direction: 'Weixdorf',
+    platform: { name: '3', type: 'Platform' },
+    arrivalTimeRelative: 33,
+    scheduledTimeRelative: 33,
     delayTime: 0,
     state: 'InTime',
     mode:
@@ -85,23 +106,7 @@ dvb.monitor(stopID, timeOffset, numResults).then((data) => {
        name: 'Tram',
        icon_url:
         'https://www.dvb.de/assets/img/trans-icon/transport-tram.svg' },
-    diva: { number: 11011, network: 'voe' } },
-  { arrivalTime: 2019-01-17T21:03:00.000Z,
-    scheduledTime: 2019-01-17T21:03:00.000Z,
-    id: '79777307',
-    line: '2',
-    direction: 'Gorbitz',
-    platform: { name: '2', type: 'Platform' },
-    arrivalTimeRelative: 7,
-    scheduledTimeRelative: 7,
-    delayTime: 0,
-    state: 'InTime',
-    mode:
-     { title: 'Straßenbahn',
-       name: 'Tram',
-       icon_url:
-        'https://www.dvb.de/assets/img/trans-icon/transport-tram.svg' },
-    diva: { number: 11002, network: 'voe' } } ]
+    diva: { number: 11007, network: 'voe' } } ]
 ```
 <!-- AUTO-GENERATED-CONTENT:END -->
 
@@ -124,192 +129,241 @@ dvb.route(origin, destination, startTime, isArrivalTime).then((data) => {
 <!-- The below code snippet is automatically added from ./packages/examples/dist/route.js.yml -->
 ```yml
 { origin:
-   { name: 'Helmholtzstraße',
+   { id: '33000742',
+     name: 'Helmholtzstraße',
      city: 'Dresden',
      coords: [ 13.725468471273134, 51.0255443264448 ] },
   destination:
-   { name: 'Postplatz',
+   { id: '33000037',
+     name: 'Postplatz',
      city: 'Dresden',
-     coords: [ 13.73357173082639, 51.05055059050917 ] },
+     coords: [ 13.733543221907427, 51.05055101347277 ] },
   trips:
    [ { nodes:
         [ { stops:
-             [ { name: 'Helmholtzstraße',
+             [ { id: '33000742',
+                 name: 'Helmholtzstraße',
                  city: 'Dresden',
                  type: 'Stop',
-                 platform: { name: '1', type: 'Platform' },
+                 platform: undefined,
                  coords: [ 13.725468471273134, 51.0255443264448 ],
-                 arrival: 2019-01-17T19:36:00.000Z,
-                 departure: 2019-01-17T19:36:00.000Z },
-               { name: 'Stadtgutstraße',
+                 arrival: 2019-03-28T01:18:00.000Z,
+                 departure: 2019-03-28T01:18:00.000Z },
+               { id: '33000135',
+                 name: 'Plauen Nöthnitzer Straße',
                  city: 'Dresden',
                  type: 'Stop',
                  platform: { name: '1', type: 'Platform' },
-                 coords: [ 13.736249024095288, 51.02412604112871 ],
-                 arrival: 2019-01-17T19:38:00.000Z,
-                 departure: 2019-01-17T19:38:00.000Z },
-               ... 1 more item ],
+                 coords: [ 13.716492082528102, 51.02796893475141 ],
+                 arrival: 2019-03-28T01:30:00.000Z,
+                 departure: 2019-03-28T01:30:00.000Z } ],
             departure:
-             { name: 'Helmholtzstraße',
+             { id: '33000742',
+               name: 'Helmholtzstraße',
                city: 'Dresden',
-               platform: { name: '1', type: 'Platform' },
-               time: 2019-01-17T19:36:00.000Z,
+               platform: undefined,
+               time: 2019-03-28T01:18:00.000Z,
                coords: [ 13.725468471273134, 51.0255443264448 ],
                type: 'Stop' },
             arrival:
-             { name: 'Räcknitzhöhe',
+             { id: '33000135',
+               name: 'Plauen Nöthnitzer Straße',
                city: 'Dresden',
                platform: { name: '1', type: 'Platform' },
-               time: 2019-01-17T19:39:00.000Z,
-               coords: [ 13.742469696952984, 51.02352100754019 ],
+               time: 2019-03-28T01:30:00.000Z,
+               coords: [ 13.716492082528102, 51.02796893475141 ],
                type: 'Stop' },
             mode:
-             { title: 'Bus',
-               name: 'CityBus',
-               icon_url: 'https://www.dvb.de/assets/img/trans-icon/transport-bus.svg' },
-            line: '85',
-            direction: 'Striesen',
-            diva: { number: 21085, network: 'voe' },
-            duration: 3,
+             { title: 'Fussweg',
+               name: 'Footpath',
+               icon_url: 'https://m.dvb.de/img/walk.svg' },
+            line: 'Fussweg',
+            direction: '',
+            diva: undefined,
+            duration: 12,
             path:
              [ [ 13.725468471273134, 51.0255443264448 ],
-               [ 13.725737159122861, 51.02548641939806 ],
-               ... 18 more items ] },
+               [ 13.725454558079187, 51.025553521653286 ],
+               ... 47 more items ] },
           { stops:
-             [ { name: 'Räcknitzhöhe',
+             [ { id: '33000135',
+                 name: 'Plauen Nöthnitzer Straße',
                  city: 'Dresden',
                  type: 'Stop',
                  platform: { name: '1', type: 'Platform' },
-                 coords: [ 13.742469696952984, 51.02352100754019 ],
-                 arrival: 2019-01-17T19:43:00.000Z,
-                 departure: 2019-01-17T19:43:00.000Z },
-               { name: 'Zellescher Weg',
+                 coords: [ 13.716492082528102, 51.02796893475141 ],
+                 arrival: 2019-03-28T01:30:00.000Z,
+                 departure: 2019-03-28T01:30:00.000Z },
+               { id: '33000134',
+                 name: 'Münchner Platz',
                  city: 'Dresden',
                  type: 'Stop',
                  platform: { name: '1', type: 'Platform' },
-                 coords: [ 13.7457515521668, 51.02816465242123 ],
-                 arrival: 2019-01-17T19:45:00.000Z,
-                 departure: 2019-01-17T19:45:00.000Z },
-               ... 8 more items ],
+                 coords: [ 13.721883037345886, 51.02995723597058 ],
+                 arrival: 2019-03-28T01:31:00.000Z,
+                 departure: 2019-03-28T01:31:00.000Z },
+               ... 4 more items ],
             departure:
-             { name: 'Räcknitzhöhe',
+             { id: '33000135',
+               name: 'Plauen Nöthnitzer Straße',
                city: 'Dresden',
                platform: { name: '1', type: 'Platform' },
-               time: 2019-01-17T19:43:00.000Z,
-               coords: [ 13.742469696952984, 51.02352100754019 ],
+               time: 2019-03-28T01:30:00.000Z,
+               coords: [ 13.716492082528102, 51.02796893475141 ],
                type: 'Stop' },
             arrival:
-             { name: 'Postplatz',
+             { id: '33000032',
+               name: 'Hauptbahnhof Nord',
                city: 'Dresden',
-               platform: { name: '4', type: 'Platform' },
-               time: 2019-01-17T19:58:00.000Z,
-               coords: [ 13.73357173082639, 51.05055059050917 ],
+               platform: { name: '1', type: 'Platform' },
+               time: 2019-03-28T01:36:00.000Z,
+               coords: [ 13.735187096532323, 51.041491968478326 ],
                type: 'Stop' },
             mode:
              { title: 'Straßenbahn',
                name: 'Tram',
                icon_url:
                 'https://www.dvb.de/assets/img/trans-icon/transport-tram.svg' },
-            line: '11',
-            direction: 'Bühlau',
-            diva: { number: 11011, network: 'voe' },
-            duration: 15,
+            line: '3',
+            direction: 'Wilder Mann',
+            diva: { number: 11003, network: 'voe' },
+            duration: 6,
             path:
-             [ [ 13.742469696952984, 51.02352100754019 ],
-               [ 13.74249987378793, 51.02356550610719 ],
-               ... 122 more items ] } ],
+             [ [ 13.71646358720785, 51.02796935341722 ],
+               [ 13.71649241447995, 51.02797791957738 ],
+               ... 38 more items ] },
+          ... 2 more items ],
        departure:
-        { name: 'Helmholtzstraße',
+        { id: '33000742',
+          name: 'Helmholtzstraße',
           city: 'Dresden',
-          platform: { name: '1', type: 'Platform' },
-          time: 2019-01-17T19:36:00.000Z,
+          platform: undefined,
+          time: 2019-03-28T01:18:00.000Z,
           coords: [ 13.725468471273134, 51.0255443264448 ],
           type: 'Stop' },
        arrival:
-        { name: 'Postplatz',
+        { id: '33000037',
+          name: 'Postplatz',
           city: 'Dresden',
           platform: { name: '4', type: 'Platform' },
-          time: 2019-01-17T19:58:00.000Z,
-          coords: [ 13.73357173082639, 51.05055059050917 ],
+          time: 2019-03-28T01:42:00.000Z,
+          coords: [ 13.733543221907427, 51.05055101347277 ],
           type: 'Stop' },
-       duration: 22,
+       duration: 24,
        interchanges: 1 },
      { nodes:
         [ { stops:
-             [ { name: 'Helmholtzstraße',
+             [ { id: '33000742',
+                 name: 'Helmholtzstraße',
                  city: 'Dresden',
                  type: 'Stop',
-                 platform: { name: '2', type: 'Platform' },
+                 platform: undefined,
                  coords: [ 13.725468471273134, 51.0255443264448 ],
-                 arrival: 2019-01-17T19:43:00.000Z,
-                 departure: 2019-01-17T19:43:00.000Z },
-               { name: 'Regensburger Straße',
+                 arrival: 2019-03-28T02:18:00.000Z,
+                 departure: 2019-03-28T02:18:00.000Z },
+               { id: '33000135',
+                 name: 'Plauen Nöthnitzer Straße',
                  city: 'Dresden',
                  type: 'Stop',
-                 platform: { name: '2', type: 'Platform' },
-                 coords: [ 13.720554082747958, 51.02640790159258 ],
-                 arrival: 2019-01-17T19:44:00.000Z,
-                 departure: 2019-01-17T19:44:00.000Z },
-               ... 1 more item ],
+                 platform: { name: '1', type: 'Platform' },
+                 coords: [ 13.716492082528102, 51.02796893475141 ],
+                 arrival: 2019-03-28T02:30:00.000Z,
+                 departure: 2019-03-28T02:30:00.000Z } ],
             departure:
-             { name: 'Helmholtzstraße',
+             { id: '33000742',
+               name: 'Helmholtzstraße',
                city: 'Dresden',
-               platform: { name: '2', type: 'Platform' },
-               time: 2019-01-17T19:43:00.000Z,
+               platform: undefined,
+               time: 2019-03-28T02:18:00.000Z,
                coords: [ 13.725468471273134, 51.0255443264448 ],
                type: 'Stop' },
             arrival:
-             { name: 'Plauen Nöthnitzer Straße',
+             { id: '33000135',
+               name: 'Plauen Nöthnitzer Straße',
                city: 'Dresden',
-               platform: { name: '6', type: 'Platform' },
-               time: 2019-01-17T19:44:00.000Z,
-               coords: [ 13.716530789023206, 51.02708737506858 ],
+               platform: { name: '1', type: 'Platform' },
+               time: 2019-03-28T02:30:00.000Z,
+               coords: [ 13.716492082528102, 51.02796893475141 ],
                type: 'Stop' },
-            mode:
-             { title: 'Bus',
-               name: 'CityBus',
-               icon_url: 'https://www.dvb.de/assets/img/trans-icon/transport-bus.svg' },
-            line: '85',
-            direction: 'Löbtau Süd',
-            diva: { number: 21085, network: 'voe' },
-            duration: 1,
-            path:
-             [ [ 13.725468471273134, 51.0255443264448 ],
-               [ 13.72529850994302, 51.025573805747264 ],
-               ... 9 more items ] },
-          { stops: [],
-            departure: undefined,
-            arrival: undefined,
             mode:
              { title: 'Fussweg',
                name: 'Footpath',
                icon_url: 'https://m.dvb.de/img/walk.svg' },
-            line: '',
+            line: 'Fussweg',
             direction: '',
             diva: undefined,
-            duration: 2,
+            duration: 12,
             path:
-             [ [ 13.716530789023206, 51.02708737506858 ],
-               [ 13.716530457074477, 51.02707839024142 ],
-               ... 15 more items ] },
-          ... 3 more items ],
+             [ [ 13.725468471273134, 51.0255443264448 ],
+               [ 13.725454558079187, 51.025553521653286 ],
+               ... 47 more items ] },
+          { stops:
+             [ { id: '33000135',
+                 name: 'Plauen Nöthnitzer Straße',
+                 city: 'Dresden',
+                 type: 'Stop',
+                 platform: { name: '1', type: 'Platform' },
+                 coords: [ 13.716492082528102, 51.02796893475141 ],
+                 arrival: 2019-03-28T02:30:00.000Z,
+                 departure: 2019-03-28T02:30:00.000Z },
+               { id: '33000134',
+                 name: 'Münchner Platz',
+                 city: 'Dresden',
+                 type: 'Stop',
+                 platform: { name: '1', type: 'Platform' },
+                 coords: [ 13.721883037345886, 51.02995723597058 ],
+                 arrival: 2019-03-28T02:31:00.000Z,
+                 departure: 2019-03-28T02:31:00.000Z },
+               ... 4 more items ],
+            departure:
+             { id: '33000135',
+               name: 'Plauen Nöthnitzer Straße',
+               city: 'Dresden',
+               platform: { name: '1', type: 'Platform' },
+               time: 2019-03-28T02:30:00.000Z,
+               coords: [ 13.716492082528102, 51.02796893475141 ],
+               type: 'Stop' },
+            arrival:
+             { id: '33000032',
+               name: 'Hauptbahnhof Nord',
+               city: 'Dresden',
+               platform: { name: '1', type: 'Platform' },
+               time: 2019-03-28T02:36:00.000Z,
+               coords: [ 13.735187096532323, 51.041491968478326 ],
+               type: 'Stop' },
+            mode:
+             { title: 'Straßenbahn',
+               name: 'Tram',
+               icon_url:
+                'https://www.dvb.de/assets/img/trans-icon/transport-tram.svg' },
+            line: '3',
+            direction: 'Wilder Mann',
+            diva: { number: 11003, network: 'voe' },
+            duration: 6,
+            path:
+             [ [ 13.71646358720785, 51.02796935341722 ],
+               [ 13.71649241447995, 51.02797791957738 ],
+               ... 38 more items ] },
+          ... 2 more items ],
        departure:
-        { name: 'Helmholtzstraße',
+        { id: '33000742',
+          name: 'Helmholtzstraße',
           city: 'Dresden',
-          platform: { name: '2', type: 'Platform' },
-          time: 2019-01-17T19:43:00.000Z,
+          platform: undefined,
+          time: 2019-03-28T02:18:00.000Z,
           coords: [ 13.725468471273134, 51.0255443264448 ],
           type: 'Stop' },
        arrival:
-        { name: 'Postplatz',
+        { id: '33000037',
+          name: 'Postplatz',
           city: 'Dresden',
-          platform: { name: '2', type: 'Platform' },
-          time: 2019-01-17T20:08:00.000Z,
-          coords: [ 13.733966669186017, 51.05081442107084 ],
+          platform: { name: '4', type: 'Platform' },
+          time: 2019-03-28T02:42:00.000Z,
+          coords: [ 13.733543221907427, 51.05055101347277 ],
           type: 'Stop' },
-       duration: 25,
-       interchanges: 2 },
-     ... 3 more items ] }
+       duration: 24,
+       interchanges: 1 },
+     ... 2 more items ] }
 ```
 <!-- AUTO-GENERATED-CONTENT:END -->
 
@@ -330,19 +384,19 @@ dvb.route(origin, destination, startTime, isArrivalTime).then((data) => {
     * Interfaces
         * [IDiva][InterfaceDeclaration-12]
         * [IPlatform][InterfaceDeclaration-13]
-        * [IPin][InterfaceDeclaration-5]
-        * [IConnection][InterfaceDeclaration-6]
-        * [IMode][InterfaceDeclaration-3]
-        * [IPoint][InterfaceDeclaration-1]
+        * [IPin][InterfaceDeclaration-6]
+        * [IConnection][InterfaceDeclaration-7]
+        * [IMode][InterfaceDeclaration-4]
         * [IAddress][InterfaceDeclaration-0]
-        * [ILine][InterfaceDeclaration-2]
-        * [IMonitor][InterfaceDeclaration-4]
-        * [ILocation][InterfaceDeclaration-11]
-        * [IStop][InterfaceDeclaration-10]
+        * [ILine][InterfaceDeclaration-3]
+        * [IMonitor][InterfaceDeclaration-5]
+        * [ILocation][InterfaceDeclaration-2]
+        * [IPoint][InterfaceDeclaration-1]
+        * [IStop][InterfaceDeclaration-11]
         * [IStopLocation][InterfaceDeclaration-14]
-        * [INode][InterfaceDeclaration-9]
-        * [ITrip][InterfaceDeclaration-8]
-        * [IRoute][InterfaceDeclaration-7]
+        * [INode][InterfaceDeclaration-10]
+        * [ITrip][InterfaceDeclaration-9]
+        * [IRoute][InterfaceDeclaration-8]
     * Types
         * [coord][TypeAliasDeclaration-0]
     * Enums
@@ -358,7 +412,7 @@ dvb.route(origin, destination, startTime, isArrivalTime).then((data) => {
 Find the coordinates for a given POI id.
 
 ```typescript
-function coords(id: string): Promise<number[] | undefined>;
+function coords(id: string): Promise<number[]>;
 ```
 
 **Parameters**
@@ -378,7 +432,7 @@ Promise<number[] | undefined>
 Lookup address and nearby stops by coordinate.
 
 ```typescript
-function findAddress(lng: number, lat: number): Promise<IAddress | undefined>;
+function findAddress(lng: number, lat: number): Promise<IAddress>;
 ```
 
 **Parameters**
@@ -450,7 +504,7 @@ function lines(stopID: string): Promise<ILine[]>;
 
 **Return type**
 
-Promise<[ILine][InterfaceDeclaration-2][]>
+Promise<[ILine][InterfaceDeclaration-3][]>
 
 ----------
 
@@ -472,7 +526,7 @@ function monitor(stopID: string, offset: number = 0, amount: number = 0): Promis
 
 **Return type**
 
-Promise<[IMonitor][InterfaceDeclaration-4][]>
+Promise<[IMonitor][InterfaceDeclaration-5][]>
 
 ----------
 
@@ -496,7 +550,7 @@ function pins(swlng: number, swlat: number, nelng: number, nelat: number, pinTyp
 
 **Return type**
 
-Promise<[IPin][InterfaceDeclaration-5][]>
+Promise<[IPin][InterfaceDeclaration-6][]>
 
 ----------
 
@@ -519,7 +573,7 @@ function route(originID: string, destinationID: string, time: Date = new Date(),
 
 **Return type**
 
-Promise<[IRoute][InterfaceDeclaration-7]>
+Promise<[IRoute][InterfaceDeclaration-8]>
 
 #### Interfaces
 
@@ -528,7 +582,7 @@ Promise<[IRoute][InterfaceDeclaration-7]>
 ```typescript
 interface IDiva {
     number: number;
-    network?: string | undefined;
+    network?: string;
 }
 ```
 
@@ -537,7 +591,7 @@ interface IDiva {
 | Name    | Type                    | Optional |
 | ------- | ----------------------- | -------- |
 | number  | number                  | false    |
-| network | string &#124; undefined | true     |
+| network | string  | true     |
 
 ----------
 
@@ -572,9 +626,9 @@ interface IPin {
     type: PIN_TYPE;
     name: string;
     coords: Array<number>;
-    platform_nr?: string | undefined;
+    platform_nr?: string;
     connections?: IConnection[];
-    info?: string | undefined;
+    info?: string;
 }
 ```
 
@@ -586,9 +640,9 @@ interface IPin {
 | type        | [PIN_TYPE][EnumDeclaration-1]           | false    |
 | name        | string                                  | false    |
 | coords      | Array<number>                           | false    |
-| platform_nr | string &#124; undefined                 | true     |
-| connections | [IConnection][InterfaceDeclaration-6][] | true     |
-| info        | string &#124; undefined                 | true     |
+| platform_nr | string                  | true     |
+| connections | [IConnection][InterfaceDeclaration-7][] | true     |
+| info        | string                  | true     |
 
 ----------
 
@@ -606,7 +660,7 @@ interface IConnection {
 | Name | Type                            | Optional |
 | ---- | ------------------------------- | -------- |
 | line | string                          | false    |
-| mode | [IMode][InterfaceDeclaration-3] | false    |
+| mode | [IMode][InterfaceDeclaration-4] | false    |
 
 ----------
 
@@ -616,7 +670,7 @@ interface IConnection {
 interface IMode {
     title: string;
     name: string;
-    icon_url?: string | undefined;
+    icon_url?: string;
 }
 ```
 
@@ -626,31 +680,7 @@ interface IMode {
 | -------- | ----------------------- | -------- |
 | title    | string                  | false    |
 | name     | string                  | false    |
-| icon_url | string &#124; undefined | true     |
-
-----------
-
-##### IPoint
-
-```typescript
-interface IPoint {
-    city: string;
-    name: string;
-    id: string;
-    coords: Array<number>;
-    type: POI_TYPE;
-}
-```
-
-**Properties**
-
-| Name   | Type                          | Optional |
-| ------ | ----------------------------- | -------- |
-| city   | string                        | false    |
-| name   | string                        | false    |
-| id     | string                        | false    |
-| coords | Array<number>                 | false    |
-| type   | [POI_TYPE][EnumDeclaration-0] | false    |
+| icon_url | string  | true     |
 
 ----------
 
@@ -680,7 +710,7 @@ interface IAddress extends IPoint {
 interface ILine {
     name: string;
     mode: IMode;
-    diva?: IDiva | undefined;
+    diva?: IDiva;
     directions: string[];
 }
 ```
@@ -690,8 +720,8 @@ interface ILine {
 | Name       | Type                            | Optional |
 | ---------- | ------------------------------- | -------- |
 | name       | string                          | false    |
-| mode       | [IMode][InterfaceDeclaration-3] | false    |
-| diva       | IDiva &#124; undefined          | true     |
+| mode       | [IMode][InterfaceDeclaration-4] | false    |
+| diva       | [IDiva][InterfaceDeclaration-12]           | true     |
 | directions | string[]                        | false    |
 
 ----------
@@ -705,13 +735,13 @@ interface IMonitor {
     id: string;
     line: string;
     direction: string;
-    platform?: IPlatform | undefined;
+    platform?: IPlatform;
     arrivalTimeRelative: number;
     scheduledTimeRelative: number;
     delayTime: number;
     state: string;
     mode: IMode;
-    diva?: IDiva | undefined;
+    diva?: IDiva;
 }
 ```
 
@@ -724,13 +754,13 @@ interface IMonitor {
 | id                    | string                          | false    |
 | line                  | string                          | false    |
 | direction             | string                          | false    |
-| platform              | IPlatform &#124; undefined      | true     |
+| platform              | [IPlatform][InterfaceDeclaration-13]       | true     |
 | arrivalTimeRelative   | number                          | false    |
 | scheduledTimeRelative | number                          | false    |
 | delayTime             | number                          | false    |
 | state                 | string                          | false    |
-| mode                  | [IMode][InterfaceDeclaration-3] | false    |
-| diva                  | IDiva &#124; undefined          | true     |
+| mode                  | [IMode][InterfaceDeclaration-4] | false    |
+| diva                  | [IDiva][InterfaceDeclaration-12]           | true     |
 
 ----------
 
@@ -738,6 +768,7 @@ interface IMonitor {
 
 ```typescript
 interface ILocation {
+    id: string;
     name: string;
     city: string;
     coords: Array<number>;
@@ -748,9 +779,30 @@ interface ILocation {
 
 | Name   | Type          | Optional |
 | ------ | ------------- | -------- |
+| id     | string        | false    |
 | name   | string        | false    |
 | city   | string        | false    |
 | coords | Array<number> | false    |
+
+----------
+
+##### IPoint
+
+```typescript
+interface IPoint extends ILocation {
+    type: POI_TYPE;
+}
+```
+
+**Extends**
+
+[ILocation][InterfaceDeclaration-2]
+
+**Properties**
+
+| Name | Type                          | Optional |
+| ---- | ----------------------------- | -------- |
+| type | [POI_TYPE][EnumDeclaration-0] | false    |
 
 ----------
 
@@ -759,7 +811,7 @@ interface ILocation {
 ```typescript
 interface IStop extends ILocation {
     type: string;
-    platform?: IPlatform | undefined;
+    platform?: IPlatform;
     arrival: Date;
     departure: Date;
 }
@@ -767,14 +819,14 @@ interface IStop extends ILocation {
 
 **Extends**
 
-[ILocation][InterfaceDeclaration-11]
+[ILocation][InterfaceDeclaration-2]
 
 **Properties**
 
 | Name      | Type                       | Optional |
 | --------- | -------------------------- | -------- |
 | type      | string                     | false    |
-| platform  | IPlatform &#124; undefined | true     |
+| platform  | [IPlatform][InterfaceDeclaration-13]  | true     |
 | arrival   | Date                       | false    |
 | departure | Date                       | false    |
 
@@ -784,7 +836,7 @@ interface IStop extends ILocation {
 
 ```typescript
 interface IStopLocation extends ILocation {
-    platform?: IPlatform | undefined;
+    platform?: IPlatform;
     time: Date;
     type: string;
 }
@@ -792,13 +844,13 @@ interface IStopLocation extends ILocation {
 
 **Extends**
 
-[ILocation][InterfaceDeclaration-11]
+[ILocation][InterfaceDeclaration-2]
 
 **Properties**
 
 | Name     | Type                       | Optional |
 | -------- | -------------------------- | -------- |
-| platform | IPlatform &#124; undefined | true     |
+| platform | [IPlatform][InterfaceDeclaration-13]  | true     |
 | time     | Date                       | false    |
 | type     | string                     | false    |
 
@@ -809,12 +861,12 @@ interface IStopLocation extends ILocation {
 ```typescript
 interface INode {
     stops: IStop[];
-    departure?: IStopLocation | undefined;
-    arrival?: IStopLocation | undefined;
+    departure?: IStopLocation;
+    arrival?: IStopLocation;
     mode: IMode;
     line: string;
     direction: string;
-    diva?: IDiva | undefined;
+    diva?: IDiva;
     duration: number;
     path: Array<number>[];
 }
@@ -824,13 +876,13 @@ interface INode {
 
 | Name      | Type                               | Optional |
 | --------- | ---------------------------------- | -------- |
-| stops     | [IStop][InterfaceDeclaration-10][] | false    |
-| departure | IStopLocation &#124; undefined     | true     |
-| arrival   | IStopLocation &#124; undefined     | true     |
-| mode      | [IMode][InterfaceDeclaration-3]    | false    |
+| stops     | [IStop][InterfaceDeclaration-11][] | false    |
+| departure | [IStopLocation][InterfaceDeclaration-14]      | true     |
+| arrival   | [IStopLocation][InterfaceDeclaration-14]      | true     |
+| mode      | [IMode][InterfaceDeclaration-4]    | false    |
 | line      | string                             | false    |
 | direction | string                             | false    |
-| diva      | IDiva &#124; undefined             | true     |
+| diva      | [IDiva][InterfaceDeclaration-12]              | true     |
 | duration  | number                             | false    |
 | path      | Array<number>[]                    | false    |
 
@@ -840,8 +892,8 @@ interface INode {
 
 ```typescript
 interface ITrip {
-    departure?: IStopLocation | undefined;
-    arrival?: IStopLocation | undefined;
+    departure?: IStopLocation;
+    arrival?: IStopLocation;
     duration: number;
     interchanges: number;
     nodes: INode[];
@@ -850,13 +902,13 @@ interface ITrip {
 
 **Properties**
 
-| Name         | Type                              | Optional |
-| ------------ | --------------------------------- | -------- |
-| departure    | IStopLocation &#124; undefined    | true     |
-| arrival      | IStopLocation &#124; undefined    | true     |
-| duration     | number                            | false    |
-| interchanges | number                            | false    |
-| nodes        | [INode][InterfaceDeclaration-9][] | false    |
+| Name         | Type                               | Optional |
+| ------------ | ---------------------------------- | -------- |
+| departure    | [IStopLocation][InterfaceDeclaration-14]      | true     |
+| arrival      | [IStopLocation][InterfaceDeclaration-14]      | true     |
+| duration     | number                             | false    |
+| interchanges | number                             | false    |
+| nodes        | [INode][InterfaceDeclaration-10][] | false    |
 
 ----------
 
@@ -864,8 +916,8 @@ interface ITrip {
 
 ```typescript
 interface IRoute {
-    origin?: ILocation | undefined;
-    destination?: ILocation | undefined;
+    origin?: ILocation;
+    destination?: ILocation;
     trips: ITrip[];
 }
 ```
@@ -874,9 +926,9 @@ interface IRoute {
 
 | Name        | Type                              | Optional |
 | ----------- | --------------------------------- | -------- |
-| origin      | ILocation &#124; undefined        | true     |
-| destination | ILocation &#124; undefined        | true     |
-| trips       | [ITrip][InterfaceDeclaration-8][] | false    |
+| origin      | [ILocation][InterfaceDeclaration-2]         | true     |
+| destination | [ILocation][InterfaceDeclaration-2]         | true     |
+| trips       | [ITrip][InterfaceDeclaration-9][] | false    |
 
 #### Types
 
@@ -955,43 +1007,44 @@ enum PIN_TYPE {
 [FunctionDeclaration-3]: README.md#findstop
 [InterfaceDeclaration-1]: README.md#ipoint
 [FunctionDeclaration-4]: README.md#lines
-[InterfaceDeclaration-2]: README.md#iline
+[InterfaceDeclaration-3]: README.md#iline
 [FunctionDeclaration-5]: README.md#monitor
-[InterfaceDeclaration-4]: README.md#imonitor
+[InterfaceDeclaration-5]: README.md#imonitor
 [FunctionDeclaration-6]: README.md#pins
 [EnumDeclaration-1]: README.md#pin_type
-[InterfaceDeclaration-5]: README.md#ipin
+[InterfaceDeclaration-6]: README.md#ipin
 [FunctionDeclaration-7]: README.md#route
-[InterfaceDeclaration-7]: README.md#iroute
+[InterfaceDeclaration-8]: README.md#iroute
 [InterfaceDeclaration-12]: README.md#idiva
 [InterfaceDeclaration-13]: README.md#iplatform
-[InterfaceDeclaration-5]: README.md#ipin
+[InterfaceDeclaration-6]: README.md#ipin
 [EnumDeclaration-1]: README.md#pin_type
-[InterfaceDeclaration-6]: README.md#iconnection
-[InterfaceDeclaration-6]: README.md#iconnection
-[InterfaceDeclaration-3]: README.md#imode
-[InterfaceDeclaration-3]: README.md#imode
-[InterfaceDeclaration-1]: README.md#ipoint
-[EnumDeclaration-0]: README.md#poi_type
+[InterfaceDeclaration-7]: README.md#iconnection
+[InterfaceDeclaration-7]: README.md#iconnection
+[InterfaceDeclaration-4]: README.md#imode
+[InterfaceDeclaration-4]: README.md#imode
 [InterfaceDeclaration-0]: README.md#iaddress
 [InterfaceDeclaration-1]: README.md#ipoint
 [InterfaceDeclaration-1]: README.md#ipoint
-[InterfaceDeclaration-2]: README.md#iline
-[InterfaceDeclaration-3]: README.md#imode
-[InterfaceDeclaration-4]: README.md#imonitor
-[InterfaceDeclaration-3]: README.md#imode
-[InterfaceDeclaration-11]: README.md#ilocation
-[InterfaceDeclaration-10]: README.md#istop
-[InterfaceDeclaration-11]: README.md#ilocation
+[InterfaceDeclaration-3]: README.md#iline
+[InterfaceDeclaration-4]: README.md#imode
+[InterfaceDeclaration-5]: README.md#imonitor
+[InterfaceDeclaration-4]: README.md#imode
+[InterfaceDeclaration-2]: README.md#ilocation
+[InterfaceDeclaration-1]: README.md#ipoint
+[InterfaceDeclaration-2]: README.md#ilocation
+[EnumDeclaration-0]: README.md#poi_type
+[InterfaceDeclaration-11]: README.md#istop
+[InterfaceDeclaration-2]: README.md#ilocation
 [InterfaceDeclaration-14]: README.md#istoplocation
-[InterfaceDeclaration-11]: README.md#ilocation
-[InterfaceDeclaration-9]: README.md#inode
-[InterfaceDeclaration-10]: README.md#istop
-[InterfaceDeclaration-3]: README.md#imode
-[InterfaceDeclaration-8]: README.md#itrip
-[InterfaceDeclaration-9]: README.md#inode
-[InterfaceDeclaration-7]: README.md#iroute
-[InterfaceDeclaration-8]: README.md#itrip
+[InterfaceDeclaration-2]: README.md#ilocation
+[InterfaceDeclaration-10]: README.md#inode
+[InterfaceDeclaration-11]: README.md#istop
+[InterfaceDeclaration-4]: README.md#imode
+[InterfaceDeclaration-9]: README.md#itrip
+[InterfaceDeclaration-10]: README.md#inode
+[InterfaceDeclaration-8]: README.md#iroute
+[InterfaceDeclaration-9]: README.md#itrip
 [TypeAliasDeclaration-0]: README.md#coord
 [EnumDeclaration-0]: README.md#poi_type
 [EnumDeclaration-1]: README.md#pin_type
