@@ -14,7 +14,7 @@
     "tslint": "tslint packages/*/{src,test}/*.{ts,tsx}",
     "prettier": "prettier packages/*/{src,test}/*.{ts,tsx} -l",
     "watch": "run-p 'tsc --watch' 'test:node --watch --watch-extensions ts'",
-    "test": "npm-run-all lint -p test:*",
+    "test": "run-p test:*",
     "test:node": "yarn workspace dvbjs nyc mocha",
     "test:browser": "yarn workspace dvbjs karma start",
     "coveralls": "cat ./packages/dvbjs/coverage/lcov.info | coveralls",
@@ -25,7 +25,7 @@
     "docs:copy": "cpy README.md packages/dvbjs",
     "uncommitted": "uncommitted",
     "run_example": "yarn tsc && yarn workspace react-example start",
-    "publish:dvbjs": "npm-run-all uncommitted lint build -p coverage build:react_example docs && yarn workspace dvbjs publish"
+    "publish:dvbjs": "npm-run-all uncommitted build -p test build:react_example docs && yarn workspace dvbjs publish"
   },
   "devDependencies": {
     "coveralls": "^3.0.3",
