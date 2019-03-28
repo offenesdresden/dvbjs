@@ -7,11 +7,11 @@ cache:
 matrix:
   include:
     - node_js: "lts/*"
-      env: YARN_TASK=coverage:node
+      env: YARN_TASK=test:node
     - node_js: "node"
-      env: YARN_TASK=coverage:node
+      env: YARN_TASK=test:node
     - node_js: "node"
-      env: YARN_TASK=coverage:browser
+      env: YARN_TASK=test:browser
       addons:
         chrome: stable
       before_install:
