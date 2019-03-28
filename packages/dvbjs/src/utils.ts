@@ -305,6 +305,7 @@ export function parseConnections(data: string): IConnection[] {
 
 function extractStop(stop: any): IStop {
   return {
+    id: stop.DataId,
     name: stop.Name.trim(),
     city: stop.Place,
     type: stop.Type,
@@ -328,6 +329,7 @@ function extractNode(node: any, mapData: any): INode {
     const lastStop = stops[stops.length - 1];
 
     departure = {
+      id: firstStop.id,
       name: firstStop.name,
       city: firstStop.city,
       platform: firstStop.platform,
@@ -337,6 +339,7 @@ function extractNode(node: any, mapData: any): INode {
     };
 
     arrival = {
+      id: lastStop.id,
       name: lastStop.name,
       city: lastStop.city,
       platform: lastStop.platform,

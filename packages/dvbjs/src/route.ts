@@ -47,11 +47,13 @@ export function route(
           const firstTrip = trips[0];
 
           origin = {
+            id: firstTrip.departure.id,
             name: firstTrip.departure.name,
             city: firstTrip.departure.city,
             coords: firstTrip.departure.coords,
           };
           destination = {
+            id: firstTrip.arrival.id,
             name: firstTrip.arrival.name,
             city: firstTrip.arrival.city,
             coords: firstTrip.arrival.coords,
