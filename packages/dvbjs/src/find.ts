@@ -76,6 +76,16 @@ export function findPOI(searchString: string): Promise<IPoint[]> {
 }
 
 /**
+ * Search for nearby stops assigned to a POI in the network of the DVB.
+ * @param searchString the name of the POI
+ * @returns an array of all possible hits including their GPS coordinates.
+ */
+export async function findNearbyStops(searchString: string): Promise<IPoint[]> {
+  const aPoints = await pointFinder(searchString, false, true);
+  return aPoints.filter((oPoint) => oPoint.type === "Stop");
+}
+
+/**
  * Lookup address and nearby stops by coordinate.
  * @param lng longitude of the coordinate
  * @param lat latitude of the coordinate
