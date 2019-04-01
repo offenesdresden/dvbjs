@@ -192,11 +192,18 @@ describe("dvb.findNearbyStops", () => {
         });
       }));
 
-    it("should find nearby stops for address", () =>
+    it("should find nearby stops for address (1)", () =>
       dvb.findNearbyStops("Sternstraße 15 Dresden").then((data) => {
         assert.strictEqual("Mickten", data[0].name);
         assert.strictEqual("Trachauer Straße", data[1].name);
         assert.strictEqual("Altpieschen", data[2].name);
+      }));
+
+    it("should find nearby stops for address (2)", () =>
+      dvb.findNearbyStops("Kreuzstraße Dresden").then((data) => {
+        assert.strictEqual("Altmarkt", data[0].name);
+        assert.strictEqual("Prager Straße", data[1].name);
+        assert.strictEqual("Pirnaischer Platz", data[2].name);
       }));
   });
 
