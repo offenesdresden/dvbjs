@@ -224,6 +224,8 @@ export function parseMode(name: string): IMode {
       return MODES.ElevatorDown;
     case "stayforconnection":
       return MODES.StayForConnection;
+    case "plusbus":
+      return MODES.PlusBus;
     default:
       return {
         name,
@@ -280,6 +282,8 @@ function connectionType(str: string): IMode | undefined {
       return MODES.Ferry;
     case "8":
       return MODES.Cableway;
+    case "10":
+      return MODES.PlusBus;
   }
 }
 
@@ -457,5 +461,10 @@ export const MODES = {
     title: "gesicherter Anschluss",
     name: "StayForConnection",
     icon_url: "https://m.dvb.de/img/sit.svg",
+  },
+  PlusBus: {
+    title: "PlusBus",
+    name: "PlusBus",
+    icon_url: "https://m.dvb.de/img/mot_icons/plusBus.svg",
   },
 };

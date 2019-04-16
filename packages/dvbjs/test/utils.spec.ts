@@ -24,6 +24,7 @@ describe("internal utils", () => {
       ["Mobilityescalatordown", "EscalatorDown"],
       ["Mobilityelevatorup", "ElevatorUp"],
       ["Mobilityelevatordown", "ElevatorDown"],
+      ["PlusBus", "PlusBus"],
     ];
 
     mots.forEach((mot) => {

@@ -185,7 +185,6 @@ export function assertTrip(trip: ITrip) {
 }
 
 function assertNode(node: INode) {
-  assertNotEmptyString(node.line);
   assert.isString(node.direction);
   assert.isNumber(node.duration);
 
@@ -198,8 +197,10 @@ function assertNode(node: INode) {
   ) {
     assert.isDefined(node.diva);
     assertDiva(node.diva!);
+    assertNotEmptyString(node.line);
   } else {
     assert.isUndefined(node.diva);
+    assert.isString(node.line);
   }
 
   if (
