@@ -1,3 +1,4 @@
+import axios from "axios";
 import chai, { assert } from "chai";
 import chaiAsPromised from "chai-as-promised";
 import * as dvb from "../src/index";
@@ -12,8 +13,40 @@ import {
   assertTrip,
 } from "./helper";
 
+let lastResponses = [] as any[];
+
 before(() => {
   chai.use(chaiAsPromised);
+  axios.interceptors.response.use((response) => {
+    lastResponses.push(response);
+    return response;
+  });
+});
+
+beforeEach(() => {
+  lastResponses = [];
+});
+
+afterEach(function() {
+  if (this.currentTest && this.currentTest.state === "failed") {
+    // tslint:disable:no-console
+    console.log(
+      JSON.stringify(
+        lastResponses.map((r) => ({
+          status: r.status,
+          headers: r.headers,
+          config: {
+            method: r.config.method,
+            url: r.config.url,
+            params: r.config.params,
+            data: r.config.data,
+          },
+          data: r.data,
+        }))
+      )
+    );
+    // tslint:enable:no-console
+  }
 });
 
 describe("dvb.monitor", () => {
