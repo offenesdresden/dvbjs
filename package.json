@@ -33,14 +33,14 @@
     "in-publish": "^2.0.0",
     "markdown-magic": "^0.1.25",
     "npm-run-all": "^4.1.5",
-    "prettier": "^1.16.4",
+    "prettier": "^1.17.0",
     "rimraf": "^2.6.3",
-    "source-map-support": "^0.5.11",
-    "ts-node": "^8.0.3",
-    "tslint": "^5.14.0",
+    "source-map-support": "^0.5.12",
+    "ts-node": "^8.1.0",
+    "tslint": "^5.16.0",
     "tslint-config-prettier": "^1.18.0",
     "tslint-react": "^4.0.0",
-    "typescript": "^3.3.4000",
+    "typescript": "^3.4.3",
     "uncommitted": "^1.0.0"
   }
 }
