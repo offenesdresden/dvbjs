@@ -63,20 +63,6 @@
     "axios": "^0.18.0",
     "proj4": "^2.5.0"
   },
-  "nyc": {
-    "extension": [
-      ".ts"
-    ],
-    "exclude": [
-      "**/*.js",
-      "**/*.d.ts",
-      "coverage",
-      "dist",
-      "test/**"
-    ],
-    "cache": false,
-    "all": true
-  },
   "devDependencies": {
     "@types/chai": "^4.1.7",
     "@types/chai-as-promised": "^7.1.0",
