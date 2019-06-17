@@ -2,5 +2,6 @@
   "extension": [".ts"],
   "exclude": ["**/*.js", "**/*.d.ts", "coverage", "dist", "test/**"],
   "cache": false,
-  "all": true
+  "all": true,
+  "reporter": ["lcovonly", "text", "text-summary"]
 }
