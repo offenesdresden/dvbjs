@@ -44,7 +44,7 @@ export default class DepartureList extends React.Component<
           {this.state.departures.map((departure) => (
             <tr key={`${departure.id}${departure.scheduledTime}`}>
               <td>
-                <img src={departure.mode.icon_url} />
+                <img src={departure.mode.icon_url} alt={departure.mode.name} />
               </td>
               <td className="align-left">{departure.line}</td>
               <td className="align-left">{departure.direction}</td>
