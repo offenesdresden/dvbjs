@@ -6,7 +6,7 @@ module.exports = function(config) {
       "**/*.ts": ["karma-typescript"],
     },
     reporters: ["mocha", "karma-typescript"],
-    browsers: ["Chrome"],
+    browsers: ["ChromeHeadless"],
     client: {
       mocha: {
         opts: "test/mocha.opts",
