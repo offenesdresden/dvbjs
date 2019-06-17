@@ -28,19 +28,19 @@
     "publish:dvbjs": "npm-run-all uncommitted build -p test build:react_example docs && yarn workspace dvbjs publish"
   },
   "devDependencies": {
-    "coveralls": "^3.0.3",
+    "coveralls": "^3.0.4",
     "cpy-cli": "^2.0.0",
     "in-publish": "^2.0.0",
     "markdown-magic": "^0.1.25",
     "npm-run-all": "^4.1.5",
-    "prettier": "^1.17.0",
+    "prettier": "^1.18.2",
     "rimraf": "^2.6.3",
     "source-map-support": "^0.5.12",
-    "ts-node": "^8.1.0",
-    "tslint": "^5.16.0",
+    "ts-node": "^8.3.0",
+    "tslint": "^5.17.0",
     "tslint-config-prettier": "^1.18.0",
     "tslint-react": "^4.0.0",
-    "typescript": "^3.4.3",
+    "typescript": "^3.5.2",
     "uncommitted": "^1.0.0"
   }
 }
