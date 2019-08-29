@@ -3,28 +3,28 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
-  },
-  "dependencies": {
-    "@types/jest": "^24.0.15",
-    "@types/node": "^12.0.8",
-    "@types/react": "^16.8.20",
-    "@types/react-autocomplete": "^1.8.5",
-    "@types/react-dom": "^16.8.4",
-    "dvbjs": "*",
-    "react": "^16.8.6",
-    "react-autocomplete": "^1.8.1",
-    "react-dom": "^16.8.6",
-    "react-scripts": "^3.0.1",
-    "typescript": "^3.5.2"
+    "eject": "react-scripts eject",
+    "start": "react-scripts start",
+    "test": "react-scripts test"
   },
   "browserslist": [
     ">0.2%",
     "not dead",
     "not ie <= 11",
     "not op_mini all"
-  ]
+  ],
+  "dependencies": {
+    "@types/jest": "^24.0.18",
+    "@types/node": "^12.7.2",
+    "@types/react": "^16.9.2",
+    "@types/react-autocomplete": "^1.8.5",
+    "@types/react-dom": "^16.9.0",
+    "dvbjs": "*",
+    "react": "^16.9.0",
+    "react-autocomplete": "^1.8.1",
+    "react-dom": "^16.9.0",
+    "react-scripts": "^3.1.1",
+    "typescript": "^3.6.2"
+  }
 }
