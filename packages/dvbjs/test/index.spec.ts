@@ -184,9 +184,9 @@ describe("dvb.findPOI", () => {
       }));
   });
 
-  describe('dvb.findPOI "zzz"', () => {
+  describe('dvb.findPOI "yyy"', () => {
     it("should return an empty array", () =>
-      dvb.findPOI("zzz").then((data) => {
+      dvb.findPOI("yyy").then((data) => {
         assert.isEmpty(data);
       }));
   });
