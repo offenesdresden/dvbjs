@@ -188,7 +188,8 @@ export function parsePin(dataAsString: string): IPin {
 }
 
 export function parseMode(name: string): IMode {
-  switch (name.toLowerCase()) {
+  // name is sometimes undefined -> toLowerCase() wouldn't be a function on undefined
+  switch (String(name).toLowerCase()) {
     case "tram":
       return MODES.Tram;
     case "bus":
@@ -229,7 +230,7 @@ export function parseMode(name: string): IMode {
     default:
       return {
         name,
-        title: name.toLowerCase(),
+        title: String(name).toLowerCase(),
       };
   }
 }
