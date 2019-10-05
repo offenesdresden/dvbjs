@@ -29,7 +29,7 @@ export function route(
       shorttermchanges: true,
       time: time.toISOString(),
     },
-    timeout: 5000,
+    timeout: 15000,
   };
 
   return axios(options)
