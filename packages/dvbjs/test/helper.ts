@@ -1,3 +1,5 @@
+/* eslint @typescript-eslint/no-non-null-assertion: 0 */
+
 import { assert } from "chai";
 import {
   coord,
@@ -18,12 +20,12 @@ import {
   POI_TYPE,
 } from "../src/interfaces";
 
-export function assertNotEmptyString(str?: string) {
+export function assertNotEmptyString(str?: string): void {
   assert.isString(str);
   assert.isNotEmpty(str);
 }
 
-export function assertCoords(coords: coord) {
+export function assertCoords(coords: coord): void {
   assert.isArray(coords);
   assert.lengthOf(coords, 2);
 
@@ -31,7 +33,7 @@ export function assertCoords(coords: coord) {
   assert.approximately(coords[1], 51, 3);
 }
 
-export function assertPlatform(platform: IPlatform) {
+export function assertPlatform(platform: IPlatform): void {
   assert.isObject(platform);
 
   assert.property(platform, "name");
@@ -41,7 +43,7 @@ export function assertPlatform(platform: IPlatform) {
   assertNotEmptyString(platform.type);
 }
 
-export function assertDiva(diva: IDiva) {
+export function assertDiva(diva: IDiva): void {
   assert.isObject(diva);
 
   assert.property(diva, "number");
@@ -51,15 +53,15 @@ export function assertDiva(diva: IDiva) {
   assertNotEmptyString(diva.network);
 }
 
-export function assertMode(mode: IMode) {
+export function assertMode(mode: IMode): void {
   assert.isObject(mode);
 
   assertNotEmptyString(mode.name);
   assertNotEmptyString(mode.title);
-  assertNotEmptyString(mode.icon_url);
+  assertNotEmptyString(mode.iconUrl);
 }
 
-export function assertLocation(stop: ILocation) {
+export function assertLocation(stop: ILocation): void {
   assert.isObject(stop);
 
   assertNotEmptyString(stop.id);
@@ -68,7 +70,7 @@ export function assertLocation(stop: ILocation) {
   assertCoords(stop.coords);
 }
 
-export function assertStop(stop: IStop) {
+export function assertStop(stop: IStop): void {
   assertLocation(stop);
 
   assert.instanceOf(stop.arrival, Date);
@@ -83,19 +85,19 @@ export function assertStop(stop: IStop) {
   assert.strictEqual(stop.type, POI_TYPE.Stop);
 }
 
-export function assertPoint(point: IPoint) {
+export function assertPoint(point: IPoint): void {
   assertLocation(point);
   assert.oneOf(point.type, Object.keys(POI_TYPE));
 }
 
-export function assertAddress(adress: IAddress) {
+export function assertAddress(adress: IAddress): void {
   assertPoint(adress);
 
   assert.isNotEmpty(adress.stops);
   adress.stops.forEach(assertPoint);
 }
 
-export function assertStopLocation(stop: IStopLocation) {
+export function assertStopLocation(stop: IStopLocation): void {
   assertLocation(stop);
 
   if (stop.platform) {
@@ -105,7 +107,7 @@ export function assertStopLocation(stop: IStopLocation) {
   assert.strictEqual(stop.type, POI_TYPE.Stop);
 }
 
-export function assertConnection(con: IConnection) {
+export function assertConnection(con: IConnection): void {
   assert.isObject(con);
   assertNotEmptyString(con.line);
   assert.isNotEmpty(con.line);
@@ -114,7 +116,7 @@ export function assertConnection(con: IConnection) {
   }
 }
 
-export function assertPin(pin: IPin, type?: PIN_TYPE) {
+export function assertPin(pin: IPin, type?: PIN_TYPE): void {
   assert.isObject(pin);
   assertNotEmptyString(pin.type);
 
@@ -127,10 +129,10 @@ export function assertPin(pin: IPin, type?: PIN_TYPE) {
 
   if (pin.type === PIN_TYPE.platform) {
     assert.isString(pin.id);
-    assertNotEmptyString(pin.platform_nr);
+    assertNotEmptyString(pin.platformNr);
   } else {
     assertNotEmptyString(pin.id);
-    assert.isUndefined(pin.platform_nr);
+    assert.isUndefined(pin.platformNr);
   }
 
   if (pin.type === PIN_TYPE.stop) {
@@ -150,7 +152,7 @@ export function assertPin(pin: IPin, type?: PIN_TYPE) {
   }
 }
 
-export function assertTransport(transport: IMonitor) {
+export function assertTransport(transport: IMonitor): void {
   assertNotEmptyString(transport.id);
   assertNotEmptyString(transport.line);
   assertNotEmptyString(transport.direction);
@@ -178,17 +180,7 @@ export function assertTransport(transport: IMonitor) {
   assertPlatform(transport.platform!);
 }
 
-export function assertTrip(trip: ITrip) {
-  assertStopLocation(trip.departure!);
-  assertStopLocation(trip.arrival!);
-  assert.isNumber(trip.duration);
-  assert.isNumber(trip.interchanges);
-
-  assert.isArray(trip.nodes);
-  trip.nodes.forEach(assertNode);
-}
-
-function assertNode(node: INode) {
+function assertNode(node: INode): void {
   assert.isString(node.direction);
   assert.isNumber(node.duration);
 
@@ -235,4 +227,14 @@ function assertNode(node: INode) {
   } else {
     assert.isEmpty(node.path);
   }
+}
+
+export function assertTrip(trip: ITrip): void {
+  assertStopLocation(trip.departure!);
+  assertStopLocation(trip.arrival!);
+  assert.isNumber(trip.duration);
+  assert.isNumber(trip.interchanges);
+
+  assert.isArray(trip.nodes);
+  trip.nodes.forEach(assertNode);
 }

@@ -1,3 +1,5 @@
+/* eslint @typescript-eslint/no-non-null-assertion: 0 */
+
 import axios from "axios";
 import chai, { assert } from "chai";
 import chaiAsPromised from "chai-as-promised";
@@ -29,7 +31,7 @@ beforeEach(() => {
 
 afterEach(function() {
   if (this.currentTest && this.currentTest.state === "failed") {
-    // tslint:disable:no-console
+    // eslint-disable-next-line no-console
     console.log(
       JSON.stringify(
         lastResponses.map((r) => ({
@@ -45,7 +47,6 @@ afterEach(function() {
         }))
       )
     );
-    // tslint:enable:no-console
   }
 });
 

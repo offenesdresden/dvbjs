@@ -1,6 +1,14 @@
 import axios, { AxiosRequestConfig } from "axios";
 import { IMonitor } from "./interfaces";
-import * as utils from "./utils";
+import {
+  checkStatus,
+  convertError,
+  dateDifference,
+  parseDate,
+  parseDiva,
+  parseMode,
+  parsePlatform,
+} from "./utils";
 
 /**
  * Monitor a single stop to see every bus or tram leaving this stop after the specified time offset.
@@ -35,16 +43,16 @@ export function monitor(
   return axios(options)
     .then((response) => {
       // check status of response
-      utils.checkStatus(response.data);
+      checkStatus(response.data);
 
       let result: IMonitor[] = [];
       if (response.data.Departures) {
         result = response.data.Departures.map(
           (d: any): IMonitor => {
-            const arrivalTime = utils.parseDate(
+            const arrivalTime = parseDate(
               d.RealTime ? d.RealTime : d.ScheduledTime
             );
-            const scheduledTime = utils.parseDate(d.ScheduledTime);
+            const scheduledTime = parseDate(d.ScheduledTime);
 
             return {
               arrivalTime,
@@ -52,13 +60,13 @@ export function monitor(
               id: d.Id,
               line: d.LineName,
               direction: d.Direction,
-              platform: utils.parsePlatform(d.Platform),
+              platform: parsePlatform(d.Platform),
               arrivalTimeRelative: dateDifference(now, arrivalTime),
               scheduledTimeRelative: dateDifference(now, scheduledTime),
               delayTime: dateDifference(scheduledTime, arrivalTime),
               state: d.State ? d.State : "Unknown",
-              mode: utils.parseMode(d.Mot),
-              diva: utils.parseDiva(d.Diva),
+              mode: parseMode(d.Mot),
+              diva: parseDiva(d.Diva),
             };
           }
         );
@@ -66,9 +74,5 @@ export function monitor(
 
       return result;
     })
-    .catch(utils.convertError);
-}
-
-function dateDifference(start: Date, end: Date): number {
-  return Math.round((end.getTime() - start.getTime()) / 1000 / 60);
+    .catch(convertError);
 }

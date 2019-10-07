@@ -1,3 +1,5 @@
+/* eslint @typescript-eslint/no-non-null-assertion: 0 */
+
 import axios, { AxiosRequestConfig } from "axios";
 import * as utils from "./utils";
 

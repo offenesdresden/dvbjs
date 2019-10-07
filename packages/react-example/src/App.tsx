@@ -1,5 +1,3 @@
-// tslint:disable:jsx-no-lambda
-
 import { findStop, IPoint } from "dvbjs";
 import * as React from "react";
 import Autocomplete from "react-autocomplete";

@@ -1,3 +1,5 @@
+/* eslint @typescript-eslint/no-non-null-assertion: 0 */
+
 import { assert } from "chai";
 import { PIN_TYPE } from "../src/interfaces";
 import * as utils from "../src/utils";
@@ -47,7 +49,7 @@ describe("internal utils", () => {
       if (mode) {
         assert.strictEqual(mode.name, name);
         assert.strictEqual(mode.title, "default");
-        assert.isUndefined(mode.icon_url);
+        assert.isUndefined(mode.iconUrl);
       } else {
         assert.fail("mode should be defined");
       }
@@ -182,7 +184,7 @@ describe("internal utils", () => {
       assertPin(pin, PIN_TYPE.platform);
       assert.strictEqual(pin.id, "");
       assert.strictEqual(pin.name, "Nürnberger Platz");
-      assert.strictEqual(pin.platform_nr, "1");
+      assert.strictEqual(pin.platformNr, "1");
     });
 
     it("poi", () => {

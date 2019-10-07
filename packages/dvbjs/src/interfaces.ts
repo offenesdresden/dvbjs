@@ -41,7 +41,7 @@ export interface IPin {
   type: PIN_TYPE;
   name: string;
   coords: coord;
-  platform_nr?: string;
+  platformNr?: string;
   connections?: IConnection[];
   info?: string;
 }
@@ -54,7 +54,7 @@ export interface IConnection {
 export interface IMode {
   title: string;
   name: string;
-  icon_url?: string;
+  iconUrl?: string;
 }
 
 export interface IAddress extends IPoint {

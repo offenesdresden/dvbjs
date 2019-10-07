@@ -104,7 +104,10 @@ export function convertError(err: any): never {
 
 export function parseDate(d: string): Date {
   const matches = d.match(/\d+/);
-  return new Date(parseInt(matches![0], 10));
+  if (matches) {
+    return new Date(parseInt(matches[0], 10));
+  }
+  return new Date();
 }
 
 export function parseDiva(d: any): IDiva | undefined {
@@ -137,6 +140,140 @@ function pinType(str: string): PIN_TYPE {
   return PIN_TYPE.unknown;
 }
 
+export const MODES = {
+  Tram: {
+    title: "Straßenbahn",
+    name: "Tram",
+    iconUrl: "https://www.dvb.de/assets/img/trans-icon/transport-tram.svg",
+  },
+  CityBus: {
+    title: "Bus",
+    name: "CityBus",
+    iconUrl: "https://www.dvb.de/assets/img/trans-icon/transport-bus.svg",
+  },
+  IntercityBus: {
+    title: "Regio-Bus",
+    name: "IntercityBus",
+    iconUrl: "https://www.dvb.de/assets/img/trans-icon/transport-bus.svg",
+  },
+  SuburbanRailway: {
+    title: "S-Bahn",
+    name: "SuburbanRailway",
+    iconUrl:
+      "https://www.dvb.de/assets/img/trans-icon/transport-metropolitan.svg",
+  },
+  Train: {
+    title: "Zug",
+    name: "Train",
+    iconUrl: "https://www.dvb.de/assets/img/trans-icon/transport-train.svg",
+  },
+  Cableway: {
+    title: "Seil-/Schwebebahn",
+    name: "Cableway",
+    iconUrl: "https://www.dvb.de/assets/img/trans-icon/transport-lift.svg",
+  },
+  Ferry: {
+    title: "Fähre",
+    name: "Ferry",
+    iconUrl: "https://www.dvb.de/assets/img/trans-icon/transport-ferry.svg",
+  },
+  HailedSharedTaxi: {
+    title: "Anrufsammeltaxi (AST)/ Rufbus",
+    name: "HailedSharedTaxi",
+    iconUrl: "https://www.dvb.de/assets/img/trans-icon/transport-alita.svg",
+  },
+  Footpath: {
+    title: "Fussweg",
+    name: "Footpath",
+    iconUrl: "https://m.dvb.de/img/walk.svg",
+  },
+  StairsUp: {
+    title: "Treppe aufwärts",
+    name: "StairsUp",
+    iconUrl: "https://m.dvb.de/img/stairs-up.svg",
+  },
+  StairsDown: {
+    title: "Treppe abwärts",
+    name: "StairsDown",
+    iconUrl: "https://m.dvb.de/img/stairs-down.svg",
+  },
+  EscalatorUp: {
+    title: "Rolltreppe aufwärts",
+    name: "EscalatorUp",
+    iconUrl: "https://m.dvb.de/img/escalator-up.svg",
+  },
+  EscalatorDown: {
+    title: "Rolltreppe abwärts",
+    name: "EscalatorDown",
+    iconUrl: "https://m.dvb.de/img/escalator-down.svg",
+  },
+  ElevatorUp: {
+    title: "Fahrstuhl aufwärts",
+    name: "ElevatorUp",
+    iconUrl: "https://m.dvb.de/img/elevator-up.svg",
+  },
+  ElevatorDown: {
+    title: "Fahrstuhl abwärts",
+    name: "ElevatorDown",
+    iconUrl: "https://m.dvb.de/img/elevator-down.svg",
+  },
+  StayForConnection: {
+    title: "gesicherter Anschluss",
+    name: "StayForConnection",
+    iconUrl: "https://m.dvb.de/img/sit.svg",
+  },
+  PlusBus: {
+    title: "PlusBus",
+    name: "PlusBus",
+    iconUrl: "https://m.dvb.de/img/mot_icons/plusBus.svg",
+  },
+};
+
+function connectionType(str: string): IMode | undefined {
+  switch (str) {
+    case "1":
+      return MODES.Tram;
+    case "2":
+      return MODES.CityBus;
+    case "3":
+      return MODES.IntercityBus;
+    case "4":
+      return MODES.Train;
+    case "5":
+      return MODES.SuburbanRailway;
+    case "6":
+      return MODES.HailedSharedTaxi;
+    case "7":
+      return MODES.Ferry;
+    case "8":
+      return MODES.Cableway;
+    case "10":
+      return MODES.PlusBus;
+    default:
+      return undefined;
+  }
+}
+
+export function parseConnections(data: string): IConnection[] {
+  let connections: IConnection[] = [];
+
+  data.split("#").forEach((types) => {
+    if (!types) {
+      return [];
+    }
+    const typesArray = types.split(":");
+    const mode = connectionType(typesArray[0]);
+    connections = connections.concat(
+      typesArray[1].split("~").map((line) => ({
+        line,
+        mode,
+      }))
+    );
+  });
+
+  return connections;
+}
+
 export function parsePin(dataAsString: string): IPin {
   const data = dataAsString.split("|");
   const coords = WmOrGK4toWGS84(data[5], data[4]) || [];
@@ -148,7 +285,7 @@ export function parsePin(dataAsString: string): IPin {
       coords,
       id: data[0],
       name: data[3],
-      platform_nr: data[6],
+      platformNr: data[6],
       type,
     };
   }
@@ -238,7 +375,7 @@ export function parseMode(name?: string): IMode | undefined {
   }
 }
 
-export function parsePoiID(id: string) {
+export function parsePoiID(id: string): { id: string; type: POI_TYPE } {
   let poiId = id.split(":");
 
   if (poiId.length >= 4) {
@@ -266,51 +403,6 @@ export function parsePoiID(id: string) {
     id,
     type: POI_TYPE.Stop,
   };
-}
-
-function connectionType(str: string): IMode | undefined {
-  switch (str) {
-    case "1":
-      return MODES.Tram;
-    case "2":
-      return MODES.CityBus;
-    case "3":
-      return MODES.IntercityBus;
-    case "4":
-      return MODES.Train;
-    case "5":
-      return MODES.SuburbanRailway;
-    case "6":
-      return MODES.HailedSharedTaxi;
-    case "7":
-      return MODES.Ferry;
-    case "8":
-      return MODES.Cableway;
-    case "10":
-      return MODES.PlusBus;
-    default:
-      return undefined;
-  }
-}
-
-export function parseConnections(data: string): IConnection[] {
-  let connections: IConnection[] = [];
-
-  data.split("#").forEach((types) => {
-    if (!types) {
-      return [];
-    }
-    const typesArray = types.split(":");
-    const mode = connectionType(typesArray[0]);
-    connections = connections.concat(
-      typesArray[1].split("~").map((line) => ({
-        line,
-        mode,
-      }))
-    );
-  });
-
-  return connections;
 }
 
 function extractStop(stop: any): IStop {
@@ -386,91 +478,6 @@ export function extractTrip(trip: any): ITrip {
   };
 }
 
-export const MODES = {
-  Tram: {
-    title: "Straßenbahn",
-    name: "Tram",
-    icon_url: "https://www.dvb.de/assets/img/trans-icon/transport-tram.svg",
-  },
-  CityBus: {
-    title: "Bus",
-    name: "CityBus",
-    icon_url: "https://www.dvb.de/assets/img/trans-icon/transport-bus.svg",
-  },
-  IntercityBus: {
-    title: "Regio-Bus",
-    name: "IntercityBus",
-    icon_url: "https://www.dvb.de/assets/img/trans-icon/transport-bus.svg",
-  },
-  SuburbanRailway: {
-    title: "S-Bahn",
-    name: "SuburbanRailway",
-    icon_url:
-      "https://www.dvb.de/assets/img/trans-icon/transport-metropolitan.svg",
-  },
-  Train: {
-    title: "Zug",
-    name: "Train",
-    icon_url: "https://www.dvb.de/assets/img/trans-icon/transport-train.svg",
-  },
-  Cableway: {
-    title: "Seil-/Schwebebahn",
-    name: "Cableway",
-    icon_url: "https://www.dvb.de/assets/img/trans-icon/transport-lift.svg",
-  },
-  Ferry: {
-    title: "Fähre",
-    name: "Ferry",
-    icon_url: "https://www.dvb.de/assets/img/trans-icon/transport-ferry.svg",
-  },
-  HailedSharedTaxi: {
-    title: "Anrufsammeltaxi (AST)/ Rufbus",
-    name: "HailedSharedTaxi",
-    icon_url: "https://www.dvb.de/assets/img/trans-icon/transport-alita.svg",
-  },
-  Footpath: {
-    title: "Fussweg",
-    name: "Footpath",
-    icon_url: "https://m.dvb.de/img/walk.svg",
-  },
-  StairsUp: {
-    title: "Treppe aufwärts",
-    name: "StairsUp",
-    icon_url: "https://m.dvb.de/img/stairs-up.svg",
-  },
-  StairsDown: {
-    title: "Treppe abwärts",
-    name: "StairsDown",
-    icon_url: "https://m.dvb.de/img/stairs-down.svg",
-  },
-  EscalatorUp: {
-    title: "Rolltreppe aufwärts",
-    name: "EscalatorUp",
-    icon_url: "https://m.dvb.de/img/escalator-up.svg",
-  },
-  EscalatorDown: {
-    title: "Rolltreppe abwärts",
-    name: "EscalatorDown",
-    icon_url: "https://m.dvb.de/img/escalator-down.svg",
-  },
-  ElevatorUp: {
-    title: "Fahrstuhl aufwärts",
-    name: "ElevatorUp",
-    icon_url: "https://m.dvb.de/img/elevator-up.svg",
-  },
-  ElevatorDown: {
-    title: "Fahrstuhl abwärts",
-    name: "ElevatorDown",
-    icon_url: "https://m.dvb.de/img/elevator-down.svg",
-  },
-  StayForConnection: {
-    title: "gesicherter Anschluss",
-    name: "StayForConnection",
-    icon_url: "https://m.dvb.de/img/sit.svg",
-  },
-  PlusBus: {
-    title: "PlusBus",
-    name: "PlusBus",
-    icon_url: "https://m.dvb.de/img/mot_icons/plusBus.svg",
-  },
-};
+export function dateDifference(start: Date, end: Date): number {
+  return Math.round((end.getTime() - start.getTime()) / 1000 / 60);
+}
