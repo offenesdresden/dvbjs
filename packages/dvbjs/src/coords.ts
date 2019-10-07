@@ -21,12 +21,14 @@ export function coords(
   };
 
   return axios(options).then((response) => {
-    if (!response.data) {
-      return undefined;
+    if (response.data) {
+      const coordinates = response.data.split("|");
+
+      if (coordinates.length > 1) {
+        return utils.WmOrGK4toWGS84(coordinates[1], coordinates[0]);
+      }
     }
 
-    const coordinates = response.data.split("|");
-
-    return utils.WmOrGK4toWGS84(coordinates[1], coordinates[0]);
+    return undefined;
   });
 }

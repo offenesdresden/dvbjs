@@ -34,11 +34,12 @@ export function lines(stopID: string, timeout = 5000): Promise<ILine[]> {
       // check status of response
       utils.checkStatus(response.data);
 
+      let result: ILine[] = [];
       if (response.data.Lines) {
-        return response.data.Lines.map(parseLine);
+        result = response.data.Lines.map((l: any): ILine => parseLine(l));
       }
 
-      return [];
+      return result;
     })
     .catch(utils.convertError);
 }

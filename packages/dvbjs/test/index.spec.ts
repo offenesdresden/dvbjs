@@ -214,7 +214,7 @@ describe("dvb.pins", () => {
   });
 
   describe('dvb.pins "13.713899, 51.026578, 13.737974, 51.035565, platform"', () => {
-    it("should contain objects with name, coords and platform_nr", () =>
+    it("should contain objects with name, coords and platformNr", () =>
       dvb
         .pins(13.713899, 51.026578, 13.737974, 51.035565, [
           dvb.PIN_TYPE.platform,

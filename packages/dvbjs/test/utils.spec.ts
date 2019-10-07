@@ -243,5 +243,10 @@ describe("internal utils", () => {
     it("should parse empty", () => {
       assert.deepEqual(utils.parseConnections(""), []);
     });
+    it("should return undefined mode", () => {
+      assert.deepEqual(utils.parseConnections("0:3"), [
+        { line: "3", mode: undefined },
+      ]);
+    });
   });
 });

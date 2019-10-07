@@ -32,28 +32,30 @@ async function pointFinder(
       // check status of response
       utils.checkStatus(response.data);
 
+      const result: IPoint[] = [];
       if (response.data.Points) {
-        return response.data.Points.map((p: string) => {
+        response.data.Points.forEach((p: string) => {
           const poi = p.split("|");
 
-          const city = poi[2] === "" ? "Dresden" : poi[2];
-          const idAndType = utils.parsePoiID(poi[0]);
           const coords = utils.WmOrGK4toWGS84(poi[5], poi[4]);
+          const pointName = poi[3].replace(/'/g, "");
 
-          if (coords) {
-            const point: IPoint = {
+          if (pointName && coords) {
+            const city = poi[2] === "" ? "Dresden" : poi[2];
+            const { id, type } = utils.parsePoiID(poi[0]);
+
+            result.push({
               city,
               coords,
-              name: poi[3].replace(/'/g, ""),
-              id: idAndType.id,
-              type: idAndType.type,
-            };
-            return point;
+              name: pointName,
+              id,
+              type,
+            });
           }
-        }).filter((p: IPoint) => p && p.name);
+        });
       }
 
-      return [];
+      return result;
     })
     .catch(utils.convertError);
 }

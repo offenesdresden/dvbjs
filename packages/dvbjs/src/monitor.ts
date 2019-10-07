@@ -37,32 +37,34 @@ export function monitor(
       // check status of response
       utils.checkStatus(response.data);
 
+      let result: IMonitor[] = [];
       if (response.data.Departures) {
-        return response.data.Departures.map((d: any) => {
-          const arrivalTime = utils.parseDate(
-            d.RealTime ? d.RealTime : d.ScheduledTime
-          );
-          const scheduledTime = utils.parseDate(d.ScheduledTime);
+        result = response.data.Departures.map(
+          (d: any): IMonitor => {
+            const arrivalTime = utils.parseDate(
+              d.RealTime ? d.RealTime : d.ScheduledTime
+            );
+            const scheduledTime = utils.parseDate(d.ScheduledTime);
 
-          const mon: IMonitor = {
-            arrivalTime,
-            scheduledTime,
-            id: d.Id,
-            line: d.LineName,
-            direction: d.Direction,
-            platform: utils.parsePlatform(d.Platform),
-            arrivalTimeRelative: dateDifference(now, arrivalTime),
-            scheduledTimeRelative: dateDifference(now, scheduledTime),
-            delayTime: dateDifference(scheduledTime, arrivalTime),
-            state: d.State ? d.State : "Unknown",
-            mode: utils.parseMode(d.Mot),
-            diva: utils.parseDiva(d.Diva),
-          };
-          return mon;
-        });
+            return {
+              arrivalTime,
+              scheduledTime,
+              id: d.Id,
+              line: d.LineName,
+              direction: d.Direction,
+              platform: utils.parsePlatform(d.Platform),
+              arrivalTimeRelative: dateDifference(now, arrivalTime),
+              scheduledTimeRelative: dateDifference(now, scheduledTime),
+              delayTime: dateDifference(scheduledTime, arrivalTime),
+              state: d.State ? d.State : "Unknown",
+              mode: utils.parseMode(d.Mot),
+              diva: utils.parseDiva(d.Diva),
+            };
+          }
+        );
       }
 
-      return [];
+      return result;
     })
     .catch(utils.convertError);
 }

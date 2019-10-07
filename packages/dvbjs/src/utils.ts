@@ -288,6 +288,8 @@ function connectionType(str: string): IMode | undefined {
       return MODES.Cableway;
     case "10":
       return MODES.PlusBus;
+    default:
+      return undefined;
   }
 }
 

@@ -1,5 +1,5 @@
 import axios, { AxiosRequestConfig } from "axios";
-import { ILocation, IRoute } from "./interfaces";
+import { ILocation, IRoute, ITrip } from "./interfaces";
 import * as utils from "./utils";
 
 /**
@@ -39,40 +39,38 @@ export function route(
       // check status of response
       utils.checkStatus(response.data);
 
-      if (response.data.Routes) {
-        const trips = response.data.Routes.map(utils.extractTrip);
+      let origin: ILocation | undefined;
+      let destination: ILocation | undefined;
+      let trips: ITrip[] = [];
 
-        let origin: ILocation | undefined;
-        let destination: ILocation | undefined;
+      if (response.data.Routes) {
+        trips = response.data.Routes.map(utils.extractTrip);
 
         if (trips && trips.length > 0) {
           const firstTrip = trips[0];
-
-          origin = {
-            id: firstTrip.departure.id,
-            name: firstTrip.departure.name,
-            city: firstTrip.departure.city,
-            coords: firstTrip.departure.coords,
-          };
-          destination = {
-            id: firstTrip.arrival.id,
-            name: firstTrip.arrival.name,
-            city: firstTrip.arrival.city,
-            coords: firstTrip.arrival.coords,
-          };
+          if (firstTrip.departure) {
+            origin = {
+              id: firstTrip.departure.id,
+              name: firstTrip.departure.name,
+              city: firstTrip.departure.city,
+              coords: firstTrip.departure.coords,
+            };
+          }
+          if (firstTrip.arrival) {
+            destination = {
+              id: firstTrip.arrival.id,
+              name: firstTrip.arrival.name,
+              city: firstTrip.arrival.city,
+              coords: firstTrip.arrival.coords,
+            };
+          }
         }
-
-        return {
-          origin,
-          destination,
-          trips,
-        };
       }
 
       return {
-        origin: undefined,
-        destination: undefined,
-        trips: [],
+        origin,
+        destination,
+        trips,
       };
     })
     .catch(utils.convertError);
