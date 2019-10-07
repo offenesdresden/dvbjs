@@ -8,6 +8,7 @@ import * as utils from "./utils";
  * @param destinationID the id of the destination stop
  * @param time starting at what time
  * @param isArrivalTime is time the arrival time
+ * @param timeout the timeout of the request
  * @returns Returns multiple possible trips, the bus-/tramlines to be taken,
  * the single stops, their arrival and departure times and their GPS coordinates.
  * The path property of a trip contains an array consisting of all the coordinates
@@ -17,7 +18,8 @@ export function route(
   originID: string,
   destinationID: string,
   time = new Date(),
-  isArrivalTime = true
+  isArrivalTime = true,
+  timeout = 15000
 ): Promise<IRoute> {
   const options: AxiosRequestConfig = {
     url: "https://webapi.vvo-online.de/tr/trips",
@@ -29,7 +31,7 @@ export function route(
       shorttermchanges: true,
       time: time.toISOString(),
     },
-    timeout: 15000,
+    timeout,
   };
 
   return axios(options)

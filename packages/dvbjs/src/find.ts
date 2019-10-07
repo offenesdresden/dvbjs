@@ -5,7 +5,8 @@ import * as utils from "./utils";
 async function pointFinder(
   name: string,
   stopsOnly: boolean,
-  assignedStops: boolean
+  assignedStops: boolean,
+  timeout: number
 ): Promise<IPoint[]> {
   if (typeof name !== "string") {
     throw utils.constructError("ValidationError", "query has to be a string");
@@ -23,7 +24,7 @@ async function pointFinder(
       query: stopName,
       dvb: true,
     },
-    timeout: 5000,
+    timeout,
   };
 
   return axios(options)
@@ -60,34 +61,44 @@ async function pointFinder(
 /**
  * Search for a single stop in the network of the DVB.
  * @param searchString the name of the stop
+ * @param timeout the timeout of the request
  * @returns an array of all possible hits including their GPS coordinates.
  */
-export function findStop(searchString: string): Promise<IPoint[]> {
-  return pointFinder(searchString, true, false);
+export function findStop(
+  searchString: string,
+  timeout = 5000
+): Promise<IPoint[]> {
+  return pointFinder(searchString, true, false, timeout);
 }
 
 /**
  * Search for POI in the network of the DVB.
  * @param searchString the name of the stop
+ * @param timeout the timeout of the request
  * @returns an array of all possible hits including their GPS coordinates.
  */
-export function findPOI(searchString: string): Promise<IPoint[]> {
-  return pointFinder(searchString, false, false);
+export function findPOI(
+  searchString: string,
+  timeout = 5000
+): Promise<IPoint[]> {
+  return pointFinder(searchString, false, false, timeout);
 }
 
 /**
  * Lookup address and nearby stops by coordinate.
  * @param lng longitude of the coordinate
  * @param lat latitude of the coordinate
+ * @param timeout the timeout of the request
  * @returns the adress and neaby stops
  */
 export function findAddress(
   lng: number,
-  lat: number
+  lat: number,
+  timeout = 5000
 ): Promise<IAddress | undefined> {
   const gk4 = utils.WGS84toGK4(lng, lat);
 
-  return pointFinder(`coord:${gk4[0]}:${gk4[1]}`, false, true).then(
+  return pointFinder(`coord:${gk4[0]}:${gk4[1]}`, false, true, timeout).then(
     (points) => {
       if (points.length === 0) {
         return undefined;
