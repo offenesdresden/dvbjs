@@ -9,13 +9,15 @@ import * as utils from "./utils";
  * @param nelng the longitude of the north east coordinate
  * @param nelat the latitude of the north east coordinate
  * @param pinTypes array of pin types
+ * @param timeout the timeout of the request
  */
 export function pins(
   swlng: number,
   swlat: number,
   nelng: number,
   nelat: number,
-  pinTypes: PIN_TYPE[] = [PIN_TYPE.stop]
+  pinTypes: PIN_TYPE[] = [PIN_TYPE.stop],
+  timeout = 5000
 ): Promise<IPin[]> {
   const sw = utils.WGS84toWm(swlng, swlat);
   const ne = utils.WGS84toWm(nelng, nelat);
@@ -31,7 +33,7 @@ export function pins(
       nelat: ne[1],
     },
     responseType: "text",
-    timeout: 5000,
+    timeout,
   };
 
   return axios(options)
