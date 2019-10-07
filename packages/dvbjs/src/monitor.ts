@@ -44,7 +44,7 @@ export function monitor(
           );
           const scheduledTime = utils.parseDate(d.ScheduledTime);
 
-          return {
+          const mon: IMonitor = {
             arrivalTime,
             scheduledTime,
             id: d.Id,
@@ -58,6 +58,7 @@ export function monitor(
             mode: utils.parseMode(d.Mot),
             diva: utils.parseDiva(d.Diva),
           };
+          return mon;
         });
       }
 

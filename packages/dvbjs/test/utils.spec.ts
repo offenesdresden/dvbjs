@@ -25,23 +25,32 @@ describe("internal utils", () => {
       ["Mobilityelevatorup", "ElevatorUp"],
       ["Mobilityelevatordown", "ElevatorDown"],
       ["PlusBus", "PlusBus"],
-      [undefined, undefined]
+      ["stayforconnection", "StayForConnection"],
+      [undefined, undefined],
     ];
 
     mots.forEach((mot) => {
       it("should parse `" + mot[0] + "` to `" + mot[1] + "`", () => {
         const mode = utils.parseMode(mot[0]);
-        assertMode(mode);
-        assert.strictEqual(mode.name, mot[1]);
+        if (mot[0]) {
+          assertMode(mode!);
+          assert.strictEqual(mode!.name, mot[1]);
+        } else {
+          assert.isUndefined(mode);
+        }
       });
     });
 
     it("should parse unknown type", () => {
       const name = "Default";
       const mode = utils.parseMode(name);
-      assert.strictEqual(mode.name, name);
-      assert.strictEqual(mode.title, "default");
-      assert.isUndefined(mode.icon_url);
+      if (mode) {
+        assert.strictEqual(mode.name, name);
+        assert.strictEqual(mode.title, "default");
+        assert.isUndefined(mode.icon_url);
+      } else {
+        assert.fail("mode should be defined");
+      }
     });
   });
 

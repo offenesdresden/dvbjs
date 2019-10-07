@@ -362,7 +362,9 @@ describe("dvb.lines", () => {
       dvb.lines("33000037").then((data) => {
         data.forEach((line) => {
           assert.isString(line.name);
-          assertMode(line.mode);
+          if (line.mode) {
+            assertMode(line.mode);
+          }
           assert.isDefined(line.diva);
           assertDiva(line.diva!);
           assert.isNotEmpty(line.directions);

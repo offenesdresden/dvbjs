@@ -109,7 +109,9 @@ export function assertConnection(con: IConnection) {
   assert.isObject(con);
   assertNotEmptyString(con.line);
   assert.isNotEmpty(con.line);
-  assertMode(con.mode);
+  if (con.mode) {
+    assertMode(con.mode);
+  }
 }
 
 export function assertPin(pin: IPin, type?: PIN_TYPE) {
@@ -162,7 +164,9 @@ export function assertTransport(transport: IMonitor) {
 
   assert.property(transport, "state");
 
-  assertMode(transport.mode);
+  if (transport.mode) {
+    assertMode(transport.mode);
+  }
 
   if (transport.line && transport.line.indexOf("E") === -1) {
     assertDiva(transport.diva!);
@@ -188,9 +192,12 @@ function assertNode(node: INode) {
   assert.isString(node.direction);
   assert.isNumber(node.duration);
 
-  assertMode(node.mode);
+  if (node.mode) {
+    assertMode(node.mode);
+  }
 
   if (
+    node.mode &&
     node.mode.name !== "Footpath" &&
     node.mode.name !== "StayForConnection" &&
     node.mode.name.indexOf("Stairs") === -1
@@ -204,8 +211,9 @@ function assertNode(node: INode) {
   }
 
   if (
-    (node.mode.name === "Footpath" && !node.departure) ||
-    node.mode.name.indexOf("Stairs") > -1
+    node.mode &&
+    ((node.mode.name === "Footpath" && !node.departure) ||
+      node.mode.name.indexOf("Stairs") > -1)
   ) {
     assert.isUndefined(node.departure);
     assert.isUndefined(node.arrival);
@@ -221,7 +229,7 @@ function assertNode(node: INode) {
   }
 
   assert.isArray(node.path);
-  if (node.mode.name !== "StayForConnection") {
+  if (node.mode && node.mode.name !== "StayForConnection") {
     assert.isNotEmpty(node.path);
     node.path.forEach(assertCoords);
   } else {

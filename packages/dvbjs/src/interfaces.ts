@@ -48,7 +48,7 @@ export interface IPin {
 
 export interface IConnection {
   line: string;
-  mode: IMode;
+  mode?: IMode;
 }
 
 export interface IMode {
@@ -63,7 +63,7 @@ export interface IAddress extends IPoint {
 
 export interface ILine {
   name: string;
-  mode: IMode;
+  mode?: IMode;
   diva?: IDiva;
   directions: string[];
 }
@@ -79,7 +79,7 @@ export interface IMonitor {
   scheduledTimeRelative: number;
   delayTime: number;
   state: string;
-  mode: IMode;
+  mode?: IMode;
   diva?: IDiva;
 }
 export interface ILocation {
@@ -110,7 +110,7 @@ export interface INode {
   stops: IStop[];
   departure?: IStopLocation;
   arrival?: IStopLocation;
-  mode: IMode;
+  mode?: IMode;
   line: string;
   direction: string;
   diva?: IDiva;

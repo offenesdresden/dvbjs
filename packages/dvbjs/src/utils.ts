@@ -187,9 +187,12 @@ export function parsePin(dataAsString: string): IPin {
   };
 }
 
-export function parseMode(name: string): IMode {
-  // name is sometimes undefined -> toLowerCase() wouldn't be a function on undefined
-  switch (String(name).toLowerCase()) {
+export function parseMode(name?: string): IMode | undefined {
+  if (!name) {
+    return undefined;
+  }
+
+  switch (name.toLowerCase()) {
     case "tram":
       return MODES.Tram;
     case "bus":
@@ -230,7 +233,7 @@ export function parseMode(name: string): IMode {
     default:
       return {
         name,
-        title: String(name).toLowerCase(),
+        title: name.toLowerCase(),
       };
   }
 }
@@ -296,7 +299,7 @@ export function parseConnections(data: string): IConnection[] {
       return [];
     }
     const typesArray = types.split(":");
-    const mode = connectionType(typesArray[0]) as IMode;
+    const mode = connectionType(typesArray[0]);
     connections = connections.concat(
       typesArray[1].split("~").map((line) => ({
         line,
