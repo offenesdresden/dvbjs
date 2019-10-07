@@ -15,12 +15,13 @@
     "docs:examples": "yarn workspace dvbjs-examples start",
     "docs:readme": "node .markdown-magic.config.js",
     "lint": "eslint \"packages/*/{src,test}/*.{ts,tsx}\"",
-    "publish:dvbjs": "npm-run-all 'uncommitted' build -p test build:react_example docs && yarn workspace dvbjs publish",
+    "publish:dvbjs": "npm-run-all uncommitted build -p test build:react_example docs && yarn workspace dvbjs publish",
     "run_example": "yarn tsc && yarn workspace react-example start",
     "test": "run-p test:*",
     "test:browser": "yarn workspace dvbjs karma start",
     "test:node": "yarn workspace dvbjs nyc mocha",
     "tsc": "tsc -b packages/*",
+    "uncommitted": "uncommitted",
     "watch": "run-p 'tsc --watch' 'test:node --watch --watch-extensions ts'"
   },
   "devDependencies": {
