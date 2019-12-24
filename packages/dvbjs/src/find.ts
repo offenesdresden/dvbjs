@@ -5,7 +5,8 @@ import * as utils from "./utils";
 async function pointFinder(
   name: string,
   stopsOnly: boolean,
-  assignedStops: boolean
+  assignedStops: boolean,
+  timeout: number
 ): Promise<IPoint[]> {
   if (typeof name !== "string") {
     throw utils.constructError("ValidationError", "query has to be a string");
@@ -23,7 +24,7 @@ async function pointFinder(
       query: stopName,
       dvb: true,
     },
-    timeout: 5000,
+    timeout,
   };
 
   return axios(options)
@@ -31,28 +32,30 @@ async function pointFinder(
       // check status of response
       utils.checkStatus(response.data);
 
+      const result: IPoint[] = [];
       if (response.data.Points) {
-        return response.data.Points.map((p: string) => {
+        response.data.Points.forEach((p: string) => {
           const poi = p.split("|");
 
-          const city = poi[2] === "" ? "Dresden" : poi[2];
-          const idAndType = utils.parsePoiID(poi[0]);
           const coords = utils.WmOrGK4toWGS84(poi[5], poi[4]);
+          const pointName = poi[3].replace(/'/g, "");
 
-          if (coords) {
-            const point: IPoint = {
+          if (pointName && coords) {
+            const city = poi[2] === "" ? "Dresden" : poi[2];
+            const { id, type } = utils.parsePoiID(poi[0]);
+
+            result.push({
               city,
               coords,
-              name: poi[3].replace(/'/g, ""),
-              id: idAndType.id,
-              type: idAndType.type,
-            };
-            return point;
+              name: pointName,
+              id,
+              type,
+            });
           }
-        }).filter((p: IPoint) => p && p.name);
+        });
       }
 
-      return [];
+      return result;
     })
     .catch(utils.convertError);
 }
@@ -60,19 +63,27 @@ async function pointFinder(
 /**
  * Search for a single stop in the network of the DVB.
  * @param searchString the name of the stop
+ * @param timeout the timeout of the request
  * @returns an array of all possible hits including their GPS coordinates.
  */
-export function findStop(searchString: string): Promise<IPoint[]> {
-  return pointFinder(searchString, true, false);
+export function findStop(
+  searchString: string,
+  timeout = 5000
+): Promise<IPoint[]> {
+  return pointFinder(searchString, true, false, timeout);
 }
 
 /**
  * Search for POI in the network of the DVB.
  * @param searchString the name of the stop
+ * @param timeout the timeout of the request
  * @returns an array of all possible hits including their GPS coordinates.
  */
-export function findPOI(searchString: string): Promise<IPoint[]> {
-  return pointFinder(searchString, false, false);
+export function findPOI(
+  searchString: string,
+  timeout = 5000
+): Promise<IPoint[]> {
+  return pointFinder(searchString, false, false, timeout);
 }
 
 /**
@@ -89,15 +100,17 @@ export async function findNearbyStops(searchString: string): Promise<IPoint[]> {
  * Lookup address and nearby stops by coordinate.
  * @param lng longitude of the coordinate
  * @param lat latitude of the coordinate
+ * @param timeout the timeout of the request
  * @returns the adress and neaby stops
  */
 export function findAddress(
   lng: number,
-  lat: number
+  lat: number,
+  timeout = 5000
 ): Promise<IAddress | undefined> {
   const gk4 = utils.WGS84toGK4(lng, lat);
 
-  return pointFinder(`coord:${gk4[0]}:${gk4[1]}`, false, true).then(
+  return pointFinder(`coord:${gk4[0]}:${gk4[1]}`, false, true, timeout).then(
     (points) => {
       if (points.length === 0) {
         return undefined;

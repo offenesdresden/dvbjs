@@ -1,9 +1,9 @@
 {
   "name": "dvbjs-examples",
   "version": "0.1.0",
+  "private": true,
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
-  "private": true,
   "scripts": {
     "start": "node dist/index.js"
   },

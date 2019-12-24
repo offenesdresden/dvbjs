@@ -1,3 +1,6 @@
+/* eslint @typescript-eslint/no-non-null-assertion: 0 */
+
+import axios from "axios";
 import chai, { assert } from "chai";
 import chaiAsPromised from "chai-as-promised";
 import * as dvb from "../src/index";
@@ -12,8 +15,39 @@ import {
   assertTrip,
 } from "./helper";
 
+let lastResponses = [] as any[];
+
 before(() => {
   chai.use(chaiAsPromised);
+  axios.interceptors.response.use((response) => {
+    lastResponses.push(response);
+    return response;
+  });
+});
+
+beforeEach(() => {
+  lastResponses = [];
+});
+
+afterEach(function() {
+  if (this.currentTest && this.currentTest.state === "failed") {
+    // eslint-disable-next-line no-console
+    console.log(
+      JSON.stringify(
+        lastResponses.map((r) => ({
+          status: r.status,
+          headers: r.headers,
+          config: {
+            method: r.config.method,
+            url: r.config.url,
+            params: r.config.params,
+            data: r.config.data,
+          },
+          data: r.data,
+        }))
+      )
+    );
+  }
 });
 
 describe("dvb.monitor", () => {
@@ -151,9 +185,9 @@ describe("dvb.findPOI", () => {
       }));
   });
 
-  describe('dvb.findPOI "zzz"', () => {
+  describe('dvb.findPOI "yyy"', () => {
     it("should return an empty array", () =>
-      dvb.findPOI("zzz").then((data) => {
+      dvb.findPOI("yyy").then((data) => {
         assert.isEmpty(data);
       }));
   });
@@ -235,7 +269,7 @@ describe("dvb.pins", () => {
   });
 
   describe('dvb.pins "13.713899, 51.026578, 13.737974, 51.035565, platform"', () => {
-    it("should contain objects with name, coords and platform_nr", () =>
+    it("should contain objects with name, coords and platformNr", () =>
       dvb
         .pins(13.713899, 51.026578, 13.737974, 51.035565, [
           dvb.PIN_TYPE.platform,
@@ -383,7 +417,9 @@ describe("dvb.lines", () => {
       dvb.lines("33000037").then((data) => {
         data.forEach((line) => {
           assert.isString(line.name);
-          assertMode(line.mode);
+          if (line.mode) {
+            assertMode(line.mode);
+          }
           assert.isDefined(line.diva);
           assertDiva(line.diva!);
           assert.isNotEmpty(line.directions);

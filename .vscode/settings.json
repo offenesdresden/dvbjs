@@ -1,4 +1,9 @@
 {
-  "lcov.path": "/Users/andreas/Documents/dvbjs/packages/dvbjs/coverage/lcov.info",
-  "typescript.tsdk": "node_modules/typescript/lib"
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "eslint.validate": [
+    "javascript",
+    "javascriptreact",
+    "typescript",
+    "typescriptreact"
+  ]
 }

@@ -41,20 +41,20 @@ export interface IPin {
   type: PIN_TYPE;
   name: string;
   coords: coord;
-  platform_nr?: string;
+  platformNr?: string;
   connections?: IConnection[];
   info?: string;
 }
 
 export interface IConnection {
   line: string;
-  mode: IMode;
+  mode?: IMode;
 }
 
 export interface IMode {
   title: string;
   name: string;
-  icon_url?: string;
+  iconUrl?: string;
 }
 
 export interface IAddress extends IPoint {
@@ -63,7 +63,7 @@ export interface IAddress extends IPoint {
 
 export interface ILine {
   name: string;
-  mode: IMode;
+  mode?: IMode;
   diva?: IDiva;
   directions: string[];
 }
@@ -79,7 +79,7 @@ export interface IMonitor {
   scheduledTimeRelative: number;
   delayTime: number;
   state: string;
-  mode: IMode;
+  mode?: IMode;
   diva?: IDiva;
 }
 export interface ILocation {
@@ -110,7 +110,7 @@ export interface INode {
   stops: IStop[];
   departure?: IStopLocation;
   arrival?: IStopLocation;
-  mode: IMode;
+  mode?: IMode;
   line: string;
   direction: string;
   diva?: IDiva;

@@ -3,28 +3,31 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
-  },
-  "dependencies": {
-    "@types/jest": "^24.0.11",
-    "@types/node": "^11.12.0",
-    "@types/react": "^16.8.10",
-    "@types/react-autocomplete": "^1.8.4",
-    "@types/react-dom": "^16.8.3",
-    "dvbjs": "*",
-    "react": "^16.8.5",
-    "react-autocomplete": "^1.8.1",
-    "react-dom": "^16.8.5",
-    "react-scripts": "^2.1.8",
-    "typescript": "^3.3.4000"
+    "eject": "react-scripts eject",
+    "start": "react-scripts start",
+    "test": "react-scripts test"
   },
   "browserslist": [
     ">0.2%",
     "not dead",
     "not ie <= 11",
     "not op_mini all"
-  ]
+  ],
+  "dependencies": {
+    "dvbjs": "*",
+    "react": "^16.10.2",
+    "react-autocomplete": "^1.8.1",
+    "react-dom": "^16.10.2"
+  },
+  "devDependencies": {
+    "@types/jest": "^24.0.18",
+    "@types/node": "^12.7.11",
+    "@types/react": "^16.9.5",
+    "@types/react-autocomplete": "^1.8.5",
+    "@types/react-dom": "^16.9.1",
+    "eslint-plugin-react": "^7.16.0",
+    "react-scripts": "^3.2.0",
+    "typescript": "^3.6.3"
+  }
 }

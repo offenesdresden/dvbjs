@@ -1,17 +1,27 @@
 import axios, { AxiosRequestConfig } from "axios";
 import { IMonitor } from "./interfaces";
-import * as utils from "./utils";
+import {
+  checkStatus,
+  convertError,
+  dateDifference,
+  parseDate,
+  parseDiva,
+  parseMode,
+  parsePlatform,
+} from "./utils";
 
 /**
  * Monitor a single stop to see every bus or tram leaving this stop after the specified time offset.
  * @param stopID ID of the stop
  * @param offset how many minutes in the future, 0 for now
  * @param amount number of results
+ * @param timeout the timeout of the request
  */
 export function monitor(
   stopID: string,
   offset = 0,
-  amount = 0
+  amount = 0,
+  timeout = 5000
 ): Promise<IMonitor[]> {
   const now = new Date();
   const time = new Date(now.getTime() + offset * 60 * 1000);
@@ -27,43 +37,42 @@ export function monitor(
       shorttermchanges: true,
       mentzonly: false,
     },
-    timeout: 5000,
+    timeout,
   };
 
   return axios(options)
     .then((response) => {
       // check status of response
-      utils.checkStatus(response.data);
+      checkStatus(response.data);
 
+      let result: IMonitor[] = [];
       if (response.data.Departures) {
-        return response.data.Departures.map((d: any) => {
-          const arrivalTime = utils.parseDate(
-            d.RealTime ? d.RealTime : d.ScheduledTime
-          );
-          const scheduledTime = utils.parseDate(d.ScheduledTime);
+        result = response.data.Departures.map(
+          (d: any): IMonitor => {
+            const arrivalTime = parseDate(
+              d.RealTime ? d.RealTime : d.ScheduledTime
+            );
+            const scheduledTime = parseDate(d.ScheduledTime);
 
-          return {
-            arrivalTime,
-            scheduledTime,
-            id: d.Id,
-            line: d.LineName,
-            direction: d.Direction,
-            platform: utils.parsePlatform(d.Platform),
-            arrivalTimeRelative: dateDifference(now, arrivalTime),
-            scheduledTimeRelative: dateDifference(now, scheduledTime),
-            delayTime: dateDifference(scheduledTime, arrivalTime),
-            state: d.State ? d.State : "Unknown",
-            mode: utils.parseMode(d.Mot),
-            diva: utils.parseDiva(d.Diva),
-          };
-        });
+            return {
+              arrivalTime,
+              scheduledTime,
+              id: d.Id,
+              line: d.LineName,
+              direction: d.Direction,
+              platform: parsePlatform(d.Platform),
+              arrivalTimeRelative: dateDifference(now, arrivalTime),
+              scheduledTimeRelative: dateDifference(now, scheduledTime),
+              delayTime: dateDifference(scheduledTime, arrivalTime),
+              state: d.State ? d.State : "Unknown",
+              mode: parseMode(d.Mot),
+              diva: parseDiva(d.Diva),
+            };
+          }
+        );
       }
 
-      return [];
+      return result;
     })
-    .catch(utils.convertError);
-}
-
-function dateDifference(start: Date, end: Date): number {
-  return Math.round((end.getTime() - start.getTime()) / 1000 / 60);
+    .catch(convertError);
 }

@@ -17,15 +17,16 @@ function parseLine(line: any): ILine {
 /**
  * get a list of availible tram/bus lines for a stop.
  * @param stopID the stop ID
+ * @param timeout the timeout of the request
  */
-export function lines(stopID: string): Promise<ILine[]> {
+export function lines(stopID: string, timeout = 5000): Promise<ILine[]> {
   const options: AxiosRequestConfig = {
     url: "https://webapi.vvo-online.de/stt/lines",
     params: {
       format: "json",
       stopid: stopID,
     },
-    timeout: 5000,
+    timeout,
   };
 
   return axios(options)
@@ -33,11 +34,12 @@ export function lines(stopID: string): Promise<ILine[]> {
       // check status of response
       utils.checkStatus(response.data);
 
+      let result: ILine[] = [];
       if (response.data.Lines) {
-        return response.data.Lines.map(parseLine);
+        result = response.data.Lines.map((l: any): ILine => parseLine(l));
       }
 
-      return [];
+      return result;
     })
     .catch(utils.convertError);
 }
