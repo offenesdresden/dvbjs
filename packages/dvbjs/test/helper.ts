@@ -29,7 +29,7 @@ export function assertCoords(coords: coord): void {
   assert.isArray(coords);
   assert.lengthOf(coords, 2);
 
-  assert.approximately(coords[0], 13, 1);
+  assert.approximately(coords[0], 13, 2);
   assert.approximately(coords[1], 51, 3);
 }
 
@@ -137,8 +137,11 @@ export function assertPin(pin: IPin, type?: PIN_TYPE): void {
 
   if (pin.type === PIN_TYPE.stop) {
     assert.isArray(pin.connections);
-    if (pin.name !== "Ebertplatz") {
-      assert.isNotEmpty(pin.connections);
+    if (!["Schule", "Ebertplatz"].includes(pin.name)) {
+      assert.isNotEmpty(
+        pin.connections,
+        `expected connections for ${pin.name}`
+      );
     }
     pin.connections!.forEach(assertConnection);
   } else {
