@@ -29,10 +29,5 @@
     "eslint-plugin-react": "^7.20.5",
     "react-scripts": "^3.4.1",
     "typescript": "^3.9.7"
-  },
-  "workspaces": {
-    "nohoist": [
-      "react-scripts"
-    ]
   }
 }
