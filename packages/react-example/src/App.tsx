@@ -2,6 +2,8 @@ import { findStop, IPoint } from "dvbjs";
 import * as React from "react";
 import Autocomplete from "react-autocomplete";
 import DepartureList from "./DepartureList";
+import { useState } from "react";
+import { useEffect } from "react";
 
 const stopSvg = (
   <svg
@@ -27,73 +29,67 @@ const stopSvg = (
   </svg>
 );
 
-interface IAppState {
-  selectedStop?: IPoint;
-  autocompleteValue: string;
-  autocompleteItems: IPoint[];
-}
+const SELECTED_STOP_KEY = "SELECTED_STOP_KEY";
 
-class App extends React.Component<{}, IAppState> {
-  private static SELECTED_STOP_KEY = "SELECTED_STOP_KEY";
+export const App: React.FunctionComponent = () => {
+  const [autocompleteValue, setAutocompleteValue] = useState("");
+  const [autocompleteItems, setAutocompleteItems] = useState<IPoint[]>([]);
+  const [selectedStop, setSelectedStop] = useState<IPoint>();
 
-  constructor(props: {}) {
-    super(props);
+  useEffect(() => {
+    const stopString = localStorage.getItem(SELECTED_STOP_KEY);
+    if (stopString) {
+      setSelectedStop(JSON.parse(stopString));
+    }
+  }, [setSelectedStop]);
 
-    const stopString = localStorage.getItem(App.SELECTED_STOP_KEY);
-    const selectedStop = stopString ? JSON.parse(stopString) : undefined;
+  const autocompleteChanged = (_: any, autocompleteValue: string) => {
+    setAutocompleteValue(autocompleteValue);
+    findStop(autocompleteValue)
+      .then((autocompleteItems) => {
+        setAutocompleteItems(autocompleteItems);
+      })
+      .catch(console.error);
+  };
 
-    this.state = {
-      autocompleteItems: [],
-      autocompleteValue: "",
-      selectedStop,
-    };
-  }
-  public render() {
-    return (
-      <div className="App">
-        {this.state.selectedStop ? (
-          <div>
-            <h3
-              style={{ cursor: "pointer" }}
-              onClick={() => this.setState({ selectedStop: undefined })}
+  const selectItem = (_: any, selectedStop: IPoint) => {
+    localStorage.setItem(SELECTED_STOP_KEY, JSON.stringify(selectedStop));
+    setSelectedStop(selectedStop);
+  };
+
+  return (
+    <div className="App">
+      {selectedStop ? (
+        <div>
+          <h3
+            style={{ cursor: "pointer" }}
+            onClick={() => setSelectedStop(undefined)}
+          >
+            {stopSvg}
+            {selectedStop.name}
+          </h3>
+          <DepartureList stop={selectedStop.id} />
+        </div>
+      ) : (
+        <Autocomplete
+          inputProps={{ autoFocus: true }}
+          items={autocompleteItems}
+          value={autocompleteValue}
+          getItemValue={(item: IPoint) => item.id}
+          renderItem={(item: IPoint, isHighlighted) => (
+            <div
+              className={`item ${isHighlighted ? "item-highlighted" : ""}`}
+              key={item.id}
             >
-              {stopSvg}
-              {this.state.selectedStop.name}
-            </h3>
-            <DepartureList stop={this.state.selectedStop.id} />
-          </div>
-        ) : (
-          <Autocomplete
-            inputProps={{ autoFocus: true }}
-            items={this.state.autocompleteItems}
-            value={this.state.autocompleteValue}
-            getItemValue={(item: IPoint) => item.id}
-            renderItem={(item: IPoint, isHighlighted) => (
-              <div
-                className={`item ${isHighlighted ? "item-highlighted" : ""}`}
-                key={item.id}
-              >
-                {item.name}, {item.city}
-              </div>
-            )}
-            onSelect={(_, selectedStop: IPoint) => {
-              localStorage.setItem(
-                App.SELECTED_STOP_KEY,
-                JSON.stringify(selectedStop)
-              );
-              this.setState({ selectedStop });
-            }}
-            onChange={(_, autocompleteValue) => {
-              this.setState({ autocompleteValue });
-              findStop(autocompleteValue).then((autocompleteItems) => {
-                this.setState({ autocompleteItems });
-              });
-            }}
-          />
-        )}
-      </div>
-    );
-  }
-}
+              {item.name}, {item.city}
+            </div>
+          )}
+          onSelect={selectItem}
+          onChange={autocompleteChanged}
+        />
+      )}
+    </div>
+  );
+};
 
 export default App;

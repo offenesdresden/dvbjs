@@ -1,66 +1,57 @@
+import React, { useState, FunctionComponent } from "react";
 import { IMonitor, monitor } from "dvbjs";
-import * as React from "react";
+import { useEffect } from "react";
 
-export interface IDepartureListProps {
+export interface DepartureListProps {
   stop: string;
 }
 
-interface IDepartureListState {
-  departures: IMonitor[];
-  timer?: number;
-}
+const DepartureList: FunctionComponent<DepartureListProps> = ({ stop }) => {
+  const [departures, setDepartures] = useState<IMonitor[]>([]);
 
-export default class DepartureList extends React.Component<
-  IDepartureListProps,
-  IDepartureListState
-> {
-  constructor(props: IDepartureListProps) {
-    super(props);
-    this.state = { departures: [] };
-  }
-  public componentDidMount() {
-    const timer = window.setInterval(this.update.bind(this), 10000);
-    this.setState({ timer });
-    this.update();
-  }
+  useEffect(() => {
+    const update = () => {
+      monitor(stop).then((departures) => {
+        setDepartures(departures);
+      });
+    };
+    update();
+    const timer = setInterval(() => {
+      update();
+    }, 10000);
 
-  public componentWillUnmount() {
-    clearInterval(this.state.timer);
-  }
+    return () => {
+      clearInterval(timer);
+    };
+  }, [setDepartures, stop]);
 
-  public render() {
-    return (
-      <table className="DepartureList">
-        <thead>
-          <tr>
-            <th colSpan={2} className="align-left">
-              Linie
-            </th>
-            <th className="align-left">Richtung</th>
-            <th className="align-right">in Min</th>
+  return (
+    <table className="DepartureList">
+      <thead>
+        <tr>
+          <th colSpan={2} className="align-left">
+            Linie
+          </th>
+          <th className="align-left">Richtung</th>
+          <th className="align-right">in Min</th>
+        </tr>
+      </thead>
+      <tbody>
+        {departures.map((departure) => (
+          <tr key={`${departure.id}${departure.scheduledTime}`}>
+            <td>
+              {departure.mode && (
+                <img src={departure.mode.iconUrl} alt={departure.mode.name} />
+              )}
+            </td>
+            <td className="align-left">{departure.line}</td>
+            <td className="align-left">{departure.direction}</td>
+            <td className="align-right">{departure.arrivalTimeRelative}</td>
           </tr>
-        </thead>
-        <tbody>
-          {this.state.departures.map((departure) => (
-            <tr key={`${departure.id}${departure.scheduledTime}`}>
-              <td>
-                {departure.mode && (
-                  <img src={departure.mode.iconUrl} alt={departure.mode.name} />
-                )}
-              </td>
-              <td className="align-left">{departure.line}</td>
-              <td className="align-left">{departure.direction}</td>
-              <td className="align-right">{departure.arrivalTimeRelative}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    );
-  }
+        ))}
+      </tbody>
+    </table>
+  );
+};
 
-  private update() {
-    monitor(this.props.stop).then((departures) => {
-      this.setState({ departures });
-    });
-  }
-}
+export default DepartureList;
