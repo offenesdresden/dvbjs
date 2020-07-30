@@ -29,7 +29,7 @@ beforeEach(() => {
   lastResponses = [];
 });
 
-afterEach(function() {
+afterEach(function () {
   if (this.currentTest && this.currentTest.state === "failed") {
     // eslint-disable-next-line no-console
     console.log(

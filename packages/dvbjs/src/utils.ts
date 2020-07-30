@@ -1,3 +1,5 @@
+/* eslint @typescript-eslint/explicit-module-boundary-types: 0 */
+
 import proj4 from "proj4";
 import {
   coord,

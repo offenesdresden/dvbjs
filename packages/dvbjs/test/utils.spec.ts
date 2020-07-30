@@ -58,7 +58,7 @@ describe("internal utils", () => {
 
   describe("checkStatus", () => {
     it('should throw "unexpected error"', () => {
-      assert.throws(utils.checkStatus, "unexpected error");
+      assert.throws(() => utils.checkStatus(null), "unexpected error");
     });
 
     it('should throw error: "foo: bar"', () => {

@@ -1,4 +1,4 @@
-module.exports = function(config) {
+module.exports = function (config) {
   config.set({
     frameworks: ["mocha", "karma-typescript"],
     files: [{ pattern: "{src,test}/**/*.ts" }],
@@ -9,7 +9,7 @@ module.exports = function(config) {
     browsers: ["ChromeHeadless"],
     client: {
       mocha: {
-        opts: "test/mocha.opts",
+        opts: ".mocharc.json",
       },
     },
     karmaTypescriptConfig: {

@@ -13,6 +13,6 @@ module.exports = {
     "@typescript-eslint/interface-name-prefix": 0,
     "@typescript-eslint/no-explicit-any": 0,
     curly: ["error", "all"],
-    "no-console": ["error"],
+    "no-console": ["error", { allow: ["error"] }],
   },
 };
