@@ -10,7 +10,6 @@ import * as utils from "./utils";
  * @param isArrivalTime is time the arrival time
  * @param timeout the timeout of the request
  * @param viaID the id of the destination stop
- * @param standardsettings request routes with special settings
  * @returns Returns multiple possible trips, the bus-/tramlines to be taken,
  * the single stops, their arrival and departure times and their GPS coordinates.
  * The path property of a trip contains an array consisting of all the coordinates
@@ -22,7 +21,6 @@ export function route(
   time = new Date(),
   isArrivalTime = true,
   timeout = 15000,
-  // standardsettings = {},
   via?: string
 ): Promise<IRoute> {
   const options: AxiosRequestConfig = {
@@ -34,7 +32,6 @@ export function route(
       isarrivaltime: isArrivalTime,
       shorttermchanges: true,
       time: time.toISOString(),
-      // standardsettings: standardsettings,
       via: via,
     },
     timeout,
