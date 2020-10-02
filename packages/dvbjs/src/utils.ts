@@ -187,47 +187,47 @@ export const MODES = {
   Footpath: {
     title: "Fussweg",
     name: "Footpath",
-    iconUrl: "https://m.dvb.de/img/walk.svg",
+    iconUrl: "https://www.dvb.de/assets/img/trans-icon/walk.svg",
   },
   StairsUp: {
     title: "Treppe aufwärts",
     name: "StairsUp",
-    iconUrl: "https://m.dvb.de/img/stairs-up.svg",
+    iconUrl: "https://www.dvb.de/assets/img/trans-icon/stairs-up.svg",
   },
   StairsDown: {
     title: "Treppe abwärts",
     name: "StairsDown",
-    iconUrl: "https://m.dvb.de/img/stairs-down.svg",
+    iconUrl: "https://www.dvb.de/assets/img/trans-icon/stairs-down.svg",
   },
   EscalatorUp: {
     title: "Rolltreppe aufwärts",
     name: "EscalatorUp",
-    iconUrl: "https://m.dvb.de/img/escalator-up.svg",
+    iconUrl: "https://www.dvb.de/assets/img/trans-icon/escalator-up.svg",
   },
   EscalatorDown: {
     title: "Rolltreppe abwärts",
     name: "EscalatorDown",
-    iconUrl: "https://m.dvb.de/img/escalator-down.svg",
+    iconUrl: "https://www.dvb.de/assets/img/trans-icon/escalator-down.svg",
   },
   ElevatorUp: {
     title: "Fahrstuhl aufwärts",
     name: "ElevatorUp",
-    iconUrl: "https://m.dvb.de/img/elevator-up.svg",
+    iconUrl: "https://www.dvb.de/assets/img/trans-icon/elevator-up.svg",
   },
   ElevatorDown: {
     title: "Fahrstuhl abwärts",
     name: "ElevatorDown",
-    iconUrl: "https://m.dvb.de/img/elevator-down.svg",
+    iconUrl: "https://www.dvb.de/assets/img/trans-icon/elevator-down.svg",
   },
   StayForConnection: {
     title: "gesicherter Anschluss",
     name: "StayForConnection",
-    iconUrl: "https://m.dvb.de/img/sit.svg",
+    iconUrl: "https://www.dvb.de/assets/img/trans-icon/sit.svg",
   },
   PlusBus: {
     title: "PlusBus",
     name: "PlusBus",
-    iconUrl: "https://m.dvb.de/img/mot_icons/plusBus.svg",
+    iconUrl: "https://www.dvb.de/assets/img/trans-icon/transport-plusbus.svg",
   },
 };
 
