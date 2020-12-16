@@ -9,6 +9,7 @@ module.exports = function (config) {
     browsers: ["ChromeHeadless"],
     client: {
       mocha: {
+        timeout: 6000,
         opts: ".mocharc.json",
       },
     },

@@ -11,7 +11,7 @@
     "coveralls": "cd packages/dvbjs && cat ./coverage/lcov.info | coveralls",
     "docs": "run-s docs:api docs:examples docs:readme docs:copy",
     "docs:api": "yarn workspace dvbjs node node_modules/.bin/ts-docs-gen --entryFile src/index.ts",
-    "docs:copy": "cpy README.md packages/dvbjs",
+    "docs:copy": "node scripts/copy.js",
     "docs:examples": "yarn workspace dvbjs-examples start",
     "docs:readme": "node .markdown-magic.config.js",
     "lint": "eslint \"packages/*/{src,test}/*.{ts,tsx}\"",
@@ -25,20 +25,19 @@
     "watch": "run-p 'tsc --watch' 'test:node --watch --watch-extensions ts'"
   },
   "devDependencies": {
-    "@typescript-eslint/eslint-plugin": "^3.7.1",
-    "@typescript-eslint/parser": "^3.7.1",
+    "@typescript-eslint/eslint-plugin": "^4.10.0",
+    "@typescript-eslint/parser": "^4.10.0",
     "coveralls": "^3.1.0",
-    "cpy-cli": "^3.1.1",
-    "eslint": "^7.5.0",
-    "eslint-config-prettier": "^6.11.0",
-    "eslint-plugin-prettier": "^3.1.4",
+    "eslint": "^7.15.0",
+    "eslint-config-prettier": "^7.0.0",
+    "eslint-plugin-prettier": "^3.3.0",
     "markdown-magic": "^1.0.0",
     "npm-run-all": "^4.1.5",
-    "prettier": "^2.0.5",
+    "prettier": "^2.2.1",
     "rimraf": "^3.0.2",
     "source-map-support": "^0.5.19",
-    "ts-node": "^8.10.2",
-    "typescript": "^3.9.7",
+    "ts-node": "^9.1.1",
+    "typescript": "^4.1.3",
     "uncommitted": "^1.0.0"
   }
 }
