@@ -9,7 +9,7 @@ import * as utils from "./utils";
  * @param time starting at what time
  * @param isArrivalTime is time the arrival time
  * @param timeout the timeout of the request
- * @param viaID the id of the destination stop
+ * @param viaID the id of a stop which must be served by the route
  * @returns Returns multiple possible trips, the bus-/tramlines to be taken,
  * the single stops, their arrival and departure times and their GPS coordinates.
  * The path property of a trip contains an array consisting of all the coordinates
