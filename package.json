@@ -25,12 +25,12 @@
     "watch": "run-p 'tsc --watch' 'test:node --watch --watch-extensions ts'"
   },
   "devDependencies": {
-    "@typescript-eslint/eslint-plugin": "^4.10.0",
-    "@typescript-eslint/parser": "^4.10.0",
+    "@typescript-eslint/eslint-plugin": "^5.59.2",
+    "@typescript-eslint/parser": "^5.59.2",
     "coveralls": "^3.1.0",
-    "eslint": "^7.15.0",
-    "eslint-config-prettier": "^7.0.0",
-    "eslint-plugin-prettier": "^3.3.0",
+    "eslint": "^8.39.0",
+    "eslint-config-prettier": "^8.8.0",
+    "eslint-plugin-prettier": "^4.2.1",
     "markdown-magic": "^1.0.0",
     "npm-run-all": "^4.1.5",
     "prettier": "^2.2.1",
