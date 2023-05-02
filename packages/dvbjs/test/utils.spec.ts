@@ -102,8 +102,10 @@ describe("internal utils", () => {
         utils.convertError(err);
         assert.fail("checkStatus did not throw an error");
       } catch (error) {
-        assert.strictEqual(error.name, "foo");
-        assert.strictEqual(error.message, "bar");
+        if (error instanceof Error) {
+          assert.strictEqual(error.name, "foo");
+          assert.strictEqual(error.message, "bar");
+        }
       }
     });
 

@@ -8,7 +8,7 @@ function _getCallerFile(): string | undefined {
   let filename: string | undefined;
   const prepareStackTraceOrg = Error.prepareStackTrace;
   try {
-    Error.prepareStackTrace = (_, structuredStackTrace): string | null => {
+    Error.prepareStackTrace = (_, structuredStackTrace): string | undefined => {
       return structuredStackTrace[2].getFileName();
     };
     filename = new Error().stack;
