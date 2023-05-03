@@ -115,13 +115,8 @@ describe("dvb.route", () => {
   });
 
   describe('dvb.route "0 -> 0"', () => {
-    it("should return empty trips", () =>
-      dvb.route("0", "0").then((data) => {
-        assert.isObject(data);
-        assert.isUndefined(data.origin);
-        assert.isUndefined(data.destination);
-        assert.isEmpty(data.trips);
-      }));
+    it("should reject too close routes", () =>
+      assert.isRejected(dvb.route("0", "0"), "origin too close to destination"));
   });
 });
 
@@ -141,9 +136,9 @@ describe("dvb.findStop", () => {
         });
       }));
 
-    it("should find the correct stop", () =>
-      dvb.findStop("Postpl").then((data) => {
-        assert.strictEqual("Postplatz", data[0].name);
+    it("should find the correct exact stop", () =>
+      dvb.findStop("Postplatz (Am Zwingerteich)").then((data) => {
+        assert.strictEqual("Postplatz (Am Zwingerteich)", data[0].name);
       }));
   });
 
@@ -295,14 +290,14 @@ describe("dvb.pins", () => {
 });
 
 describe("dvb.findAddress", () => {
-  describe('dvb.findAddress "13.722943, 51.025451"', () => {
-    const lat = 51.025451;
-    const lng = 13.722943;
+  describe('dvb.findAddress "13.7207771, 51.025269"', () => {
+    const lat = 51.025269;
+    const lng = 13.7207771;
 
     it("should resolve into an object with city, address and coords properties", () =>
       dvb.findAddress(lng, lat).then((address) => {
         assert.isDefined(address);
-        assert.strictEqual(address!.name, "Nöthnitzer Straße 46");
+        assert.strictEqual(address!.name, "Nöthnitzer Straße 44");
         assert.strictEqual(address!.city, "Dresden");
         assert.strictEqual(address!.type, dvb.POI_TYPE.Coords);
         assert.approximately(address!.coords[0], lng, 0.001);

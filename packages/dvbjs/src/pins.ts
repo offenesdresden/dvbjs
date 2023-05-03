@@ -32,7 +32,7 @@ export function pins(
       nelng: ne[0],
       nelat: ne[1],
     },
-    responseType: "text",
+    responseType: "json",
     timeout,
   };
 

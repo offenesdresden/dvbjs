@@ -18,7 +18,7 @@ export function coords(
     params: {
       id,
     },
-    responseType: "text",
+    responseType: "json",
     timeout,
   };
 
