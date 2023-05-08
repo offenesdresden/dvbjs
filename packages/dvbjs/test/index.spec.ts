@@ -201,7 +201,7 @@ describe("dvb.findPOI", () => {
 describe("dvb.findNearbyStops", () => {
   describe('dvb.findNearbyStops "Postplatz"', () => {
     it("should return station when input matches a station name", () =>
-      dvb.findNearbyStops("Postplatz").then((data) => {
+      dvb.findNearbyStops("Postplatz Dresden").then((data) => {
         assert.strictEqual("Postplatz", data[0].name);
       }));
   });
