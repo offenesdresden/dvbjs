@@ -4,7 +4,7 @@
 
 ## Usage
 
-1. checkout the source code: `git checkout https://github.com/kiliankoe/dvbjs.git`
+1. checkout the source code: `git checkout https://github.com/offenesdresden/dvbjs.git`
 2. go to the source directory: `cd dvbjs`
 3. install dependencies:`yarn`
 4. run the departure monitor: `yarn run_example`

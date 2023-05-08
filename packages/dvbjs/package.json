@@ -9,13 +9,13 @@
     "public transport",
     "tram"
   ],
-  "homepage": "https://github.com/kiliankoe/dvbjs",
+  "homepage": "https://github.com/offenesdresden/dvbjs",
   "bugs": {
-    "url": "https://github.com/kiliankoe/dvbjs/issues"
+    "url": "https://github.com/offenesdresden/dvbjs/issues"
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/kiliankoe/dvbjs.git"
+    "url": "git://github.com/offenesdresden/dvbjs.git"
   },
   "license": "MIT",
   "author": {
