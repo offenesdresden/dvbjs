@@ -34,7 +34,7 @@ See [packages/react-example](packages/react-example/README.md) for a browser dep
 
 ### Find stops by name
 <!-- AUTO-GENERATED-CONTENT:START (EXAMPLE_CODE:src=./packages/examples/src/findStop.ts) -->
-```ts
+```js
 import * as dvb from "dvbjs"; // OR const dvb = require("dvbjs");
 
 dvb.findStop("zellesch").then((data) => {
@@ -68,7 +68,7 @@ dvb.findStop("zellesch").then((data) => {
 
 ### Monitor a single stop
 <!-- AUTO-GENERATED-CONTENT:START (EXAMPLE_CODE:src=./packages/examples/src/monitor.ts) -->
-```ts
+```js
 import * as dvb from "dvbjs"; // OR const dvb = require("dvbjs");
 
 const stopID = "33000037"; // Postplatz
@@ -126,7 +126,7 @@ dvb.monitor(stopID, timeOffset, numResults).then((data) => {
 
 ### Find routes
 <!-- AUTO-GENERATED-CONTENT:START (EXAMPLE_CODE:src=./packages/examples/src/route.ts) -->
-```ts
+```js
 import * as dvb from "dvbjs"; // OR const dvb = require("dvbjs");
 
 const origin = "33000742"; // Helmholtzstraße
