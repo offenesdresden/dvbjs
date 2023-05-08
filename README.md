@@ -613,7 +613,7 @@ function route(originID: string, destinationID: string, time: Date = new Date(),
 | time          | Date                    | new Date()    | starting at what time          |
 | isArrivalTime | boolean                 | true          | is time the arrival time       |
 | timeout       | number                  | 15000         | the timeout of the request     |
-| via           | string  |               |                                |
+| via           | string                  | <optional>    | the id of a third stop         |
 
 **Return type**
 
@@ -635,7 +635,7 @@ interface IDiva {
 | Name    | Type                    | Optional |
 | ------- | ----------------------- | -------- |
 | number  | number                  | false    |
-| network | string  | true     |
+| network | string                  | true     |
 
 ----------
 
