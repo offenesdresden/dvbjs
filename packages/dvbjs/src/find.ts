@@ -91,8 +91,11 @@ export function findPOI(
  * @param searchString the lookup address
  * @returns an array of all possible hits including their GPS coordinates.
  */
-export async function findNearbyStops(searchString: string): Promise<IPoint[]> {
-  const aPoints = await pointFinder(searchString, false, true);
+export async function findNearbyStops(
+  searchString: string,
+  timeout = 5000
+): Promise<IPoint[]> {
+  const aPoints = await pointFinder(searchString, false, true, timeout);
   return aPoints.filter((oPoint) => oPoint.type === "Stop");
 }
 
