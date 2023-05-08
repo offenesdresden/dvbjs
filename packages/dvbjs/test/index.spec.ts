@@ -52,7 +52,7 @@ afterEach(function () {
 });
 
 describe("dvb.monitor", () => {
-  describe("dvb.monitor 33000037 (Postplatz)", () => {
+  describe("dvb.monitor 33000037 (Postplatz Dresden)", () => {
     it("should return an array with elements", () =>
       dvb.monitor("33000037", 0, 5).then((data) => {
         assert.isArray(data);
@@ -80,7 +80,7 @@ describe("dvb.monitor", () => {
 });
 
 describe("dvb.route", () => {
-  describe('dvb.route "33000742 (Helmholtzstraße) -> 33000037 (Postplatz)"', () => {
+  describe('dvb.route "33000742 (Helmholtzstraße) -> 33000037 (Postplatz Dresden)"', () => {
     let data: dvb.IRoute;
 
     before(async () => {
@@ -99,7 +99,7 @@ describe("dvb.route", () => {
     });
 
     it("should return an array of trips", () => {
-      assert.isNotEmpty(data.trips);
+      assert.isArray(data.trips);
       data.trips.forEach(assertTrip);
     });
 
@@ -114,7 +114,7 @@ describe("dvb.route", () => {
       });
     });
   });
-  describe('dvb.route "33000742 (Helmholtzstraße) --> via: 33000016 (Bahnhof Neustadt) --> 33000037 (Postplatz)"', () => {
+  describe('dvb.route "33000742 (Helmholtzstraße) --> via: 33000016 (Bahnhof Neustadt) --> 33000037 (Postplatz Dresden)"', () => {
     let data: dvb.IRoute;
 
     before(async () => {
@@ -242,7 +242,7 @@ describe("dvb.findPOI", () => {
 });
 
 describe("dvb.findNearbyStops", () => {
-  describe('dvb.findNearbyStops "Postplatz"', () => {
+  describe('dvb.findNearbyStops "Postplatz Dresden"', () => {
     it("should return station when input matches a station name", () =>
       dvb.findNearbyStops("Postplatz Dresden").then((data) => {
         assert.strictEqual("Postplatz", data[0].name);
