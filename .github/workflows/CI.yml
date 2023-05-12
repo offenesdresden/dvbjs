@@ -36,6 +36,11 @@ jobs:
       with:
         cmd: lint
 
+    - name: coveralls Test
+      uses: borales/actions-yarn@v4
+      with:
+        cmd: coveralls
+
     - name: dvbjs Test
       uses: borales/actions-yarn@v4
       with:
