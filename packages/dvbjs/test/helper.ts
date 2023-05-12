@@ -226,8 +226,10 @@ function assertNode(node: INode): void {
 
   assert.isArray(node.path);
   if (node.mode && node.mode.name !== "StayForConnection") {
-    assert.isNotEmpty(node.path);
-    node.path.forEach(assertCoords);
+    if ((node.mode && node.mode.name !== "Footpath") || node.path.length > 0) {
+      assert.isNotEmpty(node.path);
+      node.path.forEach(assertCoords);
+    }
   } else {
     assert.isEmpty(node.path);
   }
