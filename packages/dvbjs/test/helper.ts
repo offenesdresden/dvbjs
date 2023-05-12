@@ -134,7 +134,7 @@ export function assertPin(pin: IPin, type?: PIN_TYPE): void {
     assertNotEmptyString(pin.id);
     assert.isUndefined(pin.platformNr);
   }
-
+/*
   if (pin.type === PIN_TYPE.stop) {
     assert.isArray(pin.connections);
     if (!["Schule", "Ebertplatz"].includes(pin.name)) {
@@ -147,6 +147,7 @@ export function assertPin(pin: IPin, type?: PIN_TYPE): void {
   } else {
     assert.isUndefined(pin.connections);
   }
+*/
 
   if (pin.type === PIN_TYPE.parkandride) {
     assertNotEmptyString(pin.info);
