@@ -20,7 +20,7 @@
     "test": "run-p test:*",
     "test:browser": "yarn workspace dvbjs karma start",
     "test:node": "yarn workspace dvbjs nyc mocha",
-    "tsc": "tsc -b packages/*",
+    "tsc": "tsc -b packages/dvbjs packages/examples packages/react-example",
     "uncommitted": "uncommitted",
     "watch": "run-p 'tsc --watch' 'test:node --watch --watch-extensions ts'"
   },
