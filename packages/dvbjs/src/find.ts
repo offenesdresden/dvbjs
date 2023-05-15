@@ -6,7 +6,7 @@ async function pointFinder(
   name: string,
   stopsOnly: boolean,
   assignedStops: boolean,
-  timeout: number
+  timeout = 15000
 ): Promise<IPoint[]> {
   if (typeof name !== "string") {
     throw utils.constructError("ValidationError", "query has to be a string");
@@ -68,7 +68,7 @@ async function pointFinder(
  */
 export function findStop(
   searchString: string,
-  timeout = 5000
+  timeout = 15000
 ): Promise<IPoint[]> {
   return pointFinder(searchString, true, false, timeout);
 }
@@ -81,7 +81,7 @@ export function findStop(
  */
 export function findPOI(
   searchString: string,
-  timeout = 5000
+  timeout = 15000
 ): Promise<IPoint[]> {
   return pointFinder(searchString, false, false, timeout);
 }
@@ -93,7 +93,7 @@ export function findPOI(
  */
 export async function findNearbyStops(
   searchString: string,
-  timeout = 5000
+  timeout = 15000
 ): Promise<IPoint[]> {
   const aPoints = await pointFinder(searchString, false, true, timeout);
   return aPoints.filter((oPoint) => oPoint.type === "Stop");
@@ -109,7 +109,7 @@ export async function findNearbyStops(
 export function findAddress(
   lng: number,
   lat: number,
-  timeout = 5000
+  timeout = 15000
 ): Promise<IAddress | undefined> {
   const gk4 = utils.WGS84toGK4(lng, lat);
 

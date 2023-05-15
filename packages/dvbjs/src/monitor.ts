@@ -21,7 +21,7 @@ export function monitor(
   stopID: string,
   offset = 0,
   amount = 0,
-  timeout = 5000
+  timeout = 15000
 ): Promise<IMonitor[]> {
   const now = new Date();
   const time = new Date(now.getTime() + offset * 60 * 1000);

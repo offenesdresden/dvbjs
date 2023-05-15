@@ -19,7 +19,7 @@ function parseLine(line: any): ILine {
  * @param stopID the stop ID
  * @param timeout the timeout of the request
  */
-export function lines(stopID: string, timeout = 5000): Promise<ILine[]> {
+export function lines(stopID: string, timeout = 15000): Promise<ILine[]> {
   const options: AxiosRequestConfig = {
     url: "https://webapi.vvo-online.de/stt/lines",
     params: {

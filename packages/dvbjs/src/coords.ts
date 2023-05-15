@@ -11,7 +11,7 @@ import * as utils from "./utils";
  */
 export function coords(
   id: string,
-  timeout = 5000
+  timeout = 15000
 ): Promise<number[] | undefined> {
   const options: AxiosRequestConfig = {
     url: "https://www.dvb.de/apps/map/coordinates",

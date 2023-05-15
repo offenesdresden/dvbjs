@@ -17,7 +17,7 @@ export function pins(
   nelng: number,
   nelat: number,
   pinTypes: PIN_TYPE[] = [PIN_TYPE.stop],
-  timeout = 5000
+  timeout = 15000
 ): Promise<IPin[]> {
   const sw = utils.WGS84toWm(swlng, swlat);
   const ne = utils.WGS84toWm(nelng, nelat);
