@@ -7,7 +7,7 @@
   "scripts": {
     "build": "run-s clean lint tsc",
     "build:react_example": "yarn workspace react-example build",
-    "clean": "rimraf packages/*/.nyc_output packages/*/coverage packages/*/dist packages/*/docs packages/*/build packages/*/tsconfig.tsbuildinfo",
+    "clean": "rimraf --glob packages/*/.nyc_output packages/*/coverage packages/*/dist packages/*/docs packages/*/build packages/*/tsconfig.tsbuildinfo",
     "coveralls": "cd packages/dvbjs && cat ./coverage/lcov.info | coveralls",
     "docs": "run-s docs:api docs:examples docs:readme docs:copy",
     "docs:api": "yarn workspace dvbjs node node_modules/.bin/ts-docs-gen --entryFile src/index.ts",
