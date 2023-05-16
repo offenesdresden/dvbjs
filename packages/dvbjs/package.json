@@ -10,6 +10,7 @@
     "tram"
   ],
   "homepage": "https://github.com/offenesdresden/dvbjs",
+  "readme": "https://github.com/offenesdresden/dvbjs/blob/master/README.md",
   "bugs": {
     "url": "https://github.com/offenesdresden/dvbjs/issues"
   },
