@@ -23,12 +23,9 @@ export function coords(
   };
 
   return axios(options).then((response) => {
-    if (response.data) {
+    if (response.data && response.data.split("|").length === 2) {
       const coordinates = response.data.split("|");
-
-      if (coordinates.length > 1) {
-        return utils.WmOrGK4toWGS84(coordinates[1], coordinates[0]);
-      }
+      return utils.WmOrGK4toWGS84(coordinates[1], coordinates[0]);
     }
 
     return undefined;
