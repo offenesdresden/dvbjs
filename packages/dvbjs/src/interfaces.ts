@@ -98,6 +98,7 @@ export interface IStop extends ILocation {
   platform?: IPlatform;
   arrival: Date;
   departure: Date;
+  dhid: string;
 }
 
 export interface IStopLocation extends ILocation {
@@ -114,6 +115,7 @@ export interface INode {
   line: string;
   direction: string;
   diva?: IDiva;
+  dlid?: string;
   duration: number;
   path: coord[];
 }
