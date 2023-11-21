@@ -114,31 +114,31 @@ describe("dvb.route", () => {
       });
     });
 
-    it("all stops should have all prperties", ()=>{
-      const stops = data.trips.flatMap((trip)=>{
+    it("all stops should have all prperties", () => {
+      const stops = data.trips.flatMap((trip) => {
         return trip.nodes.flatMap((node) => {
           return node.stops
         })
       })
       stops.forEach(stop => {
-        assert.property(stop,'id')
-        assert.property(stop,'dhid')
-        assert.property(stop,'name')
-        assert.property(stop,'city')
-        assert.property(stop,'type')
-        assert.property(stop,'platform')
-        assert.property(stop,'coords')
-        assert.property(stop,'arrival')
-        assert.property(stop,'departure')
+        assert.property(stop, 'id')
+        assert.property(stop, 'dhid')
+        assert.property(stop, 'name')
+        assert.property(stop, 'city')
+        assert.property(stop, 'type')
+        assert.property(stop, 'platform')
+        assert.property(stop, 'coords')
+        assert.property(stop, 'arrival')
+        assert.property(stop, 'departure')
         expect(stop.dhid).not.to.be.empty
       })
     })
 
-    it("all nodes except footpaths should have prperty 'dlid' ", ()=>{
-      const nodes = data.trips.flatMap((trip)=>{
+    it("all nodes except footpaths should have prperty 'dlid' ", () => {
+      const nodes = data.trips.flatMap((trip) => {
         return trip.nodes
       }).filter(node => node.mode && node.mode.name !== 'Footpath')
-      nodes.forEach(node=>{
+      nodes.forEach(node => {
         expect(node.dlid).to.exist.and.to.be.an('string')
       })
     })
@@ -164,22 +164,12 @@ describe("dvb.route", () => {
         route: IRoute,
         stopId: string
       ): IStop[][] => {
-        const filteredTrips: IStop[][] = [];
-        route.trips.forEach((trip) => {
-          const stopsPerTrip: IStop[] = [];
-          trip.nodes.forEach((node) => {
-            const filteredStops = node.stops.find((stop) => {
-              return stop.id === stopId;
-            });
-            if (filteredStops) {
-              stopsPerTrip.push(filteredStops);
-            }
-          });
-          filteredTrips.push(stopsPerTrip);
-        });
-        return filteredTrips;
-      };
-
+        return route.trips.map(trip => {
+          return trip.nodes.flatMap(node => {
+            return node.stops.filter(stop => stop.id == stopId)
+          })
+        })
+      }
       getStopsFromTripByID(data, "33000016").forEach((filteredTripByID) => {
         assert.isNotEmpty(filteredTripByID);
       });
