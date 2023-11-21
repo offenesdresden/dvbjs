@@ -187,9 +187,9 @@ describe("dvb.route", () => {
     });
   });
 
-  describe('dvb.route "0 -> 0"', () => {
+  describe('dvb.route "33000016 -> 33000016"', () => {
     it("should reject too close routes", () =>
-      assert.isRejected(dvb.route("0", "0"), "origin too close to destination"));
+      assert.isRejected(dvb.route("33000016", "33000016"), "origin too close to destination"));
   });
 });
 
@@ -211,7 +211,7 @@ describe("dvb.findStop", () => {
 
     it("should find the correct exact stop", () =>
       dvb.findStop("Postplatz (Am Zwingerteich)").then((data) => {
-        assert.strictEqual("Postplatz (Am Zwingerteich)", data[0].name);
+        assert.strictEqual("Postplatz (Am Zwingert.)", data[0].name);
       }));
   });
 
@@ -424,7 +424,7 @@ describe("dvb.findAddress", () => {
     it("should resolve into an object with city, address and coords properties", () =>
       dvb.findAddress(lng, lat).then((address) => {
         assert.isDefined(address);
-        assert.strictEqual(address!.name, "Nöthnitzer Straße 44");
+        assert.strictEqual(address!.name, "Nöthnitzer Straße 44a");
         assert.strictEqual(address!.city, "Dresden");
         assert.strictEqual(address!.type, dvb.POI_TYPE.Coords);
         assert.approximately(address!.coords[0], lng, 0.001);
