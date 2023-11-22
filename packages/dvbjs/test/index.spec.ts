@@ -1,7 +1,7 @@
 /* eslint @typescript-eslint/no-non-null-assertion: 0 */
 
 import axios from "axios";
-import chai, { assert } from "chai";
+import chai, { assert, expect } from "chai";
 import chaiAsPromised from "chai-as-promised";
 import * as dvb from "../src/index";
 import { IRoute, IStop } from "../src/index";
@@ -113,7 +113,37 @@ describe("dvb.route", () => {
         assert.notEqual(0, durationSum);
       });
     });
+
+    it("all stops should have all prperties", () => {
+      const stops = data.trips.flatMap((trip) => {
+        return trip.nodes.flatMap((node) => {
+          return node.stops
+        })
+      })
+      stops.forEach(stop => {
+        assert.property(stop, 'id')
+        assert.property(stop, 'dhid')
+        assert.property(stop, 'name')
+        assert.property(stop, 'city')
+        assert.property(stop, 'type')
+        assert.property(stop, 'platform')
+        assert.property(stop, 'coords')
+        assert.property(stop, 'arrival')
+        assert.property(stop, 'departure')
+        expect(stop.dhid).not.to.be.empty
+      })
+    })
+
+    it("all nodes except footpaths should have prperty 'dlid' ", () => {
+      const nodes = data.trips.flatMap((trip) => {
+        return trip.nodes
+      }).filter(node => node.mode && node.mode.name !== 'Footpath')
+      nodes.forEach(node => {
+        expect(node.dlid).to.exist.and.to.be.an('string')
+      })
+    })
   });
+
   describe('dvb.route "33000742 (Helmholtzstraße) --> via: 33000016 (Bahnhof Neustadt) --> 33000037 (Postplatz Dresden)"', () => {
     let data: dvb.IRoute;
 
@@ -134,22 +164,12 @@ describe("dvb.route", () => {
         route: IRoute,
         stopId: string
       ): IStop[][] => {
-        const filteredTrips: IStop[][] = [];
-        route.trips.forEach((trip) => {
-          const stopsPerTrip: IStop[] = [];
-          trip.nodes.forEach((node) => {
-            const filteredStops = node.stops.find((stop) => {
-              return stop.id === stopId;
-            });
-            if (filteredStops) {
-              stopsPerTrip.push(filteredStops);
-            }
-          });
-          filteredTrips.push(stopsPerTrip);
-        });
-        return filteredTrips;
-      };
-
+        return route.trips.map(trip => {
+          return trip.nodes.flatMap(node => {
+            return node.stops.filter(stop => stop.id == stopId)
+          })
+        })
+      }
       getStopsFromTripByID(data, "33000016").forEach((filteredTripByID) => {
         assert.isNotEmpty(filteredTripByID);
       });
@@ -157,9 +177,9 @@ describe("dvb.route", () => {
     });
   });
 
-  describe('dvb.route "0 -> 0"', () => {
+  describe('dvb.route "33000016 -> 33000016"', () => {
     it("should reject too close routes", () =>
-      assert.isRejected(dvb.route("0", "0"), "origin too close to destination"));
+      assert.isRejected(dvb.route("33000016", "33000016"), "origin too close to destination"));
   });
 });
 
@@ -181,7 +201,7 @@ describe("dvb.findStop", () => {
 
     it("should find the correct exact stop", () =>
       dvb.findStop("Postplatz (Am Zwingerteich)").then((data) => {
-        assert.strictEqual("Postplatz (Am Zwingerteich)", data[0].name);
+        assert.strictEqual("Postplatz (Am Zwingert.)", data[0].name);
       }));
   });
 
@@ -394,7 +414,7 @@ describe("dvb.findAddress", () => {
     it("should resolve into an object with city, address and coords properties", () =>
       dvb.findAddress(lng, lat).then((address) => {
         assert.isDefined(address);
-        assert.strictEqual(address!.name, "Nöthnitzer Straße 44");
+        assert.strictEqual(address!.name, "Nöthnitzer Straße 44a");
         assert.strictEqual(address!.city, "Dresden");
         assert.strictEqual(address!.type, dvb.POI_TYPE.Coords);
         assert.approximately(address!.coords[0], lng, 0.001);

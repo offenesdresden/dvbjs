@@ -410,6 +410,7 @@ export function parsePoiID(id: string): { id: string; type: POI_TYPE } {
 function extractStop(stop: any): IStop {
   return {
     id: stop.DataId,
+    dhid: stop.DhId,
     name: stop.Name.trim(),
     city: stop.Place,
     type: stop.Type,
@@ -461,6 +462,7 @@ function extractNode(node: any, mapData: any): INode {
     line: node.Mot.Name ? node.Mot.Name : "",
     direction: node.Mot.Direction ? node.Mot.Direction.trim() : "",
     diva: parseDiva(node.Mot.Diva),
+    dlid: node.Mot.DlId,
     duration: node.Duration || 1,
     path: convertCoordinates(mapData[node.MapDataIndex]),
   };
