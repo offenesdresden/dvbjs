@@ -170,7 +170,7 @@ describe("dvb.route", () => {
           })
         })
       }
-      getStopsFromTripByID(data, "33000016").forEach((filteredTripByID) => {
+      getStopsFromTripByID(data, "33000037").forEach((filteredTripByID) => {
         assert.isNotEmpty(filteredTripByID);
       });
       assert.isNotEmpty(data);
