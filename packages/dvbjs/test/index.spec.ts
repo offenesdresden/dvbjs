@@ -415,7 +415,7 @@ describe("dvb.findAddress", () => {
       dvb.findAddress(lng, lat).then((address) => {
         assert.isDefined(address);
         assert.strictEqual(address!.name, "Nöthnitzer Straße 44a");
-        assert.strictEqual(address!.city, "Dresden");
+        assert.strictEqual(address!.city, "(Dresden)");
         assert.strictEqual(address!.type, dvb.POI_TYPE.Coords);
         assert.approximately(address!.coords[0], lng, 0.001);
         assert.approximately(address!.coords[1], lat, 0.001);
