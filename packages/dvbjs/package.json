@@ -1,6 +1,6 @@
 {
   "name": "dvbjs",
-  "version": "6.1.1",
+  "version": "6.2.0",
   "description": "query Dresden's public transport system for current bus- and tram stop data",
   "keywords": [
     "bus",
