@@ -74,12 +74,12 @@
     "proj4": "^2.9.0"
   },
   "devDependencies": {
-    "@types/chai": "^4.2.14",
+    "@types/chai": "^4.3.11",
     "@types/chai-as-promised": "^7.1.8",
     "@types/mocha": "^10.0.1",
     "@types/node": "^20.9.4",
     "@types/proj4": "^2.5.0",
-    "chai": "^4.2.0",
+    "chai": "^4.3.10",
     "chai-as-promised": "^7.1.1",
     "karma": "^6.3.14",
     "karma-chrome-launcher": "^3.1.0",
