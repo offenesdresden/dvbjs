@@ -79,7 +79,7 @@
     "@types/mocha": "^10.0.1",
     "@types/node": "^20.9.4",
     "@types/proj4": "^2.5.0",
-    "chai": "^4.3.10",
+    "chai": "^4.4.1",
     "chai-as-promised": "^7.1.1",
     "karma": "^6.3.14",
     "karma-chrome-launcher": "^3.1.0",
