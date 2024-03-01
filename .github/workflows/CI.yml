@@ -22,26 +22,26 @@ jobs:
         node-version: ${{ matrix.node-version }}
     
     - name: Install Test
-      uses: borales/actions-yarn@v4
+      uses: borales/actions-yarn@v5
       with:
         cmd: install
 
     - name: Build Test
-      uses: borales/actions-yarn@v4
+      uses: borales/actions-yarn@v5
       with:
         cmd: build
     
     - name: Lint Test
-      uses: borales/actions-yarn@v4
+      uses: borales/actions-yarn@v5
       with:
         cmd: lint
 
     - name: dvbjs Test
-      uses: borales/actions-yarn@v4
+      uses: borales/actions-yarn@v5
       with:
         cmd: test:node
 
     - name: coveralls Test
-      uses: borales/actions-yarn@v4
+      uses: borales/actions-yarn@v5
       with:
         cmd: coveralls
