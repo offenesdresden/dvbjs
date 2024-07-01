@@ -76,7 +76,7 @@
   "devDependencies": {
     "@types/chai": "^4.3.11",
     "@types/chai-as-promised": "^7.1.8",
-    "@types/mocha": "^10.0.1",
+    "@types/mocha": "^10.0.7",
     "@types/node": "^20.9.4",
     "@types/proj4": "^2.5.0",
     "chai": "^4.3.10",
@@ -86,7 +86,7 @@
     "karma-mocha": "^2.0.1",
     "karma-mocha-reporter": "^2.2.5",
     "karma-typescript": "^5.2.0",
-    "mocha": "^10.2.0",
+    "mocha": "^10.5.2",
     "nyc": "^15.1.0",
     "ts-docs-gen": "^0.2.0"
   }
