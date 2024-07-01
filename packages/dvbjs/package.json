@@ -80,7 +80,7 @@
     "@types/node": "^20.9.4",
     "@types/proj4": "^2.5.0",
     "chai": "^4.3.10",
-    "chai-as-promised": "^7.1.1",
+    "chai-as-promised": "^8.0.0",
     "karma": "^6.3.14",
     "karma-chrome-launcher": "^3.1.0",
     "karma-mocha": "^2.0.1",
