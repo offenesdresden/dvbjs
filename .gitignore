@@ -1,12 +1,10 @@
 node_modules/
 coverage/
-.nyc_output/
-.idea/
 dist/
 docs/
 
-npm-debug.log
-tsconfig.tsbuildinfo
+*.tsbuildinfo
 
 .DS_Store
 .direnv
+.idea/
