@@ -1,19 +1,14 @@
+import type { PointFinderResponse } from "./api-types";
 import { get } from "./http";
-import type { IAddress, IPoint } from "./interfaces";
+import type { Address, Point } from "./interfaces";
 import * as utils from "./utils";
-
-interface PointFinderResponse {
-  PointStatus: string;
-  Status: { Code: string; Message?: string };
-  Points?: string[];
-}
 
 async function pointFinder(
   name: string,
   stopsOnly: boolean,
   assignedStops: boolean,
   timeout = 15000,
-): Promise<IPoint[]> {
+): Promise<Point[]> {
   if (typeof name !== "string") {
     throw utils.constructError("ValidationError", "query has to be a string");
   }
@@ -35,7 +30,7 @@ async function pointFinder(
 
   utils.checkStatus(data);
 
-  const result: IPoint[] = [];
+  const result: Point[] = [];
   if (data.Points) {
     for (const p of data.Points) {
       const poi = p.split("|");
@@ -67,7 +62,7 @@ async function pointFinder(
  * @param timeout the timeout of the request
  * @returns an array of all possible hits including their GPS coordinates.
  */
-export function findStop(searchString: string, timeout = 15000): Promise<IPoint[]> {
+export function findStop(searchString: string, timeout = 15000): Promise<Point[]> {
   return pointFinder(searchString, true, false, timeout);
 }
 
@@ -77,7 +72,7 @@ export function findStop(searchString: string, timeout = 15000): Promise<IPoint[
  * @param timeout the timeout of the request
  * @returns an array of all possible hits including their GPS coordinates.
  */
-export function findPOI(searchString: string, timeout = 15000): Promise<IPoint[]> {
+export function findPOI(searchString: string, timeout = 15000): Promise<Point[]> {
   return pointFinder(searchString, false, false, timeout);
 }
 
@@ -86,7 +81,7 @@ export function findPOI(searchString: string, timeout = 15000): Promise<IPoint[]
  * @param searchString the lookup address
  * @returns an array of all possible hits including their GPS coordinates.
  */
-export async function findNearbyStops(searchString: string, timeout = 15000): Promise<IPoint[]> {
+export async function findNearbyStops(searchString: string, timeout = 15000): Promise<Point[]> {
   const aPoints = await pointFinder(searchString, false, true, timeout);
   return aPoints.filter((oPoint) => oPoint.type === "Stop");
 }
@@ -102,7 +97,7 @@ export async function findAddress(
   lng: number,
   lat: number,
   timeout = 15000,
-): Promise<IAddress | undefined> {
+): Promise<Address | undefined> {
   const gk4 = utils.WGS84toGK4(lng, lat);
 
   const points = await pointFinder(`coord:${gk4[0]}:${gk4[1]}`, false, true, timeout);

@@ -1,21 +1,21 @@
 import { expect } from "vitest";
 import {
+  type Address,
+  type Connection,
   type coord,
-  type IAddress,
-  type IConnection,
-  type IDiva,
-  type ILocation,
-  type IMode,
-  type IMonitor,
-  type INode,
-  type IPin,
-  type IPlatform,
-  type IPoint,
-  type IStop,
-  type IStopLocation,
-  type ITrip,
+  type Diva,
+  type Location,
+  type Mode,
+  type Monitor,
+  type Node,
   PIN_TYPE,
+  type Pin,
+  type Platform,
   POI_TYPE,
+  type Point,
+  type Stop,
+  type StopLocation,
+  type Trip,
 } from "../src/interfaces";
 
 function expectApproximately(actual: number, expected: number, delta: number): void {
@@ -35,7 +35,7 @@ export function assertCoords(coords: coord): void {
   expectApproximately(coords[1], 51, 3);
 }
 
-export function assertPlatform(platform: IPlatform): void {
+export function assertPlatform(platform: Platform): void {
   expect(typeof platform).toBe("object");
 
   expect(platform).toHaveProperty("name");
@@ -45,7 +45,7 @@ export function assertPlatform(platform: IPlatform): void {
   assertNotEmptyString(platform.type);
 }
 
-export function assertDiva(diva: IDiva): void {
+export function assertDiva(diva: Diva): void {
   expect(typeof diva).toBe("object");
 
   expect(diva).toHaveProperty("number");
@@ -55,7 +55,7 @@ export function assertDiva(diva: IDiva): void {
   assertNotEmptyString(diva.network);
 }
 
-export function assertMode(mode: IMode): void {
+export function assertMode(mode: Mode): void {
   expect(typeof mode).toBe("object");
 
   assertNotEmptyString(mode.name);
@@ -63,7 +63,7 @@ export function assertMode(mode: IMode): void {
   assertNotEmptyString(mode.iconUrl);
 }
 
-export function assertLocation(stop: ILocation): void {
+export function assertLocation(stop: Location): void {
   expect(typeof stop).toBe("object");
 
   assertNotEmptyString(stop.id);
@@ -72,7 +72,7 @@ export function assertLocation(stop: ILocation): void {
   assertCoords(stop.coords);
 }
 
-export function assertStop(stop: IStop): void {
+export function assertStop(stop: Stop): void {
   assertLocation(stop);
 
   expect(stop.arrival).toBeInstanceOf(Date);
@@ -87,19 +87,19 @@ export function assertStop(stop: IStop): void {
   expect(stop.type).toBe(POI_TYPE.Stop);
 }
 
-export function assertPoint(point: IPoint): void {
+export function assertPoint(point: Point): void {
   assertLocation(point);
   expect(Object.keys(POI_TYPE)).toContain(point.type);
 }
 
-export function assertAddress(adress: IAddress): void {
+export function assertAddress(adress: Address): void {
   assertPoint(adress);
 
   expect(adress.stops.length).toBeGreaterThan(0);
   adress.stops.forEach(assertPoint);
 }
 
-export function assertStopLocation(stop: IStopLocation): void {
+export function assertStopLocation(stop: StopLocation): void {
   assertLocation(stop);
 
   if (stop.platform) {
@@ -109,7 +109,7 @@ export function assertStopLocation(stop: IStopLocation): void {
   expect(stop.type).toBe(POI_TYPE.Stop);
 }
 
-export function assertConnection(con: IConnection): void {
+export function assertConnection(con: Connection): void {
   expect(typeof con).toBe("object");
   assertNotEmptyString(con.line);
   expect(con.line.length).toBeGreaterThan(0);
@@ -118,7 +118,7 @@ export function assertConnection(con: IConnection): void {
   }
 }
 
-export function assertPin(pin: IPin, type?: PIN_TYPE): void {
+export function assertPin(pin: Pin, type?: PIN_TYPE): void {
   expect(typeof pin).toBe("object");
   assertNotEmptyString(pin.type);
 
@@ -144,7 +144,7 @@ export function assertPin(pin: IPin, type?: PIN_TYPE): void {
   }
 }
 
-export function assertTransport(transport: IMonitor): void {
+export function assertTransport(transport: Monitor): void {
   assertNotEmptyString(transport.id);
   assertNotEmptyString(transport.line);
   assertNotEmptyString(transport.direction);
@@ -172,7 +172,7 @@ export function assertTransport(transport: IMonitor): void {
   assertPlatform(transport.platform!);
 }
 
-function assertNode(node: INode): void {
+function assertNode(node: Node): void {
   expect(typeof node.direction).toBe("string");
   expect(typeof node.duration).toBe("number");
 
@@ -222,7 +222,7 @@ function assertNode(node: INode): void {
   }
 }
 
-export function assertTrip(trip: ITrip): void {
+export function assertTrip(trip: Trip): void {
   assertStopLocation(trip.departure!);
   assertStopLocation(trip.arrival!);
   expect(typeof trip.duration).toBe("number");

@@ -1,39 +1,7 @@
+import type { TripsResponse } from "./api-types";
 import { post } from "./http";
-import type { ILocation, IRoute, ITrip } from "./interfaces";
+import type { Location, Route, Trip } from "./interfaces";
 import * as utils from "./utils";
-
-interface TripsResponse {
-  Status: { Code: string; Message?: string };
-  Routes?: Array<{
-    RouteId: number;
-    Duration: number;
-    Interchanges: number;
-    PartialRoutes: Array<{
-      Duration: number;
-      MapDataIndex: number;
-      Mot: {
-        Type?: string;
-        Name?: string;
-        Direction?: string;
-        DlId?: string;
-        Diva?: { Number: string; Network: string };
-      };
-      RegularStops?: Array<{
-        DataId: string;
-        DhId: string;
-        Name: string;
-        Place: string;
-        Type: string;
-        Platform?: { Name: string; Type: string };
-        Latitude: number;
-        Longitude: number;
-        ArrivalTime: string;
-        DepartureTime: string;
-      }>;
-    }>;
-    MapData: string[];
-  }>;
-}
 
 /**
  * Query the server for possible routes from one stop to another.
@@ -51,7 +19,7 @@ export async function route(
   isArrivalTime = true,
   timeout = 15000,
   via?: string,
-): Promise<IRoute> {
+): Promise<Route> {
   const data = await post<TripsResponse>({
     url: "https://webapi.vvo-online.de/tr/trips",
     body: {
@@ -68,9 +36,9 @@ export async function route(
 
   utils.checkStatus(data);
 
-  let origin: ILocation | undefined;
-  let destination: ILocation | undefined;
-  let trips: ITrip[] = [];
+  let origin: Location | undefined;
+  let destination: Location | undefined;
+  let trips: Trip[] = [];
 
   if (data.Routes) {
     trips = data.Routes.map(utils.extractTrip);

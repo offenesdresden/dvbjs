@@ -1,5 +1,6 @@
+import type { PinsResponse } from "./api-types";
 import { post } from "./http";
-import { type IPin, PIN_TYPE } from "./interfaces";
+import { PIN_TYPE, type Pin } from "./interfaces";
 import * as utils from "./utils";
 
 // Map our PIN_TYPE enum values to the WebAPI pintypes values
@@ -13,11 +14,6 @@ const PIN_TYPE_TO_API: Record<PIN_TYPE, string> = {
   [PIN_TYPE.parkandride]: "ParkAndRide",
   [PIN_TYPE.unknown]: "",
 };
-
-interface PinsResponse {
-  Status?: { Code: string; Message?: string };
-  Pins?: string[];
-}
 
 /**
  * Search for different kinds of POIs inside a given bounding box.
@@ -35,7 +31,7 @@ export async function pins(
   nelat: number,
   pinTypes: PIN_TYPE[] = [PIN_TYPE.stop],
   timeout = 15000,
-): Promise<IPin[]> {
+): Promise<Pin[]> {
   const sw = utils.WGS84toGK4(swlng, swlat);
   const ne = utils.WGS84toGK4(nelng, nelat);
 

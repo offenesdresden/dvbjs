@@ -1,5 +1,5 @@
 import { beforeAll, describe, expect, it } from "vitest";
-import type { IRoute, IStop } from "../src/index";
+import type { Route, Stop } from "../src/index";
 import * as dvb from "../src/index";
 import {
   assertAddress,
@@ -28,6 +28,7 @@ describe("dvb.monitor", () => {
 
   describe('dvb.monitor "xyz"', () => {
     it("should reject with ValidationError", async () => {
+      // biome-ignore lint/suspicious/noExplicitAny: testing runtime type validation
       await expect((dvb as any).monitor(undefined)).rejects.toThrow("stopid has to be not null");
     });
   });
@@ -41,7 +42,7 @@ describe("dvb.monitor", () => {
 
 describe("dvb.route", () => {
   describe('dvb.route "33000742 (Helmholtzstraße) -> 33000037 (Postplatz Dresden)"', () => {
-    let data: dvb.IRoute;
+    let data: dvb.Route;
 
     beforeAll(async () => {
       data = await dvb.route("33000742", "33000037", new Date(), false);
@@ -108,7 +109,7 @@ describe("dvb.route", () => {
   });
 
   describe('dvb.route "33000742 (Helmholtzstraße) --> via: 33000016 (Bahnhof Neustadt) --> 33000037 (Postplatz Dresden)"', () => {
-    let data: dvb.IRoute;
+    let data: dvb.Route;
 
     beforeAll(async () => {
       data = await dvb.route("33000742", "33000037", new Date(), false, undefined, "33000016");
@@ -116,7 +117,7 @@ describe("dvb.route", () => {
     });
 
     it("should include the via stop in all trips ", () => {
-      const getStopsFromTripByID = (route: IRoute, stopId: string): IStop[][] => {
+      const getStopsFromTripByID = (route: Route, stopId: string): Stop[][] => {
         return route.trips.map((trip) => {
           return trip.nodes.flatMap((node) => {
             return node.stops.filter((stop) => stop.id === stopId);
@@ -163,6 +164,7 @@ describe("dvb.findStop", () => {
 
   describe("dvb.findStop 0", () => {
     it("should reject with ValidationError", async () => {
+      // biome-ignore lint/suspicious/noExplicitAny: testing runtime type validation
       await expect((dvb as any).findStop(0)).rejects.toThrow("query has to be a string");
     });
   });
@@ -216,6 +218,7 @@ describe("dvb.findPOI", () => {
 
   describe("dvb.findPOI 0", () => {
     it("should reject with ValidationError", async () => {
+      // biome-ignore lint/suspicious/noExplicitAny: testing runtime type validation
       await expect((dvb as any).findPOI(0)).rejects.toThrow("query has to be a string");
     });
   });
@@ -261,6 +264,7 @@ describe("dvb.findNearbyStops", () => {
 
   describe("dvb.findNearbyStops 0", () => {
     it("should reject with ValidationError", async () => {
+      // biome-ignore lint/suspicious/noExplicitAny: testing runtime type validation
       await expect((dvb as any).findNearbyStops(0)).rejects.toThrow("query has to be a string");
     });
   });

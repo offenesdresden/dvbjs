@@ -1,5 +1,6 @@
+import type { DepartureMonitorResponse } from "./api-types";
 import { post } from "./http";
-import type { IMonitor } from "./interfaces";
+import type { Monitor } from "./interfaces";
 import {
   checkStatus,
   dateDifference,
@@ -8,23 +9,6 @@ import {
   parseMode,
   parsePlatform,
 } from "./utils";
-
-interface DepartureMonitorResponse {
-  Name: string;
-  Place: string;
-  Status: { Code: string; Message?: string };
-  Departures?: Array<{
-    Id: string;
-    LineName: string;
-    Direction: string;
-    Platform?: { Name: string; Type: string };
-    Mot: string;
-    RealTime?: string;
-    ScheduledTime: string;
-    State?: string;
-    Diva?: { Number: string; Network: string };
-  }>;
-}
 
 /**
  * Monitor a single stop to see every bus or tram leaving this stop after the specified time offset.
@@ -38,7 +22,7 @@ export async function monitor(
   offset = 0,
   amount = 0,
   timeout = 15000,
-): Promise<IMonitor[]> {
+): Promise<Monitor[]> {
   const now = new Date();
   const time = new Date(now.getTime() + offset * 60 * 1000);
 

@@ -19,14 +19,14 @@ export enum PIN_TYPE {
 /**
  * WGS84 coordinates [lng, lat]
  */
-export type coord = number[];
+export type coord = [number, number];
 
-export interface IDiva {
+export interface Diva {
   number: number;
   network?: string;
 }
 
-export interface IPlatform {
+export interface Platform {
   name: string;
   type: string;
 }
@@ -36,100 +36,100 @@ export interface IPlatform {
  * - PIN_TYPE.stop contains connections.
  * - PIN_TYPE.parkandride contains info.
  */
-export interface IPin {
+export interface Pin {
   id: string;
   type: PIN_TYPE;
   name: string;
   coords: coord;
   platformNr?: string;
-  connections?: IConnection[];
+  connections?: Connection[];
   info?: string;
 }
 
-export interface IConnection {
+export interface Connection {
   line: string;
-  mode?: IMode;
+  mode?: Mode;
 }
 
-export interface IMode {
+export interface Mode {
   title: string;
   name: string;
   iconUrl?: string;
 }
 
-export interface IAddress extends IPoint {
-  stops: IPoint[];
+export interface Address extends Point {
+  stops: Point[];
 }
 
-export interface ILine {
+export interface Line {
   name: string;
-  mode?: IMode;
-  diva?: IDiva;
+  mode?: Mode;
+  diva?: Diva;
   directions: string[];
 }
 
-export interface IMonitor {
+export interface Monitor {
   arrivalTime: Date;
   scheduledTime: Date;
   id: string;
   line: string;
   direction: string;
-  platform?: IPlatform;
+  platform?: Platform;
   arrivalTimeRelative: number;
   scheduledTimeRelative: number;
   delayTime: number;
   state: string;
-  mode?: IMode;
-  diva?: IDiva;
+  mode?: Mode;
+  diva?: Diva;
 }
-export interface ILocation {
+export interface Location {
   id: string;
   name: string;
   city: string;
   coords: coord;
 }
 
-export interface IPoint extends ILocation {
+export interface Point extends Location {
   type: POI_TYPE;
 }
 
-export interface IStop extends ILocation {
+export interface Stop extends Location {
   type: string;
-  platform?: IPlatform;
+  platform?: Platform;
   arrival: Date;
   departure: Date;
   dhid: string;
 }
 
-export interface IStopLocation extends ILocation {
-  platform?: IPlatform;
+export interface StopLocation extends Location {
+  platform?: Platform;
   time: Date;
   type: string;
 }
 
-export interface INode {
-  stops: IStop[];
-  departure?: IStopLocation;
-  arrival?: IStopLocation;
-  mode?: IMode;
+export interface Node {
+  stops: Stop[];
+  departure?: StopLocation;
+  arrival?: StopLocation;
+  mode?: Mode;
   line: string;
   direction: string;
-  diva?: IDiva;
+  diva?: Diva;
   dlid?: string;
   duration: number;
   path: coord[];
 }
 
-export interface ITrip {
-  departure?: IStopLocation;
-  arrival?: IStopLocation;
+export interface Trip {
+  departure?: StopLocation;
+  arrival?: StopLocation;
   duration: number;
   interchanges: number;
-  nodes: INode[];
+  nodes: Node[];
 }
 
-export interface IRoute {
-  origin?: ILocation;
-  destination?: ILocation;
-  trips: ITrip[];
+export interface Route {
+  origin?: Location;
+  destination?: Location;
+  trips: Trip[];
 }

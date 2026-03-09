@@ -1,17 +1,18 @@
 import proj4 from "proj4";
+import type { ApiDiva, ApiPartialRoute, ApiPlatform, ApiRegularStop, ApiRoute } from "./api-types";
 import {
+  type Connection,
   type coord,
-  type IConnection,
-  type IDiva,
-  type IMode,
-  type INode,
-  type IPin,
-  type IPlatform,
-  type IStop,
-  type IStopLocation,
-  type ITrip,
+  type Diva,
+  type Mode,
+  type Node,
   PIN_TYPE,
+  type Pin,
+  type Platform,
   POI_TYPE,
+  type Stop,
+  type StopLocation,
+  type Trip,
 } from "./interfaces";
 
 // EPSG:31468
@@ -27,11 +28,11 @@ proj4.defs(
 );
 
 export function WGS84toGK4(lng: number, lat: number): coord {
-  return proj4("WGS84", "GK4", [lng, lat]).map(Math.round);
+  return proj4("WGS84", "GK4", [lng, lat]).map(Math.round) as coord;
 }
 
 export function WGS84toWm(lng: number, lat: number): coord {
-  return proj4("WGS84", "WM", [lng, lat]).map(Math.round);
+  return proj4("WGS84", "WM", [lng, lat]).map(Math.round) as coord;
 }
 
 export function WmOrGK4toWGS84(lng: string, lat: string): coord | undefined {
@@ -47,14 +48,14 @@ export function WmOrGK4toWGS84(lng: string, lat: string): coord | undefined {
   }
 
   if (lngInt < 2500000) {
-    return proj4("WM", "WGS84", [lngInt, latInt]);
+    return proj4("WM", "WGS84", [lngInt, latInt]) as coord;
   } else {
-    return proj4("GK4", "WGS84", [lngInt, latInt]);
+    return proj4("GK4", "WGS84", [lngInt, latInt]) as coord;
   }
 }
 
 export function convertCoordinates(s: string): coord[] {
-  const coords = [];
+  const coords: coord[] = [];
 
   if (s) {
     const gk4Chords = s.split("|");
@@ -100,11 +101,11 @@ export function parseDate(d: string): Date {
   return new Date();
 }
 
-export function parseDiva(d: any): IDiva | undefined {
+export function parseDiva(d: ApiDiva | undefined): Diva | undefined {
   return d?.Number ? { number: parseInt(d.Number, 10), network: d.Network } : undefined;
 }
 
-export function parsePlatform(p?: any): IPlatform | undefined {
+export function parsePlatform(p?: ApiPlatform): Platform | undefined {
   return p ? { name: p.Name, type: p.Type } : undefined;
 }
 
@@ -216,7 +217,7 @@ export const MODES = {
   },
 };
 
-function connectionType(str: string): IMode | undefined {
+function connectionType(str: string): Mode | undefined {
   switch (str) {
     case "1":
       return MODES.Tram;
@@ -241,8 +242,8 @@ function connectionType(str: string): IMode | undefined {
   }
 }
 
-export function parseConnections(data: string): IConnection[] {
-  let connections: IConnection[] = [];
+export function parseConnections(data: string): Connection[] {
+  let connections: Connection[] = [];
 
   for (const types of data.split("#")) {
     if (!types) {
@@ -261,9 +262,9 @@ export function parseConnections(data: string): IConnection[] {
   return connections;
 }
 
-export function parsePin(dataAsString: string): IPin {
+export function parsePin(dataAsString: string): Pin {
   const data = dataAsString.split("|");
-  const coords = WmOrGK4toWGS84(data[5], data[4]) || [];
+  const coords = WmOrGK4toWGS84(data[5], data[4]) || ([0, 0] as coord);
 
   const type = pinType(data[1]);
 
@@ -311,7 +312,7 @@ export function parsePin(dataAsString: string): IPin {
   };
 }
 
-export function parseMode(name?: string): IMode | undefined {
+export function parseMode(name?: string): Mode | undefined {
   if (!name) {
     return undefined;
   }
@@ -392,7 +393,7 @@ export function parsePoiID(id: string): { id: string; type: POI_TYPE } {
   };
 }
 
-function extractStop(stop: any): IStop {
+function extractStop(stop: ApiRegularStop): Stop {
   return {
     id: stop.DataId,
     dhid: stop.DhId,
@@ -400,17 +401,17 @@ function extractStop(stop: any): IStop {
     city: stop.Place,
     type: stop.Type,
     platform: parsePlatform(stop.Platform),
-    coords: WmOrGK4toWGS84(stop.Longitude, stop.Latitude) || [0, 0],
+    coords: WmOrGK4toWGS84(String(stop.Longitude), String(stop.Latitude)) || ([0, 0] as coord),
     arrival: parseDate(stop.ArrivalTime),
     departure: parseDate(stop.DepartureTime),
   };
 }
 
-function extractNode(node: any, mapData: any): INode {
-  const stops: IStop[] = node.RegularStops ? node.RegularStops.map(extractStop) : [];
+function extractNode(node: ApiPartialRoute, mapData: string[]): Node {
+  const stops: Stop[] = node.RegularStops ? node.RegularStops.map(extractStop) : [];
 
-  let departure: IStopLocation | undefined;
-  let arrival: IStopLocation | undefined;
+  let departure: StopLocation | undefined;
+  let arrival: StopLocation | undefined;
 
   if (stops && stops.length > 1) {
     const firstStop = stops[0];
@@ -451,8 +452,8 @@ function extractNode(node: any, mapData: any): INode {
   };
 }
 
-export function extractTrip(trip: any): ITrip {
-  const nodes: INode[] = trip.PartialRoutes.map((node: any) => extractNode(node, trip.MapData));
+export function extractTrip(trip: ApiRoute): Trip {
+  const nodes: Node[] = trip.PartialRoutes.map((node) => extractNode(node, trip.MapData));
 
   return {
     nodes,

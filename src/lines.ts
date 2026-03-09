@@ -1,23 +1,14 @@
+import type { LinesResponse } from "./api-types";
 import { post } from "./http";
-import type { ILine } from "./interfaces";
+import type { Line } from "./interfaces";
 import * as utils from "./utils";
-
-interface LinesResponse {
-  Status: { Code: string; Message?: string };
-  Lines?: Array<{
-    Name: string;
-    Mot: string;
-    Diva?: { Number: string; Network: string };
-    Directions: Array<{ Name: string }>;
-  }>;
-}
 
 /**
  * Get a list of available tram/bus lines for a stop.
  * @param stopID the stop ID
  * @param timeout the timeout of the request
  */
-export async function lines(stopID: string, timeout = 15000): Promise<ILine[]> {
+export async function lines(stopID: string, timeout = 15000): Promise<Line[]> {
   const data = await post<LinesResponse>({
     url: "https://webapi.vvo-online.de/stt/lines",
     body: {
