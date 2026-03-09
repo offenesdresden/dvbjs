@@ -10,3 +10,4 @@ yarn-error.log
 tsconfig.tsbuildinfo
 
 .DS_Store
+.direnv
