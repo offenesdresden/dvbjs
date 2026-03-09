@@ -1,6 +1,6 @@
-import { describe, it, expect, beforeAll } from "vitest";
+import { beforeAll, describe, expect, it } from "vitest";
+import type { IRoute, IStop } from "../src/index";
 import * as dvb from "../src/index";
-import { IRoute, IStop } from "../src/index";
 import {
   assertAddress,
   assertCoords,
@@ -28,9 +28,7 @@ describe("dvb.monitor", () => {
 
   describe('dvb.monitor "xyz"', () => {
     it("should reject with ValidationError", async () => {
-      await expect(
-        (dvb as any).monitor(undefined)
-      ).rejects.toThrow("stopid has to be not null");
+      await expect((dvb as any).monitor(undefined)).rejects.toThrow("stopid has to be not null");
     });
   });
 
@@ -52,12 +50,12 @@ describe("dvb.route", () => {
 
     it("should return the correct origin and destination", () => {
       expect(typeof data).toBe("object");
-      expect(data.origin!.name).toBe("Helmholtzstraße");
-      expect(data.origin!.city).toBe("Dresden");
+      expect(data.origin?.name).toBe("Helmholtzstraße");
+      expect(data.origin?.city).toBe("Dresden");
 
       expect(data).toHaveProperty("destination");
-      expect(data.destination!.name).toBe("Postplatz");
-      expect(data.destination!.city).toBe("Dresden");
+      expect(data.destination?.name).toBe("Postplatz");
+      expect(data.destination?.city).toBe("Dresden");
     });
 
     it("should return an array of trips", () => {
@@ -113,25 +111,15 @@ describe("dvb.route", () => {
     let data: dvb.IRoute;
 
     beforeAll(async () => {
-      data = await dvb.route(
-        "33000742",
-        "33000037",
-        new Date(),
-        false,
-        undefined,
-        "33000016"
-      );
+      data = await dvb.route("33000742", "33000037", new Date(), false, undefined, "33000016");
       expect(typeof data).toBe("object");
     });
 
     it("should include the via stop in all trips ", () => {
-      const getStopsFromTripByID = (
-        route: IRoute,
-        stopId: string
-      ): IStop[][] => {
+      const getStopsFromTripByID = (route: IRoute, stopId: string): IStop[][] => {
         return route.trips.map((trip) => {
           return trip.nodes.flatMap((node) => {
-            return node.stops.filter((stop) => stop.id == stopId);
+            return node.stops.filter((stop) => stop.id === stopId);
           });
         });
       };
@@ -144,9 +132,9 @@ describe("dvb.route", () => {
 
   describe('dvb.route "33000016 -> 33000016"', () => {
     it("should reject too close routes", async () => {
-      await expect(
-        dvb.route("33000016", "33000016")
-      ).rejects.toThrow("origin too close to destination");
+      await expect(dvb.route("33000016", "33000016")).rejects.toThrow(
+        "origin too close to destination",
+      );
     });
   });
 });
@@ -175,9 +163,7 @@ describe("dvb.findStop", () => {
 
   describe("dvb.findStop 0", () => {
     it("should reject with ValidationError", async () => {
-      await expect(
-        (dvb as any).findStop(0)
-      ).rejects.toThrow("query has to be a string");
+      await expect((dvb as any).findStop(0)).rejects.toThrow("query has to be a string");
     });
   });
 
@@ -230,9 +216,7 @@ describe("dvb.findPOI", () => {
 
   describe("dvb.findPOI 0", () => {
     it("should reject with ValidationError", async () => {
-      await expect(
-        (dvb as any).findPOI(0)
-      ).rejects.toThrow("query has to be a string");
+      await expect((dvb as any).findPOI(0)).rejects.toThrow("query has to be a string");
     });
   });
 });
@@ -277,9 +261,7 @@ describe("dvb.findNearbyStops", () => {
 
   describe("dvb.findNearbyStops 0", () => {
     it("should reject with ValidationError", async () => {
-      await expect(
-        (dvb as any).findNearbyStops(0)
-      ).rejects.toThrow("query has to be a string");
+      await expect((dvb as any).findNearbyStops(0)).rejects.toThrow("query has to be a string");
     });
   });
 
@@ -294,11 +276,11 @@ describe("dvb.findNearbyStops", () => {
 describe("dvb.pins", () => {
   describe('dvb.pins "13.713899, 51.026578, 13.939144, 51.093821, stop"', () => {
     it("should contain objects with id, name, coords and connections", async () => {
-      const data = await dvb.pins(13.713899, 51.026578, 13.939144, 51.093821, [
-        dvb.PIN_TYPE.stop,
-      ]);
+      const data = await dvb.pins(13.713899, 51.026578, 13.939144, 51.093821, [dvb.PIN_TYPE.stop]);
       expect(data.length).toBeGreaterThan(0);
-      data.forEach((pin) => assertPin(pin, dvb.PIN_TYPE.stop));
+      for (const pin of data) {
+        assertPin(pin, dvb.PIN_TYPE.stop);
+      }
     });
   });
 
@@ -308,63 +290,56 @@ describe("dvb.pins", () => {
         dvb.PIN_TYPE.platform,
       ]);
       expect(data.length).toBeGreaterThan(0);
-      data.forEach((pin) => assertPin(pin, dvb.PIN_TYPE.platform));
+      for (const pin of data) {
+        assertPin(pin, dvb.PIN_TYPE.platform);
+      }
     });
   });
 
   describe('dvb.pins "13.713899, 51.026578, 13.737974, 51.035565, POI"', () => {
     it("should contain objects with name, coords and id", async () => {
-      const data = await dvb.pins(13.713899, 51.026578, 13.737974, 51.035565, [
-        dvb.PIN_TYPE.poi,
-      ]);
+      const data = await dvb.pins(13.713899, 51.026578, 13.737974, 51.035565, [dvb.PIN_TYPE.poi]);
       expect(data.length).toBeGreaterThan(0);
-      data.forEach((pin) => assertPin(pin, dvb.PIN_TYPE.poi));
+      for (const pin of data) {
+        assertPin(pin, dvb.PIN_TYPE.poi);
+      }
     });
   });
 
   describe("multiple pin types", () => {
     it("should contain ticketmachine and platform", async () => {
-      const data = await dvb.pins(
-        13.713899,
-        51.026578,
-        13.737974,
-        51.035565,
-        [dvb.PIN_TYPE.platform, dvb.PIN_TYPE.ticketmachine]
-      );
+      const data = await dvb.pins(13.713899, 51.026578, 13.737974, 51.035565, [
+        dvb.PIN_TYPE.platform,
+        dvb.PIN_TYPE.ticketmachine,
+      ]);
       expect(data.length).toBeGreaterThan(0);
-      data.forEach((pin) => assertPin(pin));
-      const platform = data.filter(
-        (pin) => pin.type === dvb.PIN_TYPE.platform
-      );
-      const ticketmachine = data.filter(
-        (pin) => pin.type === dvb.PIN_TYPE.ticketmachine
-      );
+      for (const pin of data) {
+        assertPin(pin);
+      }
+      const platform = data.filter((pin) => pin.type === dvb.PIN_TYPE.platform);
+      const ticketmachine = data.filter((pin) => pin.type === dvb.PIN_TYPE.ticketmachine);
       expect(platform.length).toBeGreaterThan(0);
       expect(ticketmachine.length).toBeGreaterThan(0);
       expect(platform.length + ticketmachine.length).toBe(data.length);
     });
 
     it("should contain poi, ticketmachine and stop", async () => {
-      const data = await dvb.pins(
-        13.713899,
-        51.026578,
-        13.737974,
-        51.035565,
-        [dvb.PIN_TYPE.poi, dvb.PIN_TYPE.ticketmachine, dvb.PIN_TYPE.stop]
-      );
+      const data = await dvb.pins(13.713899, 51.026578, 13.737974, 51.035565, [
+        dvb.PIN_TYPE.poi,
+        dvb.PIN_TYPE.ticketmachine,
+        dvb.PIN_TYPE.stop,
+      ]);
       expect(data.length).toBeGreaterThan(0);
-      data.forEach((pin) => assertPin(pin));
+      for (const pin of data) {
+        assertPin(pin);
+      }
       const poi = data.filter((pin) => pin.type === dvb.PIN_TYPE.poi);
-      const ticketmachine = data.filter(
-        (pin) => pin.type === dvb.PIN_TYPE.ticketmachine
-      );
+      const ticketmachine = data.filter((pin) => pin.type === dvb.PIN_TYPE.ticketmachine);
       const stop = data.filter((pin) => pin.type === dvb.PIN_TYPE.stop);
       expect(poi.length).toBeGreaterThan(0);
       expect(ticketmachine.length).toBeGreaterThan(0);
       expect(stop.length).toBeGreaterThan(0);
-      expect(poi.length + ticketmachine.length + stop.length).toBe(
-        data.length
-      );
+      expect(poi.length + ticketmachine.length + stop.length).toBe(data.length);
     });
   });
 
@@ -385,11 +360,11 @@ describe("dvb.findAddress", () => {
     it("should resolve into an object with city, address and coords properties", async () => {
       const address = await dvb.findAddress(lng, lat);
       expect(address).toBeDefined();
-      expect(address!.name).toBe("Nöthnitzer Straße 44a");
-      expect(address!.city).toBe("(Dresden)");
-      expect(address!.type).toBe(dvb.POI_TYPE.Coords);
-      expect(Math.abs(address!.coords[0] - lng)).toBeLessThanOrEqual(0.001);
-      expect(Math.abs(address!.coords[1] - lat)).toBeLessThanOrEqual(0.001);
+      expect(address?.name).toBe("Nöthnitzer Straße 44a");
+      expect(address?.city).toBe("(Dresden)");
+      expect(address?.type).toBe(dvb.POI_TYPE.Coords);
+      expect(Math.abs(address?.coords[0] - lng)).toBeLessThanOrEqual(0.001);
+      expect(Math.abs(address?.coords[1] - lat)).toBeLessThanOrEqual(0.001);
     });
 
     it("should contain nearby stops", async () => {
@@ -424,11 +399,11 @@ describe("dvb.coords", () => {
 
 describe("dvb.coords for id from dvb.pins", () => {
   it("coordinates should be equal for first pin", async () => {
-    const pins = await dvb.pins(13.713899, 51.026578, 13.737974, 51.035565, [
-      dvb.PIN_TYPE.poi,
-    ]);
+    const pins = await dvb.pins(13.713899, 51.026578, 13.737974, 51.035565, [dvb.PIN_TYPE.poi]);
     expect(pins.length).toBeGreaterThan(0);
-    pins.forEach((pin) => assertPin(pin, dvb.PIN_TYPE.poi));
+    for (const pin of pins) {
+      assertPin(pin, dvb.PIN_TYPE.poi);
+    }
 
     const coords = await dvb.coords(pins[0].id);
     expect(coords).toEqual(pins[0].coords);

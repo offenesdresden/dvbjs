@@ -1,5 +1,5 @@
-import axios, { AxiosRequestConfig } from "axios";
-import { ILine } from "./interfaces";
+import axios, { type AxiosRequestConfig } from "axios";
+import type { ILine } from "./interfaces";
 import * as utils from "./utils";
 
 function parseDirection(direction: any): string {

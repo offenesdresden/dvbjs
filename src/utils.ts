@@ -1,17 +1,15 @@
-/* eslint @typescript-eslint/explicit-module-boundary-types: 0 */
-
 import proj4 from "proj4";
 import {
-  coord,
-  IConnection,
-  IDiva,
-  IMode,
-  INode,
-  IPin,
-  IPlatform,
-  IStop,
-  IStopLocation,
-  ITrip,
+  type coord,
+  type IConnection,
+  type IDiva,
+  type IMode,
+  type INode,
+  type IPin,
+  type IPlatform,
+  type IStop,
+  type IStopLocation,
+  type ITrip,
   PIN_TYPE,
   POI_TYPE,
 } from "./interfaces";
@@ -19,13 +17,13 @@ import {
 // EPSG:31468
 proj4.defs(
   "GK4",
-  "+proj=tmerc +lat_0=0 +lon_0=12 +k=1 +x_0=4500000 +y_0=0 +ellps=bessel +datum=potsdam +units=m +no_defs"
+  "+proj=tmerc +lat_0=0 +lon_0=12 +k=1 +x_0=4500000 +y_0=0 +ellps=bessel +datum=potsdam +units=m +no_defs",
 );
 
 // EPSG:3857
 proj4.defs(
   "WM",
-  "+proj=merc +lon_0=0 +k=1 +x_0=0 +y_0=0 +a=6378137 +b=6378137 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs"
+  "+proj=merc +lon_0=0 +k=1 +x_0=0 +y_0=0 +a=6378137 +b=6378137 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs",
 );
 
 export function WGS84toGK4(lng: number, lat: number): coord {
@@ -44,7 +42,7 @@ export function WmOrGK4toWGS84(lng: string, lat: string): coord | undefined {
     return undefined;
   }
 
-  if (isNaN(latInt) || isNaN(lngInt)) {
+  if (Number.isNaN(latInt) || Number.isNaN(lngInt)) {
     return undefined;
   }
 
@@ -95,11 +93,8 @@ export function constructError(name?: string, message = ""): Error {
 }
 
 export function convertError(err: any): never {
-  if (err.response && err.response.data && err.response.data.Status) {
-    throw constructError(
-      err.response.data.Status.Code,
-      err.response.data.Status.Message
-    );
+  if (err.response?.data?.Status) {
+    throw constructError(err.response.data.Status.Code, err.response.data.Status.Message);
   }
   throw err;
 }
@@ -113,9 +108,7 @@ export function parseDate(d: string): Date {
 }
 
 export function parseDiva(d: any): IDiva | undefined {
-  return d && d.Number
-    ? { number: parseInt(d.Number, 10), network: d.Network }
-    : undefined;
+  return d?.Number ? { number: parseInt(d.Number, 10), network: d.Network } : undefined;
 }
 
 export function parsePlatform(p?: any): IPlatform | undefined {
@@ -161,8 +154,7 @@ export const MODES = {
   SuburbanRailway: {
     title: "S-Bahn",
     name: "SuburbanRailway",
-    iconUrl:
-      "https://www.dvb.de/assets/img/trans-icon/transport-metropolitan.svg",
+    iconUrl: "https://www.dvb.de/assets/img/trans-icon/transport-metropolitan.svg",
   },
   Train: {
     title: "Zug",
@@ -259,9 +251,9 @@ function connectionType(str: string): IMode | undefined {
 export function parseConnections(data: string): IConnection[] {
   let connections: IConnection[] = [];
 
-  data.split("#").forEach((types) => {
+  for (const types of data.split("#")) {
     if (!types) {
-      return [];
+      continue;
     }
     const typesArray = types.split(":");
     const mode = connectionType(typesArray[0]);
@@ -269,9 +261,9 @@ export function parseConnections(data: string): IConnection[] {
       typesArray[1].split("~").map((line) => ({
         line,
         mode,
-      }))
+      })),
     );
-  });
+  }
 
   return connections;
 }
@@ -422,9 +414,7 @@ function extractStop(stop: any): IStop {
 }
 
 function extractNode(node: any, mapData: any): INode {
-  const stops: IStop[] = node.RegularStops
-    ? node.RegularStops.map(extractStop)
-    : [];
+  const stops: IStop[] = node.RegularStops ? node.RegularStops.map(extractStop) : [];
 
   let departure: IStopLocation | undefined;
   let arrival: IStopLocation | undefined;
@@ -469,9 +459,7 @@ function extractNode(node: any, mapData: any): INode {
 }
 
 export function extractTrip(trip: any): ITrip {
-  const nodes: INode[] = trip.PartialRoutes.map((node: any) =>
-    extractNode(node, trip.MapData)
-  );
+  const nodes: INode[] = trip.PartialRoutes.map((node: any) => extractNode(node, trip.MapData));
 
   return {
     nodes,

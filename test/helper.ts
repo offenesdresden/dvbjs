@@ -1,34 +1,30 @@
 import { expect } from "vitest";
 import {
-  coord,
-  IAddress,
-  IConnection,
-  IDiva,
-  ILocation,
-  IMode,
-  IMonitor,
-  INode,
-  IPin,
-  IPlatform,
-  IPoint,
-  IStop,
-  IStopLocation,
-  ITrip,
+  type coord,
+  type IAddress,
+  type IConnection,
+  type IDiva,
+  type ILocation,
+  type IMode,
+  type IMonitor,
+  type INode,
+  type IPin,
+  type IPlatform,
+  type IPoint,
+  type IStop,
+  type IStopLocation,
+  type ITrip,
   PIN_TYPE,
   POI_TYPE,
 } from "../src/interfaces";
 
-function expectApproximately(
-  actual: number,
-  expected: number,
-  delta: number
-): void {
+function expectApproximately(actual: number, expected: number, delta: number): void {
   expect(Math.abs(actual - expected)).toBeLessThanOrEqual(delta);
 }
 
 export function assertNotEmptyString(str?: string): void {
   expect(typeof str).toBe("string");
-  expect(str!.length).toBeGreaterThan(0);
+  expect(str?.length).toBeGreaterThan(0);
 }
 
 export function assertCoords(coords: coord): void {
@@ -200,8 +196,7 @@ function assertNode(node: INode): void {
 
   if (
     node.mode &&
-    ((node.mode.name === "Footpath" && !node.departure) ||
-      node.mode.name.indexOf("Stairs") > -1)
+    ((node.mode.name === "Footpath" && !node.departure) || node.mode.name.indexOf("Stairs") > -1)
   ) {
     expect(node.departure).toBeUndefined();
     expect(node.arrival).toBeUndefined();

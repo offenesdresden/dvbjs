@@ -1,5 +1,5 @@
-import axios, { AxiosRequestConfig } from "axios";
-import { IMonitor } from "./interfaces";
+import axios, { type AxiosRequestConfig } from "axios";
+import type { IMonitor } from "./interfaces";
 import {
   checkStatus,
   convertError,
@@ -21,7 +21,7 @@ export function monitor(
   stopID: string,
   offset = 0,
   amount = 0,
-  timeout = 15000
+  timeout = 15000,
 ): Promise<IMonitor[]> {
   const now = new Date();
   const time = new Date(now.getTime() + offset * 60 * 1000);
@@ -47,29 +47,25 @@ export function monitor(
 
       let result: IMonitor[] = [];
       if (response.data.Departures) {
-        result = response.data.Departures.map(
-          (d: any): IMonitor => {
-            const arrivalTime = parseDate(
-              d.RealTime ? d.RealTime : d.ScheduledTime
-            );
-            const scheduledTime = parseDate(d.ScheduledTime);
+        result = response.data.Departures.map((d: any): IMonitor => {
+          const arrivalTime = parseDate(d.RealTime ? d.RealTime : d.ScheduledTime);
+          const scheduledTime = parseDate(d.ScheduledTime);
 
-            return {
-              arrivalTime,
-              scheduledTime,
-              id: d.Id,
-              line: d.LineName,
-              direction: d.Direction,
-              platform: parsePlatform(d.Platform),
-              arrivalTimeRelative: dateDifference(now, arrivalTime),
-              scheduledTimeRelative: dateDifference(now, scheduledTime),
-              delayTime: dateDifference(scheduledTime, arrivalTime),
-              state: d.State ? d.State : "Unknown",
-              mode: parseMode(d.Mot),
-              diva: parseDiva(d.Diva),
-            };
-          }
-        );
+          return {
+            arrivalTime,
+            scheduledTime,
+            id: d.Id,
+            line: d.LineName,
+            direction: d.Direction,
+            platform: parsePlatform(d.Platform),
+            arrivalTimeRelative: dateDifference(now, arrivalTime),
+            scheduledTimeRelative: dateDifference(now, scheduledTime),
+            delayTime: dateDifference(scheduledTime, arrivalTime),
+            state: d.State ? d.State : "Unknown",
+            mode: parseMode(d.Mot),
+            diva: parseDiva(d.Diva),
+          };
+        });
       }
 
       return result;

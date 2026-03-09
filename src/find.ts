@@ -1,12 +1,12 @@
-import axios, { AxiosRequestConfig } from "axios";
-import { IAddress, IPoint } from "./interfaces";
+import axios, { type AxiosRequestConfig } from "axios";
+import type { IAddress, IPoint } from "./interfaces";
 import * as utils from "./utils";
 
 async function pointFinder(
   name: string,
   stopsOnly: boolean,
   assignedStops: boolean,
-  timeout = 15000
+  timeout = 15000,
 ): Promise<IPoint[]> {
   if (typeof name !== "string") {
     throw utils.constructError("ValidationError", "query has to be a string");
@@ -66,10 +66,7 @@ async function pointFinder(
  * @param timeout the timeout of the request
  * @returns an array of all possible hits including their GPS coordinates.
  */
-export function findStop(
-  searchString: string,
-  timeout = 15000
-): Promise<IPoint[]> {
+export function findStop(searchString: string, timeout = 15000): Promise<IPoint[]> {
   return pointFinder(searchString, true, false, timeout);
 }
 
@@ -79,10 +76,7 @@ export function findStop(
  * @param timeout the timeout of the request
  * @returns an array of all possible hits including their GPS coordinates.
  */
-export function findPOI(
-  searchString: string,
-  timeout = 15000
-): Promise<IPoint[]> {
+export function findPOI(searchString: string, timeout = 15000): Promise<IPoint[]> {
   return pointFinder(searchString, false, false, timeout);
 }
 
@@ -91,10 +85,7 @@ export function findPOI(
  * @param searchString the lookup address
  * @returns an array of all possible hits including their GPS coordinates.
  */
-export async function findNearbyStops(
-  searchString: string,
-  timeout = 15000
-): Promise<IPoint[]> {
+export async function findNearbyStops(searchString: string, timeout = 15000): Promise<IPoint[]> {
   const aPoints = await pointFinder(searchString, false, true, timeout);
   return aPoints.filter((oPoint) => oPoint.type === "Stop");
 }
@@ -109,22 +100,20 @@ export async function findNearbyStops(
 export function findAddress(
   lng: number,
   lat: number,
-  timeout = 15000
+  timeout = 15000,
 ): Promise<IAddress | undefined> {
   const gk4 = utils.WGS84toGK4(lng, lat);
 
-  return pointFinder(`coord:${gk4[0]}:${gk4[1]}`, false, true, timeout).then(
-    (points) => {
-      if (points.length === 0) {
-        return undefined;
-      }
-
-      const address: IAddress = {
-        ...points[0],
-        stops: points.slice(1) || [],
-      };
-
-      return address;
+  return pointFinder(`coord:${gk4[0]}:${gk4[1]}`, false, true, timeout).then((points) => {
+    if (points.length === 0) {
+      return undefined;
     }
-  );
+
+    const address: IAddress = {
+      ...points[0],
+      stops: points.slice(1) || [],
+    };
+
+    return address;
+  });
 }

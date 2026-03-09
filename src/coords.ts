@@ -1,6 +1,4 @@
-/* eslint @typescript-eslint/no-non-null-assertion: 0 */
-
-import axios, { AxiosRequestConfig } from "axios";
+import axios, { type AxiosRequestConfig } from "axios";
 import * as utils from "./utils";
 
 /**
@@ -9,10 +7,7 @@ import * as utils from "./utils";
  * @param timeout the timeout of the request
  * @returns coordinate as [lng, lat] or undefined
  */
-export function coords(
-  id: string,
-  timeout = 15000
-): Promise<number[] | undefined> {
+export function coords(id: string, timeout = 15000): Promise<number[] | undefined> {
   const options: AxiosRequestConfig = {
     url: "https://www.dvb.de/apps/map/coordinates",
     params: {

@@ -1,5 +1,5 @@
-import axios, { AxiosRequestConfig } from "axios";
-import { ILocation, IRoute, ITrip } from "./interfaces";
+import axios, { type AxiosRequestConfig } from "axios";
+import type { ILocation, IRoute, ITrip } from "./interfaces";
 import * as utils from "./utils";
 
 /**
@@ -21,7 +21,7 @@ export function route(
   time = new Date(),
   isArrivalTime = true,
   timeout = 15000,
-  via?: string
+  via?: string,
 ): Promise<IRoute> {
   const options: AxiosRequestConfig = {
     url: "https://webapi.vvo-online.de/tr/trips",

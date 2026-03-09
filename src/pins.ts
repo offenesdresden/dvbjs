@@ -1,5 +1,5 @@
-import axios, { AxiosRequestConfig } from "axios";
-import { IPin, PIN_TYPE } from "./interfaces";
+import axios, { type AxiosRequestConfig } from "axios";
+import { type IPin, PIN_TYPE } from "./interfaces";
 import * as utils from "./utils";
 
 /**
@@ -17,13 +17,15 @@ export function pins(
   nelng: number,
   nelat: number,
   pinTypes: PIN_TYPE[] = [PIN_TYPE.stop],
-  timeout = 15000
+  timeout = 15000,
 ): Promise<IPin[]> {
   const sw = utils.WGS84toWm(swlng, swlat);
   const ne = utils.WGS84toWm(nelng, nelat);
 
   let url = "https://www.dvb.de/apps/map/pins?showLines=true";
-  pinTypes.forEach((type) => (url += `&pintypes=${type}`));
+  for (const type of pinTypes) {
+    url += `&pintypes=${type}`;
+  }
   const options: AxiosRequestConfig = {
     url,
     params: {
