@@ -17,7 +17,7 @@ npm install dvbjs
 import * as dvb from "dvbjs";
 ```
 
-Requires Node.js 18+ (uses native `fetch`).
+Requires Node.js 20+ (uses native `fetch`).
 
 ## Example Usage
 
