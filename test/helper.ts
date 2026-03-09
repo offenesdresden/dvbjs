@@ -1,0 +1,236 @@
+import { expect } from "vitest";
+import {
+  type Address,
+  type Connection,
+  type coord,
+  type Diva,
+  type Location,
+  type Mode,
+  type Monitor,
+  type Node,
+  PIN_TYPE,
+  type Pin,
+  type Platform,
+  POI_TYPE,
+  type Point,
+  type Stop,
+  type StopLocation,
+  type Trip,
+} from "../src/interfaces";
+
+function expectApproximately(actual: number, expected: number, delta: number): void {
+  expect(Math.abs(actual - expected)).toBeLessThanOrEqual(delta);
+}
+
+export function assertNotEmptyString(str?: string): void {
+  expect(typeof str).toBe("string");
+  expect(str?.length).toBeGreaterThan(0);
+}
+
+export function assertCoords(coords: coord): void {
+  expect(Array.isArray(coords)).toBe(true);
+  expect(coords).toHaveLength(2);
+
+  expectApproximately(coords[0], 13, 2);
+  expectApproximately(coords[1], 51, 3);
+}
+
+export function assertPlatform(platform: Platform): void {
+  expect(typeof platform).toBe("object");
+
+  expect(platform).toHaveProperty("name");
+  assertNotEmptyString(platform.name);
+
+  expect(platform).toHaveProperty("type");
+  assertNotEmptyString(platform.type);
+}
+
+export function assertDiva(diva: Diva): void {
+  expect(typeof diva).toBe("object");
+
+  expect(diva).toHaveProperty("number");
+  expect(typeof diva.number).toBe("number");
+
+  expect(diva).toHaveProperty("network");
+  assertNotEmptyString(diva.network);
+}
+
+export function assertMode(mode: Mode): void {
+  expect(typeof mode).toBe("object");
+
+  assertNotEmptyString(mode.name);
+  assertNotEmptyString(mode.title);
+  assertNotEmptyString(mode.iconUrl);
+}
+
+export function assertLocation(stop: Location): void {
+  expect(typeof stop).toBe("object");
+
+  assertNotEmptyString(stop.id);
+  assertNotEmptyString(stop.name);
+  assertNotEmptyString(stop.city);
+  assertCoords(stop.coords);
+}
+
+export function assertStop(stop: Stop): void {
+  assertLocation(stop);
+
+  expect(stop.arrival).toBeInstanceOf(Date);
+  expect(stop.departure).toBeInstanceOf(Date);
+
+  if (stop.platform) {
+    // workaround for station without platform
+    // eg Lennéplatz
+    assertPlatform(stop.platform);
+  }
+
+  expect(stop.type).toBe(POI_TYPE.Stop);
+}
+
+export function assertPoint(point: Point): void {
+  assertLocation(point);
+  expect(Object.keys(POI_TYPE)).toContain(point.type);
+}
+
+export function assertAddress(adress: Address): void {
+  assertPoint(adress);
+
+  expect(adress.stops.length).toBeGreaterThan(0);
+  adress.stops.forEach(assertPoint);
+}
+
+export function assertStopLocation(stop: StopLocation): void {
+  assertLocation(stop);
+
+  if (stop.platform) {
+    assertPlatform(stop.platform);
+  }
+
+  expect(stop.type).toBe(POI_TYPE.Stop);
+}
+
+export function assertConnection(con: Connection): void {
+  expect(typeof con).toBe("object");
+  assertNotEmptyString(con.line);
+  expect(con.line.length).toBeGreaterThan(0);
+  if (con.mode) {
+    assertMode(con.mode);
+  }
+}
+
+export function assertPin(pin: Pin, type?: PIN_TYPE): void {
+  expect(typeof pin).toBe("object");
+  assertNotEmptyString(pin.type);
+
+  if (type) {
+    expect(pin.type).toBe(type);
+  }
+
+  assertNotEmptyString(pin.name);
+  assertCoords(pin.coords);
+
+  if (pin.type === PIN_TYPE.platform) {
+    expect(typeof pin.id).toBe("string");
+    assertNotEmptyString(pin.platformNr);
+  } else {
+    assertNotEmptyString(pin.id);
+    expect(pin.platformNr).toBeUndefined();
+  }
+
+  if (pin.type === PIN_TYPE.parkandride) {
+    assertNotEmptyString(pin.info);
+  } else {
+    expect(pin.info).toBeUndefined();
+  }
+}
+
+export function assertTransport(transport: Monitor): void {
+  assertNotEmptyString(transport.id);
+  assertNotEmptyString(transport.line);
+  assertNotEmptyString(transport.direction);
+
+  expect(typeof transport.arrivalTimeRelative).toBe("number");
+  expect(typeof transport.scheduledTimeRelative).toBe("number");
+  expect(typeof transport.delayTime).toBe("number");
+
+  expect(transport.arrivalTime).toBeInstanceOf(Date);
+  expect(transport.scheduledTime).toBeInstanceOf(Date);
+
+  expect(transport).toHaveProperty("state");
+
+  if (transport.mode) {
+    assertMode(transport.mode);
+  }
+
+  if (transport.line && transport.line.indexOf("E") === -1) {
+    expect(transport.diva).toBeDefined();
+    if (transport.diva) assertDiva(transport.diva);
+  } else {
+    expect(transport.diva).toBeUndefined();
+  }
+
+  expect(transport.platform).toBeDefined();
+  if (transport.platform) assertPlatform(transport.platform);
+}
+
+function assertNode(node: Node): void {
+  expect(typeof node.direction).toBe("string");
+  expect(typeof node.duration).toBe("number");
+
+  if (node.mode) {
+    assertMode(node.mode);
+  }
+
+  if (
+    node.mode &&
+    node.mode.name !== "Footpath" &&
+    node.mode.name !== "StayForConnection" &&
+    node.mode.name.indexOf("Stairs") === -1
+  ) {
+    expect(node.diva).toBeDefined();
+    if (node.diva) assertDiva(node.diva);
+    assertNotEmptyString(node.line);
+  } else {
+    expect(node.diva).toBeUndefined();
+    expect(typeof node.line).toBe("string");
+  }
+
+  if (
+    node.mode &&
+    ((node.mode.name === "Footpath" && !node.departure) || node.mode.name.indexOf("Stairs") > -1)
+  ) {
+    expect(node.departure).toBeUndefined();
+    expect(node.arrival).toBeUndefined();
+    expect(Array.isArray(node.stops)).toBe(true);
+    expect(node.stops).toHaveLength(0);
+  } else {
+    if (node.departure) assertStopLocation(node.departure);
+    if (node.arrival) assertStopLocation(node.arrival);
+
+    expect(Array.isArray(node.stops)).toBe(true);
+    expect(node.stops.length).toBeGreaterThan(0);
+    node.stops.forEach(assertStop);
+  }
+
+  expect(Array.isArray(node.path)).toBe(true);
+  if (node.mode && node.mode.name !== "StayForConnection") {
+    if ((node.mode && node.mode.name !== "Footpath") || node.path.length > 0) {
+      expect(node.path.length).toBeGreaterThan(0);
+      node.path.forEach(assertCoords);
+    }
+  } else {
+    expect(node.path).toHaveLength(0);
+  }
+}
+
+export function assertTrip(trip: Trip): void {
+  expect(trip.departure).toBeDefined();
+  if (trip.departure) assertStopLocation(trip.departure);
+  expect(trip.arrival).toBeDefined();
+  if (trip.arrival) assertStopLocation(trip.arrival);
+  expect(typeof trip.duration).toBe("number");
+  expect(typeof trip.interchanges).toBe("number");
+
+  expect(Array.isArray(trip.nodes)).toBe(true);
+  trip.nodes.forEach(assertNode);
+}
