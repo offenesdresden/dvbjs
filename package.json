@@ -1,42 +1,102 @@
 {
-  "name": "dvbjs-root",
-  "private": true,
-  "workspaces": [
-    "packages/*"
+  "name": "dvbjs",
+  "version": "6.2.0",
+  "description": "query Dresden's public transport system for current bus- and tram stop data",
+  "keywords": [
+    "bus",
+    "dresden",
+    "dvb",
+    "public transport",
+    "tram"
   ],
+  "homepage": "https://github.com/offenesdresden/dvbjs",
+  "readme": "https://github.com/offenesdresden/dvbjs/blob/master/README.md",
+  "bugs": {
+    "url": "https://github.com/offenesdresden/dvbjs/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/offenesdresden/dvbjs.git"
+  },
+  "license": "MIT",
+  "author": {
+    "name": "Kilian Koeltzsch",
+    "email": "me@kilian.io",
+    "url": "http://kilian.io"
+  },
+  "contributors": [
+    {
+      "name": "Florian Schmidt",
+      "email": "florian.schmidt.1994@icloud.com",
+      "url": "https://github.com/florianschmidt1994"
+    },
+    {
+      "name": "Hannes Rosenbauer",
+      "email": "hannes.rosenbauer@gmail.com",
+      "url": "https://github.com/rebugger"
+    },
+    {
+      "name": "Andreas Hippler",
+      "email": "andreas@tabaro.de",
+      "url": "https://github.com/ronhippler"
+    },
+    {
+      "name": "Jens Maus",
+      "email": "mail@jens-maus.de",
+      "url": "https://github.com/jens-maus"
+    },
+    {
+      "name": "mimimi1968",
+      "url": "https://github.com/mimimi1968"
+    },
+    {
+      "name": "Benjamin Reim",
+      "email": "benj.reim@gmail.com",
+      "url": "https://github.com/BenReim"
+    },
+    {
+      "name": "Adwirawien",
+      "url": "https://github.com/Adwirawien"
+    },
+    {
+      "name": "Francis Doege",
+      "email": "hello@francisdoege.com",
+      "url": "https://github.com/justusjonas74"
+    }
+  ],
+  "files": [
+    "dist/"
+  ],
+  "main": "dist/src/index.js",
+  "typings": "dist/src/index.d.ts",
   "scripts": {
-    "build": "run-s clean lint tsc",
-    "build:react_example": "yarn workspace react-example build",
-    "clean": "rimraf --glob packages/*/.nyc_output packages/*/coverage packages/*/dist packages/*/docs packages/*/build packages/*/tsconfig.tsbuildinfo",
-    "coveralls": "cd packages/dvbjs && cat ./coverage/lcov.info | coveralls",
-    "docs": "run-s docs:api docs:examples docs:readme docs:copy",
-    "docs:api": "yarn workspace dvbjs node node_modules/.bin/ts-docs-gen --entryFile src/index.ts",
-    "docs:copy": "node scripts/copy.js",
-    "docs:examples": "yarn workspace dvbjs-examples start",
-    "docs:readme": "node .markdown-magic.config.js",
-    "lint": "eslint \"packages/*/{src,test}/*.ts\"",
-    "publish:dvbjs": "npm-run-all build -p test:node && yarn workspace dvbjs publish",
-    "run_example": "yarn tsc && yarn workspace react-example start",
-    "test": "run-p test:*",
-    "test:browser": "yarn workspace dvbjs karma start",
-    "test:node": "yarn workspace dvbjs nyc mocha --timeout 20000",
-    "tsc": "tsc -b packages/dvbjs packages/examples packages/react-example",
-    "uncommitted": "uncommitted",
-    "watch": "run-p 'tsc --watch' 'test:node --watch --watch-extensions ts'"
+    "build": "tsc",
+    "clean": "rm -rf dist coverage .nyc_output",
+    "lint": "eslint \"src/**/*.ts\" \"test/**/*.ts\"",
+    "test": "nyc mocha --timeout 20000",
+    "tsc": "tsc",
+    "watch": "tsc --watch"
+  },
+  "dependencies": {
+    "axios": "^1.6.2",
+    "proj4": "^2.9.0"
   },
   "devDependencies": {
+    "@types/chai": "^4.3.11",
+    "@types/chai-as-promised": "^7.1.8",
+    "@types/mocha": "^10.0.1",
+    "@types/node": "^20.9.4",
+    "@types/proj4": "^2.5.0",
     "@typescript-eslint/eslint-plugin": "^5.62.0",
     "@typescript-eslint/parser": "^5.62.0",
-    "coveralls": "^3.1.0",
+    "chai": "^4.3.10",
+    "chai-as-promised": "^7.1.1",
     "eslint": "^8.40.0",
-    "markdown-magic": "^2.6.1",
-    "npm-run-all": "^4.1.5",
+    "mocha": "^10.2.0",
+    "nyc": "^15.1.0",
     "prettier": "^3.1.0",
-    "rimraf": "^5.0.5",
     "source-map-support": "^0.5.19",
     "ts-node": "^10.9.1",
-    "typescript": "^5.3.2",
-    "uncommitted": "^1.0.0",
-    "yarn": "^1.22.19"
+    "typescript": "^5.3.2"
   }
 }
