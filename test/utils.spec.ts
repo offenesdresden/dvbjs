@@ -33,7 +33,7 @@ describe("internal utils", () => {
       it(`should parse \`${mot[0]}\` to \`${mot[1]}\``, () => {
         const mode = utils.parseMode(mot[0]);
         if (mot[0]) {
-          assertMode(mode!);
+          if (mode) assertMode(mode);
           expect(mode?.name).toBe(mot[1]);
         } else {
           expect(mode).toBeUndefined();
@@ -113,15 +113,19 @@ describe("internal utils", () => {
     it("WmOrGK4toWGS84 Wm", () => {
       const point = utils.WmOrGK4toWGS84(`${wm[0]}`, `${wm[1]}`);
       expect(Array.isArray(point)).toBe(true);
-      expectApproximately(point![0], wgs84[0], 0.0001);
-      expectApproximately(point![1], wgs84[1], 0.0001);
+      if (point) {
+        expectApproximately(point[0], wgs84[0], 0.0001);
+        expectApproximately(point[1], wgs84[1], 0.0001);
+      }
     });
 
     it("WmOrGK4toWGS84 GK4", () => {
       const point = utils.WmOrGK4toWGS84(`${gk4[0]}`, `${gk4[1]}`);
       expect(Array.isArray(point)).toBe(true);
-      expectApproximately(point![0], wgs84[0], 0.0001);
-      expectApproximately(point![1], wgs84[1], 0.0001);
+      if (point) {
+        expectApproximately(point[0], wgs84[0], 0.0001);
+        expectApproximately(point[1], wgs84[1], 0.0001);
+      }
     });
 
     it("WmOrGK4toWGS84 should return undefined", () => {
@@ -154,7 +158,7 @@ describe("internal utils", () => {
       assertPin(pin, PIN_TYPE.stop);
       expect(pin.id).toBe("33000028");
       expect(pin.name).toBe("Hauptbahnhof");
-      expect(pin.connections!).toHaveLength(28);
+      expect(pin.connections).toHaveLength(28);
     });
 
     it("platform", () => {

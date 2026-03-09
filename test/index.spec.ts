@@ -364,17 +364,19 @@ describe("dvb.findAddress", () => {
     it("should resolve into an object with city, address and coords properties", async () => {
       const address = await dvb.findAddress(lng, lat);
       expect(address).toBeDefined();
-      expect(address?.name).toBe("Nöthnitzer Straße 44a");
-      expect(address?.city).toBe("(Dresden)");
-      expect(address?.type).toBe(dvb.POI_TYPE.Coords);
-      expect(Math.abs(address!.coords[0] - lng)).toBeLessThanOrEqual(0.001);
-      expect(Math.abs(address!.coords[1] - lat)).toBeLessThanOrEqual(0.001);
+      if (address) {
+        expect(address.name).toBe("Nöthnitzer Straße 44a");
+        expect(address.city).toBe("(Dresden)");
+        expect(address.type).toBe(dvb.POI_TYPE.Coords);
+        expect(Math.abs(address.coords[0] - lng)).toBeLessThanOrEqual(0.001);
+        expect(Math.abs(address.coords[1] - lat)).toBeLessThanOrEqual(0.001);
+      }
     });
 
     it("should contain nearby stops", async () => {
       const address = await dvb.findAddress(lng, lat);
       expect(address).toBeDefined();
-      assertAddress(address!);
+      if (address) assertAddress(address);
     });
   });
 
@@ -400,7 +402,7 @@ describe("dvb.lines", () => {
           assertMode(line.mode);
         }
         expect(line.diva).toBeDefined();
-        assertDiva(line.diva!);
+        if (line.diva) assertDiva(line.diva);
         expect(line.directions.length).toBeGreaterThan(0);
         line.directions.forEach((direction) => {
           expect(typeof direction).toBe("string");

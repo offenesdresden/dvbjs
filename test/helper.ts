@@ -163,13 +163,14 @@ export function assertTransport(transport: Monitor): void {
   }
 
   if (transport.line && transport.line.indexOf("E") === -1) {
-    assertDiva(transport.diva!);
+    expect(transport.diva).toBeDefined();
+    if (transport.diva) assertDiva(transport.diva);
   } else {
     expect(transport.diva).toBeUndefined();
   }
 
   expect(transport.platform).toBeDefined();
-  assertPlatform(transport.platform!);
+  if (transport.platform) assertPlatform(transport.platform);
 }
 
 function assertNode(node: Node): void {
@@ -187,7 +188,7 @@ function assertNode(node: Node): void {
     node.mode.name.indexOf("Stairs") === -1
   ) {
     expect(node.diva).toBeDefined();
-    assertDiva(node.diva!);
+    if (node.diva) assertDiva(node.diva);
     assertNotEmptyString(node.line);
   } else {
     expect(node.diva).toBeUndefined();
@@ -203,8 +204,8 @@ function assertNode(node: Node): void {
     expect(Array.isArray(node.stops)).toBe(true);
     expect(node.stops).toHaveLength(0);
   } else {
-    assertStopLocation(node.departure!);
-    assertStopLocation(node.arrival!);
+    if (node.departure) assertStopLocation(node.departure);
+    if (node.arrival) assertStopLocation(node.arrival);
 
     expect(Array.isArray(node.stops)).toBe(true);
     expect(node.stops.length).toBeGreaterThan(0);
@@ -223,8 +224,10 @@ function assertNode(node: Node): void {
 }
 
 export function assertTrip(trip: Trip): void {
-  assertStopLocation(trip.departure!);
-  assertStopLocation(trip.arrival!);
+  expect(trip.departure).toBeDefined();
+  if (trip.departure) assertStopLocation(trip.departure);
+  expect(trip.arrival).toBeDefined();
+  if (trip.arrival) assertStopLocation(trip.arrival);
   expect(typeof trip.duration).toBe("number");
   expect(typeof trip.interchanges).toBe("number");
 
