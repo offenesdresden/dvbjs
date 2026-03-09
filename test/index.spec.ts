@@ -348,10 +348,8 @@ describe("dvb.pins", () => {
   });
 
   describe('dvb.pins "0, 0, 0, 0, stop"', () => {
-    it("should resolve into an empty array", async () => {
-      const data = await dvb.pins(0, 0, 0, 0);
-      expect(Array.isArray(data)).toBe(true);
-      expect(data).toHaveLength(0);
+    it("should reject with an error", async () => {
+      await expect(dvb.pins(0, 0, 0, 0)).rejects.toThrow();
     });
   });
 });

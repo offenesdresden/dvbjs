@@ -48,6 +48,7 @@ export async function pins(
     timeout,
   });
 
+  utils.checkStatus(data);
   const elements = data.Pins || [];
   return elements.map((elem) => utils.parsePin(elem));
 }
