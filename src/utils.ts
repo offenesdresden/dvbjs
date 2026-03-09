@@ -73,7 +73,7 @@ export function convertCoordinates(s: string): coord[] {
   return coords;
 }
 
-export function checkStatus(data: any): void {
+export function checkStatus(data: { Status?: { Code: string; Message?: string } }): void {
   if (!data || !data.Status) {
     throw new Error("unexpected error");
   }
@@ -90,13 +90,6 @@ export function constructError(name?: string, message = ""): Error {
     error.name = name;
   }
   return error;
-}
-
-export function convertError(err: any): never {
-  if (err.response?.data?.Status) {
-    throw constructError(err.response.data.Status.Code, err.response.data.Status.Message);
-  }
-  throw err;
 }
 
 export function parseDate(d: string): Date {

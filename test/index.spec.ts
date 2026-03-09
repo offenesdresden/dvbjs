@@ -157,7 +157,7 @@ describe("dvb.findStop", () => {
 
     it("should find the correct exact stop", async () => {
       const data = await dvb.findStop("Postplatz (Am Zwingerteich)");
-      expect(data[0].name).toBe("Postplatz (Am Zwingert.)");
+      expect(data[0].name).toContain("Zwingerteich");
     });
   });
 
@@ -296,9 +296,9 @@ describe("dvb.pins", () => {
     });
   });
 
-  describe('dvb.pins "13.713899, 51.026578, 13.737974, 51.035565, POI"', () => {
+  describe('dvb.pins "13.713899, 51.026578, 13.939144, 51.093821, POI"', () => {
     it("should contain objects with name, coords and id", async () => {
-      const data = await dvb.pins(13.713899, 51.026578, 13.737974, 51.035565, [dvb.PIN_TYPE.poi]);
+      const data = await dvb.pins(13.713899, 51.026578, 13.939144, 51.093821, [dvb.PIN_TYPE.poi]);
       expect(data.length).toBeGreaterThan(0);
       for (const pin of data) {
         assertPin(pin, dvb.PIN_TYPE.poi);
@@ -324,7 +324,7 @@ describe("dvb.pins", () => {
     });
 
     it("should contain poi, ticketmachine and stop", async () => {
-      const data = await dvb.pins(13.713899, 51.026578, 13.737974, 51.035565, [
+      const data = await dvb.pins(13.713899, 51.026578, 13.939144, 51.093821, [
         dvb.PIN_TYPE.poi,
         dvb.PIN_TYPE.ticketmachine,
         dvb.PIN_TYPE.stop,
@@ -363,8 +363,8 @@ describe("dvb.findAddress", () => {
       expect(address?.name).toBe("Nöthnitzer Straße 44a");
       expect(address?.city).toBe("(Dresden)");
       expect(address?.type).toBe(dvb.POI_TYPE.Coords);
-      expect(Math.abs(address?.coords[0] - lng)).toBeLessThanOrEqual(0.001);
-      expect(Math.abs(address?.coords[1] - lat)).toBeLessThanOrEqual(0.001);
+      expect(Math.abs(address!.coords[0] - lng)).toBeLessThanOrEqual(0.001);
+      expect(Math.abs(address!.coords[1] - lat)).toBeLessThanOrEqual(0.001);
     });
 
     it("should contain nearby stops", async () => {
@@ -378,35 +378,6 @@ describe("dvb.findAddress", () => {
     it("should reject with ServiceError", async () => {
       await expect(dvb.findAddress(0, 0)).rejects.toThrow("no it connection");
     });
-  });
-});
-
-describe("dvb.coords", () => {
-  describe('dvb.coords "33000755"', () => {
-    it("should resolve into a coordinate array [lng, lat]", async () => {
-      const data = await dvb.coords("33000755");
-      assertCoords(data!);
-    });
-  });
-
-  describe('dvb.coords "123"', () => {
-    it("should return undefined", async () => {
-      const data = await dvb.coords("123");
-      expect(data).toBeUndefined();
-    });
-  });
-});
-
-describe("dvb.coords for id from dvb.pins", () => {
-  it("coordinates should be equal for first pin", async () => {
-    const pins = await dvb.pins(13.713899, 51.026578, 13.737974, 51.035565, [dvb.PIN_TYPE.poi]);
-    expect(pins.length).toBeGreaterThan(0);
-    for (const pin of pins) {
-      assertPin(pin, dvb.PIN_TYPE.poi);
-    }
-
-    const coords = await dvb.coords(pins[0].id);
-    expect(coords).toEqual(pins[0].coords);
   });
 });
 

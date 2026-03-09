@@ -1,14 +1,30 @@
-import axios, { type AxiosRequestConfig } from "axios";
+import { post } from "./http";
 import type { IMonitor } from "./interfaces";
 import {
   checkStatus,
-  convertError,
   dateDifference,
   parseDate,
   parseDiva,
   parseMode,
   parsePlatform,
 } from "./utils";
+
+interface DepartureMonitorResponse {
+  Name: string;
+  Place: string;
+  Status: { Code: string; Message?: string };
+  Departures?: Array<{
+    Id: string;
+    LineName: string;
+    Direction: string;
+    Platform?: { Name: string; Type: string };
+    Mot: string;
+    RealTime?: string;
+    ScheduledTime: string;
+    State?: string;
+    Diva?: { Number: string; Network: string };
+  }>;
+}
 
 /**
  * Monitor a single stop to see every bus or tram leaving this stop after the specified time offset.
@@ -17,7 +33,7 @@ import {
  * @param amount number of results
  * @param timeout the timeout of the request
  */
-export function monitor(
+export async function monitor(
   stopID: string,
   offset = 0,
   amount = 0,
@@ -26,9 +42,9 @@ export function monitor(
   const now = new Date();
   const time = new Date(now.getTime() + offset * 60 * 1000);
 
-  const options: AxiosRequestConfig = {
+  const data = await post<DepartureMonitorResponse>({
     url: "https://webapi.vvo-online.de/dm",
-    params: {
+    body: {
       format: "json",
       stopid: stopID,
       time: time.toISOString(),
@@ -38,37 +54,31 @@ export function monitor(
       mentzonly: false,
     },
     timeout,
-  };
+  });
 
-  return axios(options)
-    .then((response) => {
-      // check status of response
-      checkStatus(response.data);
+  checkStatus(data);
 
-      let result: IMonitor[] = [];
-      if (response.data.Departures) {
-        result = response.data.Departures.map((d: any): IMonitor => {
-          const arrivalTime = parseDate(d.RealTime ? d.RealTime : d.ScheduledTime);
-          const scheduledTime = parseDate(d.ScheduledTime);
+  if (!data.Departures) {
+    return [];
+  }
 
-          return {
-            arrivalTime,
-            scheduledTime,
-            id: d.Id,
-            line: d.LineName,
-            direction: d.Direction,
-            platform: parsePlatform(d.Platform),
-            arrivalTimeRelative: dateDifference(now, arrivalTime),
-            scheduledTimeRelative: dateDifference(now, scheduledTime),
-            delayTime: dateDifference(scheduledTime, arrivalTime),
-            state: d.State ? d.State : "Unknown",
-            mode: parseMode(d.Mot),
-            diva: parseDiva(d.Diva),
-          };
-        });
-      }
+  return data.Departures.map((d) => {
+    const arrivalTime = parseDate(d.RealTime ? d.RealTime : d.ScheduledTime);
+    const scheduledTime = parseDate(d.ScheduledTime);
 
-      return result;
-    })
-    .catch(convertError);
+    return {
+      arrivalTime,
+      scheduledTime,
+      id: d.Id,
+      line: d.LineName,
+      direction: d.Direction,
+      platform: parsePlatform(d.Platform),
+      arrivalTimeRelative: dateDifference(now, arrivalTime),
+      scheduledTimeRelative: dateDifference(now, scheduledTime),
+      delayTime: dateDifference(scheduledTime, arrivalTime),
+      state: d.State ? d.State : "Unknown",
+      mode: parseMode(d.Mot),
+      diva: parseDiva(d.Diva),
+    };
+  });
 }

@@ -1,6 +1,23 @@
-import axios, { type AxiosRequestConfig } from "axios";
+import { post } from "./http";
 import { type IPin, PIN_TYPE } from "./interfaces";
 import * as utils from "./utils";
+
+// Map our PIN_TYPE enum values to the WebAPI pintypes values
+const PIN_TYPE_TO_API: Record<PIN_TYPE, string> = {
+  [PIN_TYPE.stop]: "Stop",
+  [PIN_TYPE.platform]: "Platform",
+  [PIN_TYPE.poi]: "Poi",
+  [PIN_TYPE.rentabike]: "RentABike",
+  [PIN_TYPE.ticketmachine]: "TicketMachine",
+  [PIN_TYPE.carsharing]: "CarSharing",
+  [PIN_TYPE.parkandride]: "ParkAndRide",
+  [PIN_TYPE.unknown]: "",
+};
+
+interface PinsResponse {
+  Status?: { Code: string; Message?: string };
+  Pins?: string[];
+}
 
 /**
  * Search for different kinds of POIs inside a given bounding box.
@@ -11,7 +28,7 @@ import * as utils from "./utils";
  * @param pinTypes array of pin types
  * @param timeout the timeout of the request
  */
-export function pins(
+export async function pins(
   swlng: number,
   swlat: number,
   nelng: number,
@@ -19,28 +36,22 @@ export function pins(
   pinTypes: PIN_TYPE[] = [PIN_TYPE.stop],
   timeout = 15000,
 ): Promise<IPin[]> {
-  const sw = utils.WGS84toWm(swlng, swlat);
-  const ne = utils.WGS84toWm(nelng, nelat);
+  const sw = utils.WGS84toGK4(swlng, swlat);
+  const ne = utils.WGS84toGK4(nelng, nelat);
 
-  let url = "https://www.dvb.de/apps/map/pins?showLines=true";
-  for (const type of pinTypes) {
-    url += `&pintypes=${type}`;
-  }
-  const options: AxiosRequestConfig = {
-    url,
-    params: {
-      swlng: sw[0],
-      swlat: sw[1],
-      nelng: ne[0],
-      nelat: ne[1],
+  const data = await post<PinsResponse>({
+    url: "https://webapi.vvo-online.de/map/pins",
+    body: {
+      swlat: String(sw[1]),
+      swlng: String(sw[0]),
+      nelat: String(ne[1]),
+      nelng: String(ne[0]),
+      pintypes: pinTypes.map((t) => PIN_TYPE_TO_API[t]).filter(Boolean),
+      format: "json",
     },
-    responseType: "json",
     timeout,
-  };
+  });
 
-  return axios(options)
-    .then((response) => {
-      return response.data || [];
-    })
-    .then((elements) => elements.map((elem: string) => utils.parsePin(elem)));
+  const elements = data.Pins || [];
+  return elements.map((elem) => utils.parsePin(elem));
 }

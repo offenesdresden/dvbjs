@@ -53,7 +53,7 @@ describe("internal utils", () => {
 
   describe("checkStatus", () => {
     it('should throw "unexpected error"', () => {
-      expect(() => utils.checkStatus(null)).toThrow("unexpected error");
+      expect(() => utils.checkStatus(null as never)).toThrow("unexpected error");
     });
 
     it('should throw error: "foo: bar"', () => {
@@ -89,27 +89,6 @@ describe("internal utils", () => {
     });
   });
 
-  describe("convert error", () => {
-    it('should throw error: "foo: bar"', () => {
-      try {
-        const err: any = new Error("400 - foo: bar");
-        err.response = { data: { Status: { Code: "foo", Message: "bar" } } };
-        utils.convertError(err);
-        expect.unreachable("checkStatus did not throw an error");
-      } catch (error) {
-        if (error instanceof Error) {
-          expect(error.name).toBe("foo");
-          expect(error.message).toBe("bar");
-        }
-      }
-    });
-
-    it("should throw passed error", () => {
-      const error = new Error("400 - foo: bar");
-      expect(() => utils.convertError(error)).toThrow(Error);
-    });
-  });
-
   describe("transform coords", () => {
     const wgs84 = [13.722766, 51.025835];
     const gk4 = [4620969, 5655929];
@@ -134,15 +113,15 @@ describe("internal utils", () => {
     it("WmOrGK4toWGS84 Wm", () => {
       const point = utils.WmOrGK4toWGS84(`${wm[0]}`, `${wm[1]}`);
       expect(Array.isArray(point)).toBe(true);
-      expectApproximately(point?.[0], wgs84[0], 0.0001);
-      expectApproximately(point?.[1], wgs84[1], 0.0001);
+      expectApproximately(point![0], wgs84[0], 0.0001);
+      expectApproximately(point![1], wgs84[1], 0.0001);
     });
 
     it("WmOrGK4toWGS84 GK4", () => {
       const point = utils.WmOrGK4toWGS84(`${gk4[0]}`, `${gk4[1]}`);
       expect(Array.isArray(point)).toBe(true);
-      expectApproximately(point?.[0], wgs84[0], 0.0001);
-      expectApproximately(point?.[1], wgs84[1], 0.0001);
+      expectApproximately(point![0], wgs84[0], 0.0001);
+      expectApproximately(point![1], wgs84[1], 0.0001);
     });
 
     it("WmOrGK4toWGS84 should return undefined", () => {

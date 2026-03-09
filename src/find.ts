@@ -1,6 +1,12 @@
-import axios, { type AxiosRequestConfig } from "axios";
+import { get } from "./http";
 import type { IAddress, IPoint } from "./interfaces";
 import * as utils from "./utils";
+
+interface PointFinderResponse {
+  PointStatus: string;
+  Status: { Code: string; Message?: string };
+  Points?: string[];
+}
 
 async function pointFinder(
   name: string,
@@ -14,7 +20,7 @@ async function pointFinder(
 
   const stopName = name.trim();
 
-  const options: AxiosRequestConfig = {
+  const data = await get<PointFinderResponse>({
     url: "https://webapi.vvo-online.de/tr/pointfinder",
     params: {
       format: "json",
@@ -25,39 +31,34 @@ async function pointFinder(
       dvb: true,
     },
     timeout,
-  };
+  });
 
-  return axios(options)
-    .then((response) => {
-      // check status of response
-      utils.checkStatus(response.data);
+  utils.checkStatus(data);
 
-      const result: IPoint[] = [];
-      if (response.data.Points) {
-        response.data.Points.forEach((p: string) => {
-          const poi = p.split("|");
+  const result: IPoint[] = [];
+  if (data.Points) {
+    for (const p of data.Points) {
+      const poi = p.split("|");
 
-          const coords = utils.WmOrGK4toWGS84(poi[5], poi[4]);
-          const pointName = poi[3].replace(/'/g, "");
+      const coords = utils.WmOrGK4toWGS84(poi[5], poi[4]);
+      const pointName = poi[3].replace(/'/g, "");
 
-          if (pointName && coords) {
-            const city = poi[2] === "" ? "Dresden" : poi[2];
-            const { id, type } = utils.parsePoiID(poi[0]);
+      if (pointName && coords) {
+        const city = poi[2] === "" ? "Dresden" : poi[2];
+        const { id, type } = utils.parsePoiID(poi[0]);
 
-            result.push({
-              city,
-              coords,
-              name: pointName,
-              id,
-              type,
-            });
-          }
+        result.push({
+          city,
+          coords,
+          name: pointName,
+          id,
+          type,
         });
       }
+    }
+  }
 
-      return result;
-    })
-    .catch(utils.convertError);
+  return result;
 }
 
 /**
@@ -97,23 +98,20 @@ export async function findNearbyStops(searchString: string, timeout = 15000): Pr
  * @param timeout the timeout of the request
  * @returns the adress and neaby stops
  */
-export function findAddress(
+export async function findAddress(
   lng: number,
   lat: number,
   timeout = 15000,
 ): Promise<IAddress | undefined> {
   const gk4 = utils.WGS84toGK4(lng, lat);
 
-  return pointFinder(`coord:${gk4[0]}:${gk4[1]}`, false, true, timeout).then((points) => {
-    if (points.length === 0) {
-      return undefined;
-    }
+  const points = await pointFinder(`coord:${gk4[0]}:${gk4[1]}`, false, true, timeout);
+  if (points.length === 0) {
+    return undefined;
+  }
 
-    const address: IAddress = {
-      ...points[0],
-      stops: points.slice(1) || [],
-    };
-
-    return address;
-  });
+  return {
+    ...points[0],
+    stops: points.slice(1) || [],
+  };
 }

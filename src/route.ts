@@ -1,6 +1,39 @@
-import axios, { type AxiosRequestConfig } from "axios";
+import { post } from "./http";
 import type { ILocation, IRoute, ITrip } from "./interfaces";
 import * as utils from "./utils";
+
+interface TripsResponse {
+  Status: { Code: string; Message?: string };
+  Routes?: Array<{
+    RouteId: number;
+    Duration: number;
+    Interchanges: number;
+    PartialRoutes: Array<{
+      Duration: number;
+      MapDataIndex: number;
+      Mot: {
+        Type?: string;
+        Name?: string;
+        Direction?: string;
+        DlId?: string;
+        Diva?: { Number: string; Network: string };
+      };
+      RegularStops?: Array<{
+        DataId: string;
+        DhId: string;
+        Name: string;
+        Place: string;
+        Type: string;
+        Platform?: { Name: string; Type: string };
+        Latitude: number;
+        Longitude: number;
+        ArrivalTime: string;
+        DepartureTime: string;
+      }>;
+    }>;
+    MapData: string[];
+  }>;
+}
 
 /**
  * Query the server for possible routes from one stop to another.
@@ -9,13 +42,9 @@ import * as utils from "./utils";
  * @param time starting at what time
  * @param isArrivalTime is time the arrival time
  * @param timeout the timeout of the request
- * @param viaID the id of a stop which must be served by the route
- * @returns Returns multiple possible trips, the bus-/tramlines to be taken,
- * the single stops, their arrival and departure times and their GPS coordinates.
- * The path property of a trip contains an array consisting of all the coordinates
- * describing the path of this node. This can be useful to draw the route on a map.
+ * @param via the id of a stop which must be served by the route
  */
-export function route(
+export async function route(
   originID: string,
   destinationID: string,
   time = new Date(),
@@ -23,57 +52,49 @@ export function route(
   timeout = 15000,
   via?: string,
 ): Promise<IRoute> {
-  const options: AxiosRequestConfig = {
+  const data = await post<TripsResponse>({
     url: "https://webapi.vvo-online.de/tr/trips",
-    params: {
+    body: {
       format: "json",
       origin: originID,
       destination: destinationID,
       isarrivaltime: isArrivalTime,
       shorttermchanges: true,
       time: time.toISOString(),
-      via: via,
+      via,
     },
     timeout,
-  };
-  return axios(options)
-    .then((response) => {
-      // check status of response
-      utils.checkStatus(response.data);
+  });
 
-      let origin: ILocation | undefined;
-      let destination: ILocation | undefined;
-      let trips: ITrip[] = [];
+  utils.checkStatus(data);
 
-      if (response.data.Routes) {
-        trips = response.data.Routes.map(utils.extractTrip);
+  let origin: ILocation | undefined;
+  let destination: ILocation | undefined;
+  let trips: ITrip[] = [];
 
-        if (trips && trips.length > 0) {
-          const firstTrip = trips[0];
-          if (firstTrip.departure) {
-            origin = {
-              id: firstTrip.departure.id,
-              name: firstTrip.departure.name,
-              city: firstTrip.departure.city,
-              coords: firstTrip.departure.coords,
-            };
-          }
-          if (firstTrip.arrival) {
-            destination = {
-              id: firstTrip.arrival.id,
-              name: firstTrip.arrival.name,
-              city: firstTrip.arrival.city,
-              coords: firstTrip.arrival.coords,
-            };
-          }
-        }
+  if (data.Routes) {
+    trips = data.Routes.map(utils.extractTrip);
+
+    if (trips.length > 0) {
+      const firstTrip = trips[0];
+      if (firstTrip.departure) {
+        origin = {
+          id: firstTrip.departure.id,
+          name: firstTrip.departure.name,
+          city: firstTrip.departure.city,
+          coords: firstTrip.departure.coords,
+        };
       }
+      if (firstTrip.arrival) {
+        destination = {
+          id: firstTrip.arrival.id,
+          name: firstTrip.arrival.name,
+          city: firstTrip.arrival.city,
+          coords: firstTrip.arrival.coords,
+        };
+      }
+    }
+  }
 
-      return {
-        origin,
-        destination,
-        trips,
-      };
-    })
-    .catch(utils.convertError);
+  return { origin, destination, trips };
 }

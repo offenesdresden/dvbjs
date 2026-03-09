@@ -1,4 +1,3 @@
-export { coords } from "./coords";
 export { findAddress, findNearbyStops, findPOI, findStop } from "./find";
 export * from "./interfaces";
 export { lines } from "./lines";

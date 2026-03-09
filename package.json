@@ -82,7 +82,6 @@
     "watch": "tsc --watch"
   },
   "dependencies": {
-    "axios": "^1.6.2",
     "proj4": "^2.9.0"
   },
   "devDependencies": {
