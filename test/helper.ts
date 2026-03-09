@@ -1,6 +1,4 @@
-/* eslint @typescript-eslint/no-non-null-assertion: 0 */
-
-import { assert } from "chai";
+import { expect } from "vitest";
 import {
   coord,
   IAddress,
@@ -20,41 +18,49 @@ import {
   POI_TYPE,
 } from "../src/interfaces";
 
+function expectApproximately(
+  actual: number,
+  expected: number,
+  delta: number
+): void {
+  expect(Math.abs(actual - expected)).toBeLessThanOrEqual(delta);
+}
+
 export function assertNotEmptyString(str?: string): void {
-  assert.isString(str);
-  assert.isNotEmpty(str);
+  expect(typeof str).toBe("string");
+  expect(str!.length).toBeGreaterThan(0);
 }
 
 export function assertCoords(coords: coord): void {
-  assert.isArray(coords);
-  assert.lengthOf(coords, 2);
+  expect(Array.isArray(coords)).toBe(true);
+  expect(coords).toHaveLength(2);
 
-  assert.approximately(coords[0], 13, 2);
-  assert.approximately(coords[1], 51, 3);
+  expectApproximately(coords[0], 13, 2);
+  expectApproximately(coords[1], 51, 3);
 }
 
 export function assertPlatform(platform: IPlatform): void {
-  assert.isObject(platform);
+  expect(typeof platform).toBe("object");
 
-  assert.property(platform, "name");
+  expect(platform).toHaveProperty("name");
   assertNotEmptyString(platform.name);
 
-  assert.property(platform, "type");
+  expect(platform).toHaveProperty("type");
   assertNotEmptyString(platform.type);
 }
 
 export function assertDiva(diva: IDiva): void {
-  assert.isObject(diva);
+  expect(typeof diva).toBe("object");
 
-  assert.property(diva, "number");
-  assert.isNumber(diva.number);
+  expect(diva).toHaveProperty("number");
+  expect(typeof diva.number).toBe("number");
 
-  assert.property(diva, "network");
+  expect(diva).toHaveProperty("network");
   assertNotEmptyString(diva.network);
 }
 
 export function assertMode(mode: IMode): void {
-  assert.isObject(mode);
+  expect(typeof mode).toBe("object");
 
   assertNotEmptyString(mode.name);
   assertNotEmptyString(mode.title);
@@ -62,7 +68,7 @@ export function assertMode(mode: IMode): void {
 }
 
 export function assertLocation(stop: ILocation): void {
-  assert.isObject(stop);
+  expect(typeof stop).toBe("object");
 
   assertNotEmptyString(stop.id);
   assertNotEmptyString(stop.name);
@@ -73,8 +79,8 @@ export function assertLocation(stop: ILocation): void {
 export function assertStop(stop: IStop): void {
   assertLocation(stop);
 
-  assert.instanceOf(stop.arrival, Date);
-  assert.instanceOf(stop.departure, Date);
+  expect(stop.arrival).toBeInstanceOf(Date);
+  expect(stop.departure).toBeInstanceOf(Date);
 
   if (stop.platform) {
     // workaround for station without platform
@@ -82,18 +88,18 @@ export function assertStop(stop: IStop): void {
     assertPlatform(stop.platform);
   }
 
-  assert.strictEqual(stop.type, POI_TYPE.Stop);
+  expect(stop.type).toBe(POI_TYPE.Stop);
 }
 
 export function assertPoint(point: IPoint): void {
   assertLocation(point);
-  assert.oneOf(point.type, Object.keys(POI_TYPE));
+  expect(Object.keys(POI_TYPE)).toContain(point.type);
 }
 
 export function assertAddress(adress: IAddress): void {
   assertPoint(adress);
 
-  assert.isNotEmpty(adress.stops);
+  expect(adress.stops.length).toBeGreaterThan(0);
   adress.stops.forEach(assertPoint);
 }
 
@@ -104,55 +110,41 @@ export function assertStopLocation(stop: IStopLocation): void {
     assertPlatform(stop.platform);
   }
 
-  assert.strictEqual(stop.type, POI_TYPE.Stop);
+  expect(stop.type).toBe(POI_TYPE.Stop);
 }
 
 export function assertConnection(con: IConnection): void {
-  assert.isObject(con);
+  expect(typeof con).toBe("object");
   assertNotEmptyString(con.line);
-  assert.isNotEmpty(con.line);
+  expect(con.line.length).toBeGreaterThan(0);
   if (con.mode) {
     assertMode(con.mode);
   }
 }
 
 export function assertPin(pin: IPin, type?: PIN_TYPE): void {
-  assert.isObject(pin);
+  expect(typeof pin).toBe("object");
   assertNotEmptyString(pin.type);
 
   if (type) {
-    assert.strictEqual(pin.type, type);
+    expect(pin.type).toBe(type);
   }
 
   assertNotEmptyString(pin.name);
   assertCoords(pin.coords);
 
   if (pin.type === PIN_TYPE.platform) {
-    assert.isString(pin.id);
+    expect(typeof pin.id).toBe("string");
     assertNotEmptyString(pin.platformNr);
   } else {
     assertNotEmptyString(pin.id);
-    assert.isUndefined(pin.platformNr);
+    expect(pin.platformNr).toBeUndefined();
   }
-/*
-  if (pin.type === PIN_TYPE.stop) {
-    assert.isArray(pin.connections);
-    if (!["Schule", "Ebertplatz"].includes(pin.name)) {
-      assert.isNotEmpty(
-        pin.connections,
-        `expected connections for ${pin.name}`
-      );
-    }
-    pin.connections!.forEach(assertConnection);
-  } else {
-    assert.isUndefined(pin.connections);
-  }
-*/
 
   if (pin.type === PIN_TYPE.parkandride) {
     assertNotEmptyString(pin.info);
   } else {
-    assert.isUndefined(pin.info);
+    expect(pin.info).toBeUndefined();
   }
 }
 
@@ -161,14 +153,14 @@ export function assertTransport(transport: IMonitor): void {
   assertNotEmptyString(transport.line);
   assertNotEmptyString(transport.direction);
 
-  assert.isNumber(transport.arrivalTimeRelative);
-  assert.isNumber(transport.scheduledTimeRelative);
-  assert.isNumber(transport.delayTime);
+  expect(typeof transport.arrivalTimeRelative).toBe("number");
+  expect(typeof transport.scheduledTimeRelative).toBe("number");
+  expect(typeof transport.delayTime).toBe("number");
 
-  assert.instanceOf(transport.arrivalTime, Date);
-  assert.instanceOf(transport.scheduledTime, Date);
+  expect(transport.arrivalTime).toBeInstanceOf(Date);
+  expect(transport.scheduledTime).toBeInstanceOf(Date);
 
-  assert.property(transport, "state");
+  expect(transport).toHaveProperty("state");
 
   if (transport.mode) {
     assertMode(transport.mode);
@@ -177,16 +169,16 @@ export function assertTransport(transport: IMonitor): void {
   if (transport.line && transport.line.indexOf("E") === -1) {
     assertDiva(transport.diva!);
   } else {
-    assert.isUndefined(transport.diva);
+    expect(transport.diva).toBeUndefined();
   }
 
-  assert.isDefined(transport.platform);
+  expect(transport.platform).toBeDefined();
   assertPlatform(transport.platform!);
 }
 
 function assertNode(node: INode): void {
-  assert.isString(node.direction);
-  assert.isNumber(node.duration);
+  expect(typeof node.direction).toBe("string");
+  expect(typeof node.duration).toBe("number");
 
   if (node.mode) {
     assertMode(node.mode);
@@ -198,12 +190,12 @@ function assertNode(node: INode): void {
     node.mode.name !== "StayForConnection" &&
     node.mode.name.indexOf("Stairs") === -1
   ) {
-    assert.isDefined(node.diva);
+    expect(node.diva).toBeDefined();
     assertDiva(node.diva!);
     assertNotEmptyString(node.line);
   } else {
-    assert.isUndefined(node.diva);
-    assert.isString(node.line);
+    expect(node.diva).toBeUndefined();
+    expect(typeof node.line).toBe("string");
   }
 
   if (
@@ -211,36 +203,36 @@ function assertNode(node: INode): void {
     ((node.mode.name === "Footpath" && !node.departure) ||
       node.mode.name.indexOf("Stairs") > -1)
   ) {
-    assert.isUndefined(node.departure);
-    assert.isUndefined(node.arrival);
-    assert.isArray(node.stops);
-    assert.isEmpty(node.stops);
+    expect(node.departure).toBeUndefined();
+    expect(node.arrival).toBeUndefined();
+    expect(Array.isArray(node.stops)).toBe(true);
+    expect(node.stops).toHaveLength(0);
   } else {
     assertStopLocation(node.departure!);
     assertStopLocation(node.arrival!);
 
-    assert.isArray(node.stops);
-    assert.isNotEmpty(node.stops);
+    expect(Array.isArray(node.stops)).toBe(true);
+    expect(node.stops.length).toBeGreaterThan(0);
     node.stops.forEach(assertStop);
   }
 
-  assert.isArray(node.path);
+  expect(Array.isArray(node.path)).toBe(true);
   if (node.mode && node.mode.name !== "StayForConnection") {
     if ((node.mode && node.mode.name !== "Footpath") || node.path.length > 0) {
-      assert.isNotEmpty(node.path);
+      expect(node.path.length).toBeGreaterThan(0);
       node.path.forEach(assertCoords);
     }
   } else {
-    assert.isEmpty(node.path);
+    expect(node.path).toHaveLength(0);
   }
 }
 
 export function assertTrip(trip: ITrip): void {
   assertStopLocation(trip.departure!);
   assertStopLocation(trip.arrival!);
-  assert.isNumber(trip.duration);
-  assert.isNumber(trip.interchanges);
+  expect(typeof trip.duration).toBe("number");
+  expect(typeof trip.interchanges).toBe("number");
 
-  assert.isArray(trip.nodes);
+  expect(Array.isArray(trip.nodes)).toBe(true);
   trip.nodes.forEach(assertNode);
 }

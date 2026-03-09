@@ -1,8 +1,0 @@
-{
-  "reporter": "spec",
-  "timeout": 20000,
-  "slow": 1000,
-  "require": ["ts-node/register", "source-map-support/register"],
-  "extension": ["ts"],
-  "files": ["test/*.spec.ts"]
-}

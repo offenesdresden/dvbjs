@@ -16,7 +16,8 @@
     "noFallthroughCasesInSwitch": true,
     "noUnusedParameters": true,
     "noUnusedLocals": true,
-    "types": ["mocha", "node"]
+    "types": ["node"],
+    "skipLibCheck": true
   },
   "include": ["src", "test"]
 }
