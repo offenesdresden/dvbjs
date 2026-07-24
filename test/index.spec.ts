@@ -277,6 +277,9 @@ describe("dvb.findNearbyStops", () => {
   });
 });
 
+// The WebAPI returns results erratically for small bounding boxes — the same
+// request alternates between an empty list and a full one. Keep these boxes
+// city-sized so the assertions stay meaningful.
 describe("dvb.pins", () => {
   describe('dvb.pins "13.713899, 51.026578, 13.939144, 51.093821, stop"', () => {
     it("should contain objects with id, name, coords and connections", async () => {
@@ -288,9 +291,9 @@ describe("dvb.pins", () => {
     });
   });
 
-  describe('dvb.pins "13.713899, 51.026578, 13.737974, 51.035565, platform"', () => {
+  describe('dvb.pins "13.713899, 51.026578, 13.939144, 51.093821, platform"', () => {
     it("should contain objects with name, coords and platformNr", async () => {
-      const data = await dvb.pins(13.713899, 51.026578, 13.737974, 51.035565, [
+      const data = await dvb.pins(13.713899, 51.026578, 13.939144, 51.093821, [
         dvb.PIN_TYPE.platform,
       ]);
       expect(data.length).toBeGreaterThan(0);
@@ -312,7 +315,7 @@ describe("dvb.pins", () => {
 
   describe("multiple pin types", () => {
     it("should contain ticketmachine and platform", async () => {
-      const data = await dvb.pins(13.713899, 51.026578, 13.737974, 51.035565, [
+      const data = await dvb.pins(13.713899, 51.026578, 13.939144, 51.093821, [
         dvb.PIN_TYPE.platform,
         dvb.PIN_TYPE.ticketmachine,
       ]);

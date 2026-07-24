@@ -2,6 +2,10 @@ name: CI
 
 on: [push, pull_request]
 
+# Only checkout needs the token; nothing here writes back to the repo.
+permissions:
+  contents: read
+
 jobs:
   build:
     runs-on: ${{ matrix.os }}
@@ -9,14 +13,14 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        node-version: [20.x, 22.x]
+        node-version: [22.x, 24.x, 26.x]
         os: [ubuntu-latest, windows-latest, macos-latest]
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version: ${{ matrix.node-version }}
           cache: npm
@@ -26,3 +30,16 @@ jobs:
       - run: npm run typecheck
       - run: npm run build
       - run: npm test
+
+  # Single check for branch protection to require, so the build matrix can
+  # change without anyone editing the ruleset. always() is what makes it report
+  # a result when the matrix fails, rather than being skipped.
+  ci-success:
+    if: always()
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check build matrix result
+        if: needs.build.result != 'success'
+        run: exit 1

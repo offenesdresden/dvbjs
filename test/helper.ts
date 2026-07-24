@@ -162,11 +162,10 @@ export function assertTransport(transport: Monitor): void {
     assertMode(transport.mode);
   }
 
-  if (transport.line && transport.line.indexOf("E") === -1) {
-    expect(transport.diva).toBeDefined();
-    if (transport.diva) assertDiva(transport.diva);
-  } else {
-    expect(transport.diva).toBeUndefined();
+  // Replacement services ("EV 3", "EV 8") carry a diva just like regular lines,
+  // so its presence can't be inferred from the line name.
+  if (transport.diva) {
+    assertDiva(transport.diva);
   }
 
   expect(transport.platform).toBeDefined();
