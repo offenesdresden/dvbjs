@@ -21,18 +21,16 @@ proj4.defs(
   "+proj=tmerc +lat_0=0 +lon_0=12 +k=1 +x_0=4500000 +y_0=0 +ellps=bessel +datum=potsdam +units=m +no_defs",
 );
 
-// EPSG:3857
-proj4.defs(
-  "WM",
-  "+proj=merc +lon_0=0 +k=1 +x_0=0 +y_0=0 +a=6378137 +b=6378137 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs",
-);
+// Web Mercator. proj4 ships EPSG:3857 built in; a hand-rolled +proj=merc with a
+// spherical +a/+b override silently switched to ellipsoidal maths in proj4 2.20.9.
+const WM = "EPSG:3857";
 
 export function WGS84toGK4(lng: number, lat: number): coord {
   return proj4("WGS84", "GK4", [lng, lat]).map(Math.round) as coord;
 }
 
 export function WGS84toWm(lng: number, lat: number): coord {
-  return proj4("WGS84", "WM", [lng, lat]).map(Math.round) as coord;
+  return proj4("WGS84", WM, [lng, lat]).map(Math.round) as coord;
 }
 
 export function WmOrGK4toWGS84(lng: string, lat: string): coord | undefined {
@@ -48,7 +46,7 @@ export function WmOrGK4toWGS84(lng: string, lat: string): coord | undefined {
   }
 
   if (lngInt < 2500000) {
-    return proj4("WM", "WGS84", [lngInt, latInt]) as coord;
+    return proj4(WM, "WGS84", [lngInt, latInt]) as coord;
   } else {
     return proj4("GK4", "WGS84", [lngInt, latInt]) as coord;
   }
@@ -75,7 +73,7 @@ export function convertCoordinates(s: string): coord[] {
 }
 
 export function checkStatus(data: { Status?: { Code: string; Message?: string } }): void {
-  if (!data || !data.Status) {
+  if (!data?.Status) {
     throw new Error("unexpected error");
   }
   if (data.Status.Code !== "Ok") {

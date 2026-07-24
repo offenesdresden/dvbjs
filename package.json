@@ -95,15 +95,14 @@
     "prepublishOnly": "npm run build"
   },
   "dependencies": {
-    "proj4": "^2.9.0"
+    "proj4": "^2.20.9"
   },
   "devDependencies": {
-    "@biomejs/biome": "^2.4.6",
-    "@types/node": "^20.9.4",
-    "@types/proj4": "^2.5.0",
-    "@vitest/coverage-v8": "^4.0.18",
-    "tsdown": "^0.21.1",
-    "typescript": "^5.3.2",
-    "vitest": "^4.0.18"
+    "@biomejs/biome": "^2.5.5",
+    "@types/node": "^26.1.1",
+    "@vitest/coverage-v8": "^4.1.10",
+    "tsdown": "^0.22.14",
+    "typescript": "^7.0.2",
+    "vitest": "^4.1.10"
   }
 }

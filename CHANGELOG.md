@@ -5,6 +5,20 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## Unreleased
+
+### Fixed
+
+- Web Mercator conversions now use proj4's built-in `EPSG:3857` definition. proj4 2.20.9 changed
+  how it handles a spherical `+a`/`+b` override on `+proj=merc`, which shifted results by ~33 km.
+
+### Changed
+
+- Updated all dependencies to latest: TypeScript 7, proj4 2.20.9, Vitest 4.1, Biome 2.5,
+  tsdown 0.22, @types/node 26
+- Dropped `@types/proj4`; proj4 ships its own type declarations
+- Bumped `actions/checkout` and `actions/setup-node` to v6
+
 ## 7.0.0 - 2026-03-09
 
 ### Breaking Changes
