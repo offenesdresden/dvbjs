@@ -1,6 +1,6 @@
 {
   "name": "dvbjs",
-  "version": "7.0.0",
+  "version": "8.0.0",
   "description": "query Dresden's public transport system for current bus- and tram stop data",
   "keywords": [
     "bus",
@@ -83,6 +83,9 @@
   "files": [
     "dist/"
   ],
+  "engines": {
+    "node": ">=22"
+  },
   "scripts": {
     "build": "npm run typecheck && tsdown",
     "typecheck": "tsc --noEmit",

@@ -6,6 +6,11 @@ name: Auto-Merge Dependabot PRs
 on:
   pull_request_target:
 
+# pull_request_target grants a write-scoped token by default. Only checkout uses
+# it here; the merge itself runs on AUTO_MERGE_TOKEN below.
+permissions:
+  contents: read
+
 jobs:
   auto-merge:
     runs-on: ubuntu-latest

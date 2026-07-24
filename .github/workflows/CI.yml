@@ -2,6 +2,10 @@ name: CI
 
 on: [push, pull_request]
 
+# Only checkout needs the token; nothing here writes back to the repo.
+permissions:
+  contents: read
+
 jobs:
   build:
     runs-on: ${{ matrix.os }}
@@ -26,3 +30,16 @@ jobs:
       - run: npm run typecheck
       - run: npm run build
       - run: npm test
+
+  # Single check for branch protection to require, so the build matrix can
+  # change without anyone editing the ruleset. always() is what makes it report
+  # a result when the matrix fails, rather than being skipped.
+  ci-success:
+    if: always()
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check build matrix result
+        if: needs.build.result != 'success'
+        run: exit 1
