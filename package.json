@@ -98,11 +98,11 @@
     "prepublishOnly": "npm run build"
   },
   "dependencies": {
-    "proj4": "^2.20.9"
+    "proj4": "^2.21.0"
   },
   "devDependencies": {
-    "@biomejs/biome": "^2.5.5",
-    "@types/node": "^26.1.1",
+    "@biomejs/biome": "^2.5.6",
+    "@types/node": "^26.1.2",
     "@vitest/coverage-v8": "^4.1.10",
     "tsdown": "^0.22.14",
     "typescript": "^7.0.2",
