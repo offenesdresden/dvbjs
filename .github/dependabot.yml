@@ -7,7 +7,7 @@ updates:
       interval: monthly
       time: "04:00"
       timezone: Europe/Berlin
-      
+
   - package-ecosystem: npm
     directory: "/"
     schedule:
@@ -16,3 +16,10 @@ updates:
       timezone: Europe/Berlin
     open-pull-requests-limit: 20
     versioning-strategy: increase
+    groups:
+      # The @vitest/* packages pin vitest to their exact version as a peer, so
+      # separate bump PRs can never install on their own.
+      vitest:
+        patterns:
+          - "vitest"
+          - "@vitest/*"

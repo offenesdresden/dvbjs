@@ -168,7 +168,8 @@ export function assertTransport(transport: Monitor): void {
     assertDiva(transport.diva);
   }
 
-  expect(transport.platform).toBeDefined();
+  // The WebAPI occasionally omits the platform for a departure at stops that
+  // usually report one, so only validate it when present.
   if (transport.platform) assertPlatform(transport.platform);
 }
 
