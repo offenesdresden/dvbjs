@@ -101,7 +101,7 @@
     "proj4": "^2.22.0"
   },
   "devDependencies": {
-    "@biomejs/biome": "^2.5.15",
+    "@biomejs/biome": "^2.6.4",
     "@types/node": "^26.6.5",
     "@vitest/coverage-v8": "^5.0.5",
     "tsdown": "^0.23.1",
